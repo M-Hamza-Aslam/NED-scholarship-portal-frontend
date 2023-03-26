@@ -1,0 +1,60 @@
+.innerDiv {
+  margin-top: 1.7rem;
+  max-width: 75%;
+  margin-bottom: 5rem;
+}
+.innerDiv > h2 {
+  font-weight: 600;
+  font-size: 22px;
+}
+.innerDiv > p {
+  margin-top: 0px;
+  font-size: 13px;
+}
+.innerDiv > h3 {
+  color: red;
+  font-size: 14px;
+}
+.instructionDiv {
+  border: 1px solid #e58c00;
+  border-radius: 10px;
+  margin: 1rem 0 3rem 0;
+  padding: 1rem;
+  background-color: #ffeee6;
+}
+.instructionDiv > p {
+  margin: 0;
+  font-weight: 700;
+  color: #e58c00;
+  font-size: 14px;
+}
+.signupForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 4%;
+}
+.formInput {
+  flex: 0 0 48%;
+}
+.signupForm > button {
+  flex: 0 0 48%;
+  height: 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.backBtn {
+  background-color: white !important;
+  color: black !important;
+  box-shadow: none !important;
+}
+.backBtn:hover {
+  background-color: rgb(224, 220, 220) !important;
+}
+@media screen and (max-width: 712px) {
+  .formInput {
+    flex: 0 0 100%;
+  }
+  .innerDiv {
+    max-width: 90%;
+  }
+}

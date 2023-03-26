@@ -1,31 +1,6 @@
-.main {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  min-height: 100vh;
-}
-.leftDiv {
-  flex: 0 0 40%;
-  background-image: url("../../images/ned_1.jpg");
-  width: 100%;
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.leftDiv > img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.rightDiv {
-  flex: 0 0 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .innerDiv {
-  margin-top: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 .logoDiv {
   display: flex;
@@ -49,12 +24,15 @@
 }
 .submitDiv {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   flex-direction: column;
 }
 .submitDiv > a {
   text-decoration: none;
   color: #1565c0;
+}
+.submitDiv > a:hover {
+  color: #1b7dee;
 }
 .submitDiv > button {
   width: 50%;
@@ -66,21 +44,13 @@
 .signupLink {
   text-align: center;
 }
-.signupLink > a {
-  text-decoration: none;
+.signupLink > button {
   color: #1565c0;
   font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
-
-@media screen and (max-width: 1000px) {
-  .main {
-    display: block;
-  }
-  .leftDiv {
-    display: none;
-  }
-  .rightDiv {
-    flex: 0 0 100%;
-    margin: 0 20px;
-  }
+.signupLink > button:hover {
+  color: #1b7dee;
 }

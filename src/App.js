@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import Login from "./components/Registeration/Login";
 import "./App.css";
+import Registeration from "./components/Registeration/Registeration";
 
 function App() {
   return (
     <Fragment>
-      <Login></Login>
+      <Registeration />
     </Fragment>
   );
 }
