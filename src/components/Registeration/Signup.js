@@ -34,7 +34,7 @@ const Signup = (props) => {
     <div className={classes.innerDiv}>
       <h2>Create your Account</h2>
       <p>to continue to NED Scholarship Portal</p>
-      <h3>Note:Read Important Instruction for Signup</h3>
+      <h3>Note: Read Important Instruction for Signup</h3>
       <div className={classes.instructionDiv}>
         <p>
           1. Please enter your 13 digit NADRA CNIC number without dashes for an
