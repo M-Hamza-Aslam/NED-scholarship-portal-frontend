@@ -26,6 +26,9 @@ const Login = (props) => {
   const setSignupFormHandler = () => {
     setSignupForm(true);
   };
+  const ForgotPasswordHandler = () => {
+    props.setForgotPassword(true);
+  };
   return (
     <div className={classes.innerDiv}>
       <div className={classes.logoDiv}>
@@ -85,7 +88,12 @@ const Login = (props) => {
           </FormControl>
         </div>
         <div className={classes.submitDiv}>
-          <a href="https://localhost:3000">Forgot your password?</a>
+          <button
+            onClick={ForgotPasswordHandler}
+            className={classes.forgotPassBtn}
+          >
+            Forgot your password?
+          </button>
           <Button
             variant="contained"
             type="submit"

@@ -27,26 +27,31 @@
   align-items: flex-end;
   flex-direction: column;
 }
-.submitDiv > a {
-  text-decoration: none;
+.forgotPassBtn {
   color: #1565c0;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
-.submitDiv > a:hover {
+.forgotPassBtn:hover {
   color: #1b7dee;
 }
-.submitDiv > button {
+.submitBtn {
   width: 50%;
-  margin: 2rem 0;
+  margin: 2rem 0 !important;
   height: 50px;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 700 !important;
+  font-size: 16px !important;
 }
 .signupLink {
   text-align: center;
 }
 .signupLink > button {
   color: #1565c0;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 16px;
   background: none;
   border: none;
   cursor: pointer;
