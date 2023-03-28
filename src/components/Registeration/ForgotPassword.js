@@ -50,7 +50,7 @@ const ForgotPassword = (props) => {
           variant="outlined"
           className={classes.formInput}
         >
-          <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
           <OutlinedInput
             id="outlined-adornment-email"
             type="email"

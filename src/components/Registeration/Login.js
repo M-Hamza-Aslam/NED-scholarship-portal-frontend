@@ -80,7 +80,7 @@ const Login = (props) => {
             variant="outlined"
             className={classes.formInput}
           >
-            <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
             <OutlinedInput
               id="outlined-adornment-email"
               type="email"
@@ -103,7 +103,7 @@ const Login = (props) => {
             className={classes.formInput}
           >
             <InputLabel htmlFor="outlined-adornment-password">
-              Password
+              Password*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
