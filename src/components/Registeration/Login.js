@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState } from "react";
+import useInput from "../../Hooks/UseInput";
+
 const logo = require("../../images/ned_logo.png");
 
 const Login = (props) => {
@@ -29,6 +31,39 @@ const Login = (props) => {
   const ForgotPasswordHandler = () => {
     props.setForgotPassword(true);
   };
+  //formvalidations
+  const {
+    value: emailInputValue,
+    isValid: enteredEmailisValid,
+    isError: emailIsError,
+    inputKeyStrockHandler: emailKeyStrockHandler,
+    inputBlurHandler: emailInputBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => value.includes("@"));
+  const {
+    value: passwordInputValue,
+    isValid: enteredPasswordisValid,
+    isError: passwordIsError,
+    inputKeyStrockHandler: passwordKeyStrockHandler,
+    inputBlurHandler: passwordInputBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => !(value.trim().length < 6));
+
+  let formIsValid = false;
+  if (enteredEmailisValid && enteredPasswordisValid) {
+    formIsValid = true;
+  }
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    if (!formIsValid) {
+      return;
+    }
+    //add your logic
+
+    //
+    resetEmailInput();
+    resetPasswordInput();
+  };
   return (
     <div className={classes.innerDiv}>
       <div className={classes.logoDiv}>
@@ -36,12 +71,12 @@ const Login = (props) => {
       </div>
       <h2>Sign in to NED Scholarship Portal</h2>
       <h3>Enter your details below</h3>
-      <form>
+      <form onSubmit={formSubmitHandler}>
         <div className={classes.inputsDiv}>
           {/* Email Input */}
           <FormControl
             fullWidth
-            error
+            error={emailIsError && true}
             variant="outlined"
             className={classes.formInput}
           >
@@ -50,15 +85,20 @@ const Login = (props) => {
               id="outlined-adornment-email"
               type="email"
               label="Email"
+              value={emailInputValue}
+              onChange={emailKeyStrockHandler}
+              onBlur={emailInputBlurHandler}
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Email!
-            </FormHelperText>
+            {emailIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Email!
+              </FormHelperText>
+            )}
           </FormControl>
           {/* pasword Input */}
           <FormControl
             fullWidth
-            error
+            error={passwordIsError && true}
             variant="outlined"
             className={classes.formInput}
           >
@@ -68,6 +108,9 @@ const Login = (props) => {
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
+              value={passwordInputValue}
+              onChange={passwordKeyStrockHandler}
+              onBlur={passwordInputBlurHandler}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -82,9 +125,11 @@ const Login = (props) => {
               }
               label="Password"
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Password!
-            </FormHelperText>
+            {passwordIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Password!
+              </FormHelperText>
+            )}
           </FormControl>
         </div>
         <div className={classes.submitDiv}>

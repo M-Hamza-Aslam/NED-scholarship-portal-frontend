@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState } from "react";
+import useInput from "../../Hooks/UseInput";
+
 const Signup = (props) => {
   const setSignupForm = props.setSignupForm;
   const [showPassword, setShowPassword] = useState(false);
@@ -30,80 +32,200 @@ const Signup = (props) => {
   const setSignupFormHandler = () => {
     setSignupForm(false);
   };
+  //form validations
+  const {
+    value: emailInputValue,
+    isValid: enteredEmailisValid,
+    isError: emailIsError,
+    inputKeyStrockHandler: emailKeyStrockHandler,
+    inputBlurHandler: emailInputBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => value.includes("@"));
+  const {
+    value: passwordInputValue,
+    isValid: enteredPasswordisValid,
+    isError: passwordIsError,
+    inputKeyStrockHandler: passwordKeyStrockHandler,
+    inputBlurHandler: passwordInputBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => !(value.trim().length < 6));
+  const {
+    value: confirmPasswordInputValue,
+    isValid: enteredConfirmPasswordisValid,
+    isError: confirmPasswordIsError,
+    inputKeyStrockHandler: confirmPasswordKeyStrockHandler,
+    inputBlurHandler: confirmPasswordInputBlurHandler,
+    reset: resetConfirmPasswordInput,
+  } = useInput((value) => value === passwordInputValue);
+  const {
+    value: firstNameInputValue,
+    isValid: enteredFirstNameisValid,
+    isError: firstNameIsError,
+    inputKeyStrockHandler: firstNameKeyStrockHandler,
+    inputBlurHandler: firstNameInputBlurHandler,
+    reset: resetFirstNameInput,
+  } = useInput((value) => !(value.trim().length < 1));
+  const {
+    value: lastNameInputValue,
+    isValid: enteredLastNameisValid,
+    isError: lastNameIsError,
+    inputKeyStrockHandler: lastNameKeyStrockHandler,
+    inputBlurHandler: lastNameInputBlurHandler,
+    reset: resetLastNameInput,
+  } = useInput((value) => !(value.trim().length < 1));
+  const {
+    value: phoneNumberInputValue,
+    isValid: enteredPhoneNumberisValid,
+    isError: phoneNumberIsError,
+    inputKeyStrockHandler: phoneNumberKeyStrockHandler,
+    inputBlurHandler: phoneNumberInputBlurHandler,
+    reset: resetPhoneNumberInput,
+  } = useInput(
+    (value) => value.trim().length === 12 && value.slice(0, 2) === "92"
+  );
+
+  let formIsValid = false;
+  if (
+    enteredEmailisValid &&
+    enteredPasswordisValid &&
+    enteredFirstNameisValid &&
+    enteredLastNameisValid &&
+    enteredConfirmPasswordisValid &&
+    enteredPhoneNumberisValid
+  ) {
+    formIsValid = true;
+  }
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    if (!formIsValid) {
+      return;
+    }
+    //add your logic
+
+    //
+    resetEmailInput();
+    resetPasswordInput();
+    resetConfirmPasswordInput();
+    resetFirstNameInput();
+    resetLastNameInput();
+    resetPhoneNumberInput();
+  };
   return (
     <div className={classes.innerDiv}>
       <h2>Create your Account</h2>
       <p>to continue to NED Scholarship Portal</p>
-      <h3>Note: Read Important Instruction for Signup</h3>
+      <h3>Note: Read Important Instructions for Signup</h3>
       <div className={classes.instructionDiv}>
         <p>
-          1. Please enter your 13 digit NADRA CNIC number without dashes for an
-          account creation. <br></br> 2. In case you do not have NADRA CNIC,
-          please enter your 13 digit B-Form number without dashes for an account
-          creation.
+          1. Please enter your 12 digit cell phone number in the format
+          92XXXXXXXXXX. <br></br> 2. Select a strong password of length atleast
+          6 or more.
         </p>
       </div>
-      <form>
+      <form onSubmit={formSubmitHandler}>
         <div className={classes.signupForm}>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={firstNameIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-firstname">
-              First Name
+              First Name*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-firstname"
               type="text"
               label="Last Name"
+              value={firstNameInputValue}
+              onChange={firstNameKeyStrockHandler}
+              onBlur={firstNameInputBlurHandler}
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Last Name!
-            </FormHelperText>
+            {firstNameIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect First Name!
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={lastNameIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-lastname">
-              Last Name
+              Last Name*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-lastname"
               type="text"
               label="Last Name"
+              value={lastNameInputValue}
+              onChange={lastNameKeyStrockHandler}
+              onBlur={lastNameInputBlurHandler}
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Last Name!
-            </FormHelperText>
+            {lastNameIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Last Name!
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={emailIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-primaryemail">
-              Primary Email
+              Primary Email*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-primaryemail"
               type="email"
               label="Primary Email"
+              value={emailInputValue}
+              onChange={emailKeyStrockHandler}
+              onBlur={emailInputBlurHandler}
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Email!
-            </FormHelperText>
+            {emailIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Email!
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={phoneNumberIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-number">
-              Phone Number
+              Phone Number*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-number"
               type="number"
               label="Phone Number"
+              value={phoneNumberInputValue}
+              onChange={phoneNumberKeyStrockHandler}
+              onBlur={phoneNumberInputBlurHandler}
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Number!
-            </FormHelperText>
+            {phoneNumberIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Number!
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={passwordIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-password">
-              Password
+              Password*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
+              value={passwordInputValue}
+              onChange={passwordKeyStrockHandler}
+              onBlur={passwordInputBlurHandler}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -118,17 +240,26 @@ const Signup = (props) => {
               }
               label="Password"
             />
-            <FormHelperText id="component-error-text">
-              Incorrect Password!
-            </FormHelperText>
+            {passwordIsError && (
+              <FormHelperText id="component-error-text">
+                Incorrect Password!
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl error variant="outlined" className={classes.formInput}>
+          <FormControl
+            error={confirmPasswordIsError && true}
+            variant="outlined"
+            className={classes.formInput}
+          >
             <InputLabel htmlFor="outlined-adornment-confirmpassword">
-              Confirm Password
+              Confirm Password*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-confirmpassword"
               type={showConfirmPassword ? "text" : "password"}
+              value={confirmPasswordInputValue}
+              onChange={confirmPasswordKeyStrockHandler}
+              onBlur={confirmPasswordInputBlurHandler}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -143,9 +274,11 @@ const Signup = (props) => {
               }
               label="Confirm Password"
             />
-            <FormHelperText id="component-error-text">
-              Password should be same!
-            </FormHelperText>
+            {confirmPasswordIsError && (
+              <FormHelperText id="component-error-text">
+                Password should be same!
+              </FormHelperText>
+            )}
           </FormControl>
           <Button
             variant="contained"
