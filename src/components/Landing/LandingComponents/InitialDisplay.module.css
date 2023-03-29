@@ -1,0 +1,205 @@
+.initial-display {
+  margin: 0rem 0rem;
+  /* padding-bottom: 2rem; */
+  position: relative;
+  /* background: linear-gradient(135deg, #0f2d25 11.2%, #217a77 100%); */
+  background-color: black;
+  /* height: 100%; */
+  color: white;
+  justify-content: space-between;
+
+  /* z-index: -2; */
+}
+
+.initial-display h1 {
+  font-family: "Crimson Text";
+  font-size: 45px;
+  position: relative;
+  /* width: 50%; */
+
+  width: max-content;
+}
+
+.initial-display h1:after {
+  content: "";
+  display: inline-block;
+  background-image: url("../../../assets/images/heading-dec-white.png");
+  background-size: 50px;
+  position: absolute;
+  top: -35px;
+  width: 50px;
+  height: 50px;
+
+  right: -35px;
+}
+
+.initial-display p {
+  font-family: "Nunito";
+  position: relative;
+}
+
+.initial-image {
+  display: flex;
+  align-items: flex-end;
+  /* width: 90%; */
+  /* justify-content: flex-end; */
+}
+/* 
+.initial-display img {
+  position: relative;
+  bottom: 0;
+} */
+
+.carousel-image {
+  position: absolute;
+  width: 100%;
+  /* max-height: 100%; */
+  height: 100%;
+  display: flex;
+  opacity: 0.5;
+  /* justify-content: stretch;
+  align-items: stretch; */
+}
+
+.initial-text {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 4rem;
+  width: 60%;
+  padding: 3rem 0;
+}
+
+.masked-logo {
+  position: absolute;
+  /* top: 0; */
+  /* max-height: 100%; */
+  z-index: 0;
+}
+
+.btn {
+  /* align-items: center; */
+  display: flex;
+  overflow: visible;
+  background-color: transparent;
+  border: none;
+  width: max-content;
+  position: relative;
+  padding: 1rem 2rem;
+}
+
+.btn-text {
+  display: flex;
+  align-items: center;
+  transition: color 1s;
+  font-size: larger;
+  color: white;
+}
+
+.btn::before {
+  border-radius: 100px;
+  transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  content: "";
+  width: 30%;
+  height: 100%;
+  /* background-color: #1976d2; */
+  background: #0f2d25;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.btn:hover::before {
+  /* transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+  width: 100%;
+  background-color: white;
+}
+
+.btn:hover .btn-text {
+  color: black;
+}
+
+.btn span {
+  z-index: 10;
+}
+
+.social-handles {
+  margin: 2rem 0 0 0;
+  position: relative;
+}
+
+.social-handles svg {
+  margin-right: 1rem;
+}
+
+.initial-display img {
+  width: 100%;
+}
+
+@media screen and (max-width: 1025px) {
+  .initial-text {
+    padding: 1rem 0;
+    margin-left: 2rem;
+    /* width: 80%; */
+  }
+
+  .initial-text h1 {
+    font-size: 2em;
+    /* width: 100%; */
+    margin-bottom: 0;
+  }
+
+  .initial-text p {
+    margin-bottom: 0;
+  }
+
+  .stud-cards > div {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .initial-display {
+    background: linear-gradient(135deg, #0f2d25 11.2%, #217a77 100%);
+  }
+
+  .initial-image {
+    display: none;
+    width: 0%;
+  }
+
+  .initial-text {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .initial-text p,
+  .initial-text h1 {
+    width: 100%;
+  }
+
+  .initial-display h1:after {
+    right: -10px;
+  }
+
+  .stud-cards > div {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .container {
+    padding: 0 0.4rem;
+  }
+}

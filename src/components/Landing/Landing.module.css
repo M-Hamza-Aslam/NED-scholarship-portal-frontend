@@ -1,0 +1,11 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Crimson+Text&family=Nunito&display=swap"); */
+
+.landing {
+  margin-left: 65px;
+}
+
+@media screen and (max-width: 600px) {
+  .landing {
+    margin-left: 48px;
+  }
+}
