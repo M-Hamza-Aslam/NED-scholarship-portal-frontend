@@ -8,6 +8,10 @@ import {
   FormControl,
   FormHelperText,
   Button,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import useInput from "../../Hooks/UseInput";
@@ -18,9 +22,15 @@ const logo = require("../../images/ned_logo.png");
 const Login = (props) => {
   const navigate = useNavigate();
 
+  const [userRole, setUserRole] = useState("student");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleUserRole = (event) => {
+    setUserRole(event.target.value);
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -62,11 +72,13 @@ const Login = (props) => {
         return;
       }
       //add your logic
+      console.log(userRole);
       console.log(emailInputValue);
       console.log(passwordInputValue);
       const userAuthData = {
         email: emailInputValue,
         password: passwordInputValue,
+        userRole: userRole,
       };
       const res = await fetch("http://localhost:8080/login", {
         method: "POST",
@@ -94,6 +106,29 @@ const Login = (props) => {
       <h3>Enter your details below</h3>
       <form onSubmit={formSubmitHandler}>
         <div className={classes.inputsDiv}>
+          <FormControl className={classes.formInput}>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Select Role
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={userRole}
+              onChange={handleUserRole}
+            >
+              <FormControlLabel
+                value="student"
+                control={<Radio />}
+                label="Student"
+              />
+              <FormControlLabel
+                value="admin"
+                control={<Radio />}
+                label="Admin"
+              />
+            </RadioGroup>
+          </FormControl>
           {/* Email Input */}
           <FormControl
             fullWidth
