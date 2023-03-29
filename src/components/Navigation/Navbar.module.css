@@ -1,0 +1,10 @@
+.navbar {
+  display: flex;
+  margin-top: 64px;
+}
+
+@media screen and (max-width: 600px) {
+  .navbar {
+    margin-top: 48px;
+  }
+}
