@@ -11,9 +11,10 @@ import {
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState } from "react";
 import useInput from "../../Hooks/UseInput";
+import { useNavigate } from "react-router-dom";
 
 const Signup = (props) => {
-  const setSignupForm = props.setSignupForm;
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -30,7 +31,8 @@ const Signup = (props) => {
     event.preventDefault();
   };
   const setSignupFormHandler = () => {
-    setSignupForm(false);
+    // props.setSignupForm(false);
+    navigate("/auth/login");
   };
   //form validations
   const {
@@ -95,20 +97,41 @@ const Signup = (props) => {
   ) {
     formIsValid = true;
   }
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    if (!formIsValid) {
-      return;
+  const formSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      if (!formIsValid) {
+        return;
+      }
+      //add your logic
+      const userAuthData = {
+        firstName: firstNameInputValue,
+        lastName: lastNameInputValue,
+        phoneNumber: phoneNumberInputValue,
+        email: emailInputValue,
+        password: passwordInputValue,
+      };
+      console.log(userAuthData);
+      const res = await fetch("http://localhost:8080/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userAuthData),
+      });
+      const resData = await res.json();
+      console.log(resData);
+      resetEmailInput();
+      resetPasswordInput();
+      resetConfirmPasswordInput();
+      resetFirstNameInput();
+      resetLastNameInput();
+      resetPhoneNumberInput();
+      // redirect to login page
+      navigate("/auth/login");
+    } catch (err) {
+      throw new Error("User Signup failed!");
     }
-    //add your logic
-
-    //
-    resetEmailInput();
-    resetPasswordInput();
-    resetConfirmPasswordInput();
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetPhoneNumberInput();
   };
   return (
     <div className={classes.innerDiv}>

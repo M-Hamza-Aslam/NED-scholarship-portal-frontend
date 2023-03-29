@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Login.module.css";
 import {
   InputLabel,
@@ -10,13 +10,13 @@ import {
   Button,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { useState } from "react";
 import useInput from "../../Hooks/UseInput";
+import { useNavigate } from "react-router-dom";
 
 const logo = require("../../images/ned_logo.png");
 
 const Login = (props) => {
-  const setSignupForm = props.setSignupForm;
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,10 +26,12 @@ const Login = (props) => {
     event.preventDefault();
   };
   const setSignupFormHandler = () => {
-    setSignupForm(true);
+    // props.setSignupForm(true);
+    navigate("/auth/signup");
   };
   const ForgotPasswordHandler = () => {
-    props.setForgotPassword(true);
+    navigate("/auth/reset-password");
+    // props.setForgotPassword(true);
   };
   //formvalidations
   const {
@@ -53,16 +55,35 @@ const Login = (props) => {
   if (enteredEmailisValid && enteredPasswordisValid) {
     formIsValid = true;
   }
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    if (!formIsValid) {
-      return;
-    }
-    //add your logic
+  const formSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      if (!formIsValid) {
+        return;
+      }
+      //add your logic
+      console.log(emailInputValue);
+      console.log(passwordInputValue);
+      const userAuthData = {
+        email: emailInputValue,
+        password: passwordInputValue,
+      };
+      const res = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userAuthData),
+      });
+      const resData = await res.json();
+      console.log(resData);
+      //add token in redux store.
 
-    //
-    resetEmailInput();
-    resetPasswordInput();
+      resetEmailInput();
+      resetPasswordInput();
+    } catch (err) {
+      throw new Error("User login Failed!");
+    }
   };
   return (
     <div className={classes.innerDiv}>

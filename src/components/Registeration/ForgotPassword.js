@@ -7,10 +7,13 @@ import {
   Button,
 } from "@mui/material";
 import useInput from "../../Hooks/UseInput";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = (props) => {
+  const navigate = useNavigate();
   const ForgotPasswordHandler = () => {
-    props.setForgotPassword(false);
+    // props.setForgotPassword(false);
+    navigate("/auth/login");
   };
   //form validations
   const {
@@ -26,15 +29,29 @@ const ForgotPassword = (props) => {
   if (enteredEmailisValid) {
     formIsValid = true;
   }
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    if (!formIsValid) {
-      return;
+  const formSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      if (!formIsValid) {
+        return;
+      }
+      //add your logic
+      const email = emailInputValue;
+      const res = await fetch("http://localhost:8080/resetPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const resData = await res.json();
+      console.log(resData);
+      resetEmailInput();
+      // redirect to login
+      navigate("/auth/login");
+    } catch (err) {
+      throw new Error("Password reset failed!");
     }
-    //add your logic
-
-    //
-    resetEmailInput();
   };
   return (
     <div className={classes.innerDiv}>

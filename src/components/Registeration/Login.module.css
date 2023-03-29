@@ -44,6 +44,7 @@
   height: 50px;
   font-weight: 700 !important;
   font-size: 16px !important;
+  background-image: var(--primaryGradientColor) !important;
 }
 .signupLink {
   text-align: center;
