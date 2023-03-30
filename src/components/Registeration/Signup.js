@@ -31,7 +31,6 @@ const Signup = (props) => {
     event.preventDefault();
   };
   const setSignupFormHandler = () => {
-    // props.setSignupForm(false);
     navigate("/auth/login");
   };
   //form validations
@@ -111,7 +110,6 @@ const Signup = (props) => {
         email: emailInputValue,
         password: passwordInputValue,
       };
-      console.log(userAuthData);
       const res = await fetch("http://localhost:8080/signup", {
         method: "POST",
         headers: {
@@ -119,8 +117,15 @@ const Signup = (props) => {
         },
         body: JSON.stringify(userAuthData),
       });
+      if (res.status !== 201) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
+      console.log(resData.message);
+      //here show success msg through notification
       resetEmailInput();
       resetPasswordInput();
       resetConfirmPasswordInput();
@@ -130,6 +135,7 @@ const Signup = (props) => {
       // redirect to login page
       navigate("/auth/login");
     } catch (err) {
+      console.log(err);
       throw new Error("User Signup failed!");
     }
   };

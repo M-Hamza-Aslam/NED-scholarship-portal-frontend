@@ -37,15 +37,22 @@ const ForgotPassword = (props) => {
       }
       //add your logic
       const email = emailInputValue;
-      const res = await fetch("http://localhost:8080/resetPassword", {
+      const res = await fetch("http://localhost:8080/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
+      if (res.status !== 200) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
+      //add a notifaction
+      console.log(resData.message);
       resetEmailInput();
       // redirect to login
       navigate("/auth/login");
@@ -88,7 +95,7 @@ const ForgotPassword = (props) => {
             type="submit"
             className={classes.submitBtn}
           >
-            Get verification Code
+            Get verification Link
           </Button>
           <Button
             variant="contained"

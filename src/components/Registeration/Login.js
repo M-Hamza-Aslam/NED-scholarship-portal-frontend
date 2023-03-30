@@ -16,11 +16,14 @@ import {
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
+import { userActions } from "../../store/userSlice";
+import { useDispatch } from "react-redux";
 
 const logo = require("../../images/ned_logo.png");
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [userRole, setUserRole] = useState("student");
 
@@ -40,7 +43,7 @@ const Login = (props) => {
     navigate("/auth/signup");
   };
   const ForgotPasswordHandler = () => {
-    navigate("/auth/reset-password");
+    navigate("/auth/forgot-password");
     // props.setForgotPassword(true);
   };
   //formvalidations
@@ -72,9 +75,6 @@ const Login = (props) => {
         return;
       }
       //add your logic
-      console.log(userRole);
-      console.log(emailInputValue);
-      console.log(passwordInputValue);
       const userAuthData = {
         email: emailInputValue,
         password: passwordInputValue,
@@ -87,9 +87,29 @@ const Login = (props) => {
         },
         body: JSON.stringify(userAuthData),
       });
+      if (res.status !== 200) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
+      console.log(resData.message);
+      //here show success msg through notification
+
       //add token in redux store.
+      const userData = {
+        _id: resData.userId,
+        firstName: resData.userDetails.firstName,
+        lastName: resData.userDetails.lastName,
+        email: resData.userDetails.email,
+        password: resData.userDetails.password,
+        phoneNumber: resData.userDetails.phoneNumber,
+        userRole: resData.userDetails.userRole,
+        token: resData.token,
+      };
+
+      dispatch(userActions.getUserData(userData));
 
       resetEmailInput();
       resetPasswordInput();
