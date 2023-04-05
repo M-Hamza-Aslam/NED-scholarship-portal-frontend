@@ -14,7 +14,7 @@ const Landing = () => {
       <ScholarshipList />
       <Faqs />
       <ContactForm />
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 };

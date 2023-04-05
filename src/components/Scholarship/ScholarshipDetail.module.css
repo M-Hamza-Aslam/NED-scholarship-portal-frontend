@@ -1,0 +1,8 @@
+.scholarship-detail {
+  margin-left: 65px;
+}
+@media screen and (max-width: 600px) {
+  .scholarship-detail {
+    margin-left: 48px;
+  }
+}
