@@ -16,14 +16,17 @@ const Education = (props) => {
   };
   const deleteEducationHandler = async () => {
     try {
-      const res = await fetch("http://localhost:8080/delete-education", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ index: index }),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/delete-education",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ index: index }),
+        }
+      );
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();

@@ -7,7 +7,9 @@ import SectionDiv from "../SectionDiv/SectionDiv";
 import EditFamilyDetails from "./EditFamilyDetails";
 import { Fragment } from "react";
 const FamilyDetails = () => {
-  const { fetchData } = useFetch("http://localhost:8080/family-details");
+  const { fetchData } = useFetch(
+    "https://ned-scholarship-portal.onrender.com/family-details"
+  );
   const [editMode, setEditMode] = useState(false);
   const token = useSelector((state) => state.user.user.token);
   const userData = useSelector((state) => {

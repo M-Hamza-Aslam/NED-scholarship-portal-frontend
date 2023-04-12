@@ -40,13 +40,16 @@ const ForgotPassword = (props) => {
       }
       //add your logic
       const email = emailInputValue;
-      const res = await fetch("http://localhost:8080/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();

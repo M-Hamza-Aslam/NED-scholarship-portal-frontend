@@ -114,13 +114,16 @@ const Signup = (props) => {
         email: emailInputValue,
         password: passwordInputValue,
       };
-      const res = await fetch("http://localhost:8080/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAuthData),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        }
+      );
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();

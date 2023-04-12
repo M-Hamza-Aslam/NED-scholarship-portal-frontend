@@ -8,7 +8,9 @@ import useFetch from "../../../Hooks/UseFetch";
 import { useSelector } from "react-redux";
 
 const EducationalDetails = (props) => {
-  const { fetchData } = useFetch("http://localhost:8080/education-details");
+  const { fetchData } = useFetch(
+    "https://ned-scholarship-portal.onrender.com/education-details"
+  );
   const token = useSelector((state) => state.user.user.token);
   const educationalDetails = useSelector((state) => {
     return {

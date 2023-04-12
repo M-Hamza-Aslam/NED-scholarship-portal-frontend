@@ -92,14 +92,17 @@ const EditDependant = (props) => {
         index,
       };
       //sending dependantData
-      const res = await fetch("http://localhost:8080/dependant-details", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/dependant-details",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(userData),
+        }
+      );
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();

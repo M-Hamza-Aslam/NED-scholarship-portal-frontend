@@ -83,13 +83,16 @@ const Login = (props) => {
         password: passwordInputValue,
         userRole: userRole,
       };
-      const res = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAuthData),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        }
+      );
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();

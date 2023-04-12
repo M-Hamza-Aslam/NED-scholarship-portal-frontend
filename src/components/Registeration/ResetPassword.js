@@ -63,13 +63,16 @@ const ResetPassword = (props) => {
       //add your logic
       const token = params.token;
       const newPassword = passwordInputValue;
-      const res = await fetch("http://localhost:8080/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token, newPassword }),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token, newPassword }),
+        }
+      );
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();

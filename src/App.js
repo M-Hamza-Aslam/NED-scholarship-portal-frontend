@@ -38,11 +38,14 @@ function App() {
       const decodedToken = jwtDecode(token);
       const expirationTime = decodedToken.expiration;
       if (Date.now() < expirationTime) {
-        const res = await fetch("http://localhost:8080/getLoginData", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        });
+        const res = await fetch(
+          "https://ned-scholarship-portal.onrender.com/getLoginData",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
         if (res.status !== 200) {
           console.log(res);
           localStorage.removeItem("token");

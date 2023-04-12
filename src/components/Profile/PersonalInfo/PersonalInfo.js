@@ -7,7 +7,9 @@ import useFetch from "../../../Hooks/UseFetch";
 import { useSelector } from "react-redux";
 
 const PersonalInfo = () => {
-  const { fetchData } = useFetch("http://localhost:8080/personal-info");
+  const { fetchData } = useFetch(
+    "https://ned-scholarship-portal.onrender.com/personal-info"
+  );
   const [editMode, setEditMode] = useState(false);
   const token = useSelector((state) => state.user.user.token);
   const userData = useSelector((state) => {
