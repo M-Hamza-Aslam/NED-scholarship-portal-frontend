@@ -1,30 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const userInitialState = {
-  _id: "",
-  email: "",
-  password: "",
-  firstName: "",
-  lastName: "",
-  phoneNumber: "",
-  token: "",
+  user: {
+    _id: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    token: "",
+    profileStatus: 0,
+    userRole: "",
+    personalInfo: {},
+    familyDetails: {},
+    educationalDetails: {
+      hasFetched: false,
+      educationalDetailsArr: [],
+    },
+    dependantDetails: {
+      hasFetched: false,
+      dependantDetailsArr: [],
+    },
+  },
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState: userInitialState,
   reducers: {
-    getUserData(state, actions) {
-      state = { ...state, ...actions.payload };
+    updateUserData(state, action) {
+      state.user = { ...state.user, ...action.payload };
     },
     clearUserData(state) {
-      state = userInitialState;
-    },
-    updatePersonalInfo(state, actions) {
-      state = { ...state, ...actions.payload };
-    },
-    updatePhoneNumber(state, actions) {
-      state.phoneNumber = actions.payload.phoneNumber;
+      state.user = userInitialState;
     },
   },
 });

@@ -23,7 +23,10 @@ const ForgotPassword = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
 
   let formIsValid = false;
   if (enteredEmailisValid) {
@@ -74,18 +77,20 @@ const ForgotPassword = (props) => {
           variant="outlined"
           className={classes.formInput}
         >
-          <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-email">
+            NED Cloud Email*
+          </InputLabel>
           <OutlinedInput
             id="outlined-adornment-email"
             type="email"
-            label="Email"
+            label="NED Cloud Email*"
             value={emailInputValue}
             onChange={emailKeyStrockHandler}
             onBlur={emailInputBlurHandler}
           />
           {emailIsError && (
             <FormHelperText id="component-error-text">
-              Incorrect Email!
+              e.g.:"abc@cloud.neduet.edu.pk"
             </FormHelperText>
           )}
         </FormControl>

@@ -1,0 +1,13 @@
+.inputContainer {
+  margin: 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5%;
+  row-gap: 25px;
+}
+.formInput {
+  flex: 0 0 31.5%;
+}
+.btnDiv > button {
+  margin: 0 1rem 1rem 0;
+}

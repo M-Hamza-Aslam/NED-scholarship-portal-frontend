@@ -54,7 +54,10 @@ const Login = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
   const {
     value: passwordInputValue,
     isValid: enteredPasswordisValid,
@@ -62,7 +65,7 @@ const Login = (props) => {
     inputKeyStrockHandler: passwordKeyStrockHandler,
     inputBlurHandler: passwordInputBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value) => !(value.trim().length < 6));
+  } = useInput("", (value) => !(value.trim().length < 6));
 
   let formIsValid = false;
   if (enteredEmailisValid && enteredPasswordisValid) {
@@ -94,25 +97,21 @@ const Login = (props) => {
         return;
       }
       const resData = await res.json();
-      console.log(resData.message);
       //here show success msg through notification
 
-      //add token in redux store.
+      localStorage.setItem("token", resData.token);
+
+      // add token in redux store.
       const userData = {
         _id: resData.userId,
-        firstName: resData.userDetails.firstName,
-        lastName: resData.userDetails.lastName,
-        email: resData.userDetails.email,
-        password: resData.userDetails.password,
-        phoneNumber: resData.userDetails.phoneNumber,
-        userRole: resData.userDetails.userRole,
         token: resData.token,
+        ...resData.userDetails,
       };
-
-      dispatch(userActions.getUserData(userData));
+      dispatch(userActions.updateUserData(userData));
 
       resetEmailInput();
       resetPasswordInput();
+      navigate("/profile");
     } catch (err) {
       throw new Error("User login Failed!");
     }
@@ -156,18 +155,20 @@ const Login = (props) => {
             variant="outlined"
             className={classes.formInput}
           >
-            <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-email">
+              NED Cloud Email*
+            </InputLabel>
             <OutlinedInput
               id="outlined-adornment-email"
               type="email"
-              label="Email"
+              label="NED Cloud Email"
               value={emailInputValue}
               onChange={emailKeyStrockHandler}
               onBlur={emailInputBlurHandler}
             />
             {emailIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Email!
+                e.g.:"abc@cloud.neduet.edu.pk"
               </FormHelperText>
             )}
           </FormControl>
@@ -203,7 +204,7 @@ const Login = (props) => {
             />
             {passwordIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Password!
+                Password must be 6 digits long!
               </FormHelperText>
             )}
           </FormControl>

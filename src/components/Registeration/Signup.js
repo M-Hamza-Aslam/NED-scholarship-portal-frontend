@@ -41,7 +41,10 @@ const Signup = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
   const {
     value: passwordInputValue,
     isValid: enteredPasswordisValid,
@@ -49,7 +52,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: passwordKeyStrockHandler,
     inputBlurHandler: passwordInputBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value) => !(value.trim().length < 6));
+  } = useInput("", (value) => !(value.trim().length < 6));
   const {
     value: confirmPasswordInputValue,
     isValid: enteredConfirmPasswordisValid,
@@ -57,7 +60,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: confirmPasswordKeyStrockHandler,
     inputBlurHandler: confirmPasswordInputBlurHandler,
     reset: resetConfirmPasswordInput,
-  } = useInput((value) => value === passwordInputValue);
+  } = useInput("", (value) => value === passwordInputValue);
   const {
     value: firstNameInputValue,
     isValid: enteredFirstNameisValid,
@@ -65,7 +68,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: firstNameKeyStrockHandler,
     inputBlurHandler: firstNameInputBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput((value) => !(value.trim().length < 1));
+  } = useInput("", (value) => !(value.trim().length < 1));
   const {
     value: lastNameInputValue,
     isValid: enteredLastNameisValid,
@@ -73,7 +76,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: lastNameKeyStrockHandler,
     inputBlurHandler: lastNameInputBlurHandler,
     reset: resetLastNameInput,
-  } = useInput((value) => !(value.trim().length < 1));
+  } = useInput("", (value) => !(value.trim().length < 1));
   const {
     value: phoneNumberInputValue,
     isValid: enteredPhoneNumberisValid,
@@ -82,6 +85,7 @@ const Signup = (props) => {
     inputBlurHandler: phoneNumberInputBlurHandler,
     reset: resetPhoneNumberInput,
   } = useInput(
+    "",
     (value) => value.trim().length === 12 && value.slice(0, 2) === "92"
   );
 
@@ -203,19 +207,19 @@ const Signup = (props) => {
             className={classes.formInput}
           >
             <InputLabel htmlFor="outlined-adornment-primaryemail">
-              Primary Email*
+              NED Cloud Email*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-primaryemail"
               type="email"
-              label="Primary Email"
+              label="NED Cloud Email*"
               value={emailInputValue}
               onChange={emailKeyStrockHandler}
               onBlur={emailInputBlurHandler}
             />
             {emailIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Email!
+                e.g.:"abc@cloud.neduet.edu.pk"
               </FormHelperText>
             )}
           </FormControl>
