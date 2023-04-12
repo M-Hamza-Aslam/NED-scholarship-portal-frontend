@@ -24,3 +24,13 @@
   font-size: 25px;
   margin-right: 1rem;
 }
+@media screen and (max-width: 500px) {
+  .iconDiv {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+  }
+  .container {
+    display: block;
+  }
+}

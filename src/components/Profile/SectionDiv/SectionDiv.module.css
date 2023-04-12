@@ -43,3 +43,16 @@
 .addressField {
   flex: 0 0 100%;
 }
+
+@media screen and (max-width: 900px) {
+  .infoDiv {
+    flex: 0 0 50%;
+    margin-bottom: 2rem;
+  }
+}
+@media screen and (max-width: 650px) {
+  .infoDiv {
+    flex: 0 0 100%;
+    margin-bottom: 2rem;
+  }
+}

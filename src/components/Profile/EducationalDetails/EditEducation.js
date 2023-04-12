@@ -235,7 +235,11 @@ const EditEducation = (props) => {
         <Button type="submit" variant="contained">
           Save Education
         </Button>
-        <Button type="button" variant="outlined" onClick={setIsEdit}>
+        <Button
+          type="button"
+          variant="outlined"
+          onClick={() => setIsEdit(false)}
+        >
           Cancel
         </Button>
       </div>

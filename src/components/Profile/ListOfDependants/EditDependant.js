@@ -180,7 +180,11 @@ const EditDependant = (props) => {
         <Button type="submit" variant="contained">
           Save Dependant
         </Button>
-        <Button type="button" variant="outlined" onClick={setIsEdit}>
+        <Button
+          type="button"
+          variant="outlined"
+          onClick={() => setIsEdit(false)}
+        >
           Cancel
         </Button>
       </div>

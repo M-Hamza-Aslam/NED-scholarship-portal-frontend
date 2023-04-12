@@ -2,24 +2,28 @@
   margin-left: 65px;
 }
 .mainDiv {
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
-  column-gap: 2%;
+  column-gap: 2%; */
   background-color: #eaedf0;
   padding: 2rem;
 }
 .leftDiv {
   background-color: white;
   border-radius: 5px;
-  width: 29%;
+  /* width: 29%; */
   box-shadow: 0 0 5px #d4d4d4;
 }
 .rightDiv {
   border-radius: 5px;
-  width: 69%;
+  /* width: 69%; */
+  width: 100%;
 }
 @media screen and (max-width: 600px) {
   .container {
     margin-left: 48px;
+  }
+  .mainDiv {
+    padding: 1rem;
   }
 }
