@@ -31,7 +31,6 @@ const Signup = (props) => {
     event.preventDefault();
   };
   const setSignupFormHandler = () => {
-    // props.setSignupForm(false);
     navigate("/auth/login");
   };
   //form validations
@@ -42,7 +41,10 @@ const Signup = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
   const {
     value: passwordInputValue,
     isValid: enteredPasswordisValid,
@@ -50,7 +52,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: passwordKeyStrockHandler,
     inputBlurHandler: passwordInputBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value) => !(value.trim().length < 6));
+  } = useInput("", (value) => !(value.trim().length < 6));
   const {
     value: confirmPasswordInputValue,
     isValid: enteredConfirmPasswordisValid,
@@ -58,7 +60,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: confirmPasswordKeyStrockHandler,
     inputBlurHandler: confirmPasswordInputBlurHandler,
     reset: resetConfirmPasswordInput,
-  } = useInput((value) => value === passwordInputValue);
+  } = useInput("", (value) => value === passwordInputValue);
   const {
     value: firstNameInputValue,
     isValid: enteredFirstNameisValid,
@@ -66,7 +68,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: firstNameKeyStrockHandler,
     inputBlurHandler: firstNameInputBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput((value) => !(value.trim().length < 1));
+  } = useInput("", (value) => !(value.trim().length < 1));
   const {
     value: lastNameInputValue,
     isValid: enteredLastNameisValid,
@@ -74,7 +76,7 @@ const Signup = (props) => {
     inputKeyStrockHandler: lastNameKeyStrockHandler,
     inputBlurHandler: lastNameInputBlurHandler,
     reset: resetLastNameInput,
-  } = useInput((value) => !(value.trim().length < 1));
+  } = useInput("", (value) => !(value.trim().length < 1));
   const {
     value: phoneNumberInputValue,
     isValid: enteredPhoneNumberisValid,
@@ -83,6 +85,7 @@ const Signup = (props) => {
     inputBlurHandler: phoneNumberInputBlurHandler,
     reset: resetPhoneNumberInput,
   } = useInput(
+    "",
     (value) => value.trim().length === 12 && value.slice(0, 2) === "92"
   );
 
@@ -111,16 +114,25 @@ const Signup = (props) => {
         email: emailInputValue,
         password: passwordInputValue,
       };
-      console.log(userAuthData);
-      const res = await fetch("http://localhost:8080/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAuthData),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        }
+      );
+      if (res.status !== 201) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
+      console.log(resData.message);
+      //here show success msg through notification
       resetEmailInput();
       resetPasswordInput();
       resetConfirmPasswordInput();
@@ -130,6 +142,7 @@ const Signup = (props) => {
       // redirect to login page
       navigate("/auth/login");
     } catch (err) {
+      console.log(err);
       throw new Error("User Signup failed!");
     }
   };
@@ -197,19 +210,19 @@ const Signup = (props) => {
             className={classes.formInput}
           >
             <InputLabel htmlFor="outlined-adornment-primaryemail">
-              Primary Email*
+              NED Cloud Email*
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-primaryemail"
               type="email"
-              label="Primary Email"
+              label="NED Cloud Email*"
               value={emailInputValue}
               onChange={emailKeyStrockHandler}
               onBlur={emailInputBlurHandler}
             />
             {emailIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Email!
+                e.g.:"abc@cloud.neduet.edu.pk"
               </FormHelperText>
             )}
           </FormControl>

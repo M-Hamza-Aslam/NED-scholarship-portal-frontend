@@ -23,7 +23,10 @@ const ForgotPassword = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
 
   let formIsValid = false;
   if (enteredEmailisValid) {
@@ -37,15 +40,25 @@ const ForgotPassword = (props) => {
       }
       //add your logic
       const email = emailInputValue;
-      const res = await fetch("http://localhost:8080/resetPassword", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+      if (res.status !== 200) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
+      //add a notifaction
+      console.log(resData.message);
       resetEmailInput();
       // redirect to login
       navigate("/auth/login");
@@ -67,18 +80,20 @@ const ForgotPassword = (props) => {
           variant="outlined"
           className={classes.formInput}
         >
-          <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-email">
+            NED Cloud Email*
+          </InputLabel>
           <OutlinedInput
             id="outlined-adornment-email"
             type="email"
-            label="Email"
+            label="NED Cloud Email*"
             value={emailInputValue}
             onChange={emailKeyStrockHandler}
             onBlur={emailInputBlurHandler}
           />
           {emailIsError && (
             <FormHelperText id="component-error-text">
-              Incorrect Email!
+              e.g.:"abc@cloud.neduet.edu.pk"
             </FormHelperText>
           )}
         </FormControl>
@@ -88,7 +103,7 @@ const ForgotPassword = (props) => {
             type="submit"
             className={classes.submitBtn}
           >
-            Get verification Code
+            Get verification Link
           </Button>
           <Button
             variant="contained"

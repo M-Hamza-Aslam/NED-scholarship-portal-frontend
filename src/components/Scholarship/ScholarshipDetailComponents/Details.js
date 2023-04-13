@@ -2,10 +2,10 @@ import React from "react";
 
 import classes from "./Details.module.css";
 
-const Details = () => {
+const Details = ({ data }) => {
   return (
     <div className={classes.details}>
-      <h1>Fulbright Scholarship Program Merit Badge</h1>
+      <h1>{data.title}</h1>
 
       <div className={classes.images}>
         <img
@@ -16,14 +16,7 @@ const Details = () => {
         <div className={classes.text}>
           <div>
             <h3>Description:</h3>
-            <p>
-              If you want to study anywhere or in your own country and at the
-              same time want the benefit of an international education, distance
-              learning education is for you. It is cheaper than actually
-              studying abroad because everything is done online.
-              scholars4dev.com made a list of online degree scholarships and
-              free online courses to help you get an online education for free.
-            </p>
+            <p>{data.description}</p>
           </div>
 
           <div>

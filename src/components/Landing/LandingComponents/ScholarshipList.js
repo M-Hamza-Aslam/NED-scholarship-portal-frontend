@@ -1,5 +1,7 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import useSWR from "swr";
+import { useSelector } from "react-redux";
+import { globalFetcher } from "../../../api";
 import Carousel from "react-multi-carousel";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -47,6 +49,13 @@ const SC_LIST_DATA = [
 ];
 
 const ScholarshipList = () => {
+  const token = useSelector((state) => state.user.user.token);
+
+  const { data, error, isLoading } = useSWR(
+    [token ? `/featured-scholarship-list?qty=6` : null, token],
+    ([url, token]) => globalFetcher(url, token)
+  );
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -87,23 +96,25 @@ const ScholarshipList = () => {
           containerClass="carousel-container"
           itemClass="carousel-item-padding-40-px"
         >
-          {SC_LIST_DATA.length > 0 ? (
-            SC_LIST_DATA.map((sc) => (
+          {data ? (
+            data.map((sc) => (
               <div className={classes["sc-card"]}>
                 <div className={classes["sc-header"]}>
                   <div>
                     <p className={classes.date}>
-                      {new Date(sc.date).getDate()}th
+                      {/* {new Date(sc.date).getDate()}th */}
+                      {sc.date.day}th
                     </p>
                     <p className={classes.month}>
-                      {new Date(sc.date).toLocaleString("default", {
+                      {/* {new Date(sc.date).toLocaleString("default", {
                         month: "long",
                       })}{" "}
-                      {new Date(sc.date).getFullYear()}
+                      {new Date(sc.date).getFullYear()} */}
+                      {sc.date.month} {sc.date.year}
                     </p>
                   </div>
                   <span className={classes.vl}></span>
-                  <h2>{sc.name}</h2>
+                  <h2>{sc.title}</h2>
                 </div>
                 <div className={classes["sc-details"]}>
                   <p>

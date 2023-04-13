@@ -11,7 +11,7 @@ const ScholarshipCards = ({ currentItems }) => {
       {currentItems.map((scholarship) => (
         <div className={classes["scholarship-card"]}>
           <div className={classes.heading}>
-            <h1>{scholarship.name}</h1>
+            <h1>{scholarship.title}</h1>
             <div className={classes.info}>
               {/* <img src={logo} alt="Masked Logo" /> */}
               <div className={classes.date}>
@@ -45,7 +45,7 @@ const ScholarshipCards = ({ currentItems }) => {
           </div>
           <p>{scholarship.description}</p>
           <div className={classes.view}>
-            <Link to={`${scholarship.name}`}>
+            <Link to={`${scholarship._id}`}>
               <span>View Details</span>
             </Link>
           </div>

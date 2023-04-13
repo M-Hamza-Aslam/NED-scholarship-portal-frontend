@@ -8,19 +8,32 @@ import {
   FormControl,
   FormHelperText,
   Button,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
+import { userActions } from "../../store/userSlice";
+import { useDispatch } from "react-redux";
 
 const logo = require("../../images/ned_logo.png");
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [userRole, setUserRole] = useState("student");
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleUserRole = (event) => {
+    setUserRole(event.target.value);
+  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -30,7 +43,7 @@ const Login = (props) => {
     navigate("/auth/signup");
   };
   const ForgotPasswordHandler = () => {
-    navigate("/auth/reset-password");
+    navigate("/auth/forgot-password");
     // props.setForgotPassword(true);
   };
   //formvalidations
@@ -41,7 +54,10 @@ const Login = (props) => {
     inputKeyStrockHandler: emailKeyStrockHandler,
     inputBlurHandler: emailInputBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value) => value.includes("@"));
+  } = useInput("", (value) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@cloud\.neduet\.edu\.pk$/;
+    return regex.test(value.trim());
+  });
   const {
     value: passwordInputValue,
     isValid: enteredPasswordisValid,
@@ -49,7 +65,7 @@ const Login = (props) => {
     inputKeyStrockHandler: passwordKeyStrockHandler,
     inputBlurHandler: passwordInputBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value) => !(value.trim().length < 6));
+  } = useInput("", (value) => !(value.trim().length < 6));
 
   let formIsValid = false;
   if (enteredEmailisValid && enteredPasswordisValid) {
@@ -62,25 +78,43 @@ const Login = (props) => {
         return;
       }
       //add your logic
-      console.log(emailInputValue);
-      console.log(passwordInputValue);
       const userAuthData = {
         email: emailInputValue,
         password: passwordInputValue,
+        userRole: userRole,
       };
-      const res = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAuthData),
-      });
+      const res = await fetch(
+        "https://ned-scholarship-portal.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        }
+      );
+      if (res.status !== 200) {
+        //here show an error through notification
+        const resData = await res.json();
+        console.log(resData.message);
+        return;
+      }
       const resData = await res.json();
-      console.log(resData);
-      //add token in redux store.
+      //here show success msg through notification
+
+      localStorage.setItem("token", resData.token);
+
+      // add token in redux store.
+      const userData = {
+        _id: resData.userId,
+        token: resData.token,
+        ...resData.userDetails,
+      };
+      dispatch(userActions.updateUserData(userData));
 
       resetEmailInput();
       resetPasswordInput();
+      navigate("/profile");
     } catch (err) {
       throw new Error("User login Failed!");
     }
@@ -94,6 +128,29 @@ const Login = (props) => {
       <h3>Enter your details below</h3>
       <form onSubmit={formSubmitHandler}>
         <div className={classes.inputsDiv}>
+          <FormControl className={classes.formInput}>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Select Role
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={userRole}
+              onChange={handleUserRole}
+            >
+              <FormControlLabel
+                value="student"
+                control={<Radio />}
+                label="Student"
+              />
+              <FormControlLabel
+                value="admin"
+                control={<Radio />}
+                label="Admin"
+              />
+            </RadioGroup>
+          </FormControl>
           {/* Email Input */}
           <FormControl
             fullWidth
@@ -101,18 +158,20 @@ const Login = (props) => {
             variant="outlined"
             className={classes.formInput}
           >
-            <InputLabel htmlFor="outlined-adornment-email">Email*</InputLabel>
+            <InputLabel htmlFor="outlined-adornment-email">
+              NED Cloud Email*
+            </InputLabel>
             <OutlinedInput
               id="outlined-adornment-email"
               type="email"
-              label="Email"
+              label="NED Cloud Email"
               value={emailInputValue}
               onChange={emailKeyStrockHandler}
               onBlur={emailInputBlurHandler}
             />
             {emailIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Email!
+                e.g.:"abc@cloud.neduet.edu.pk"
               </FormHelperText>
             )}
           </FormControl>
@@ -148,7 +207,7 @@ const Login = (props) => {
             />
             {passwordIsError && (
               <FormHelperText id="component-error-text">
-                Incorrect Password!
+                Password must be 6 digits long!
               </FormHelperText>
             )}
           </FormControl>

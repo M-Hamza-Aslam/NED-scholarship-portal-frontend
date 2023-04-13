@@ -1,21 +1,37 @@
 import React from "react";
+import useSWR from "swr";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { globalFetcher } from "../../api";
 import InitialDisplay from "./ScholarshipDetailComponents/InitialDisplay";
+import Details from "./ScholarshipDetailComponents/Details";
+import ApplyForm from "./ScholarshipDetailComponents/ApplyForm";
+import { CircularProgress } from "@mui/material";
 
 import classes from "./ScholarshipDetail.module.css";
-import Details from "./ScholarshipDetailComponents/Details";
 
 const ScholarshipDetail = () => {
+  const token = useSelector((state) => state.user.user.token);
+  const { scholarshipId } = useParams();
+
+  const { data, error, isLoading } = useSWR(
+    [token ? `/scholarship-list/${scholarshipId}` : null, token],
+    ([url, token]) => globalFetcher(url, token)
+  );
+
+  if (!data) {
+    return (
+      <div className="loading">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div className={classes["scholarship-detail"]}>
       <InitialDisplay title="Scholarship Details" />
-      <Details />
-      {/* <div>
-        <a href="https://www.hec.gov.pk/english/scholarshipsgrants/IDPS/Pages/default.aspx">
-          HEC
-        </a>
-        <br />
-        <a href="https://portal.ukaa-scholarships.com/dashboard-detail">UKAA</a>
-      </div> */}
+      <Details data={data} />
+      <ApplyForm data={data} />
     </div>
   );
 };
