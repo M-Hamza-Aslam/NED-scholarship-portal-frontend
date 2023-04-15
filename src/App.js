@@ -62,6 +62,7 @@ function App() {
           token: token,
           ...resData.userDetails,
         };
+        console.log(userData);
         dispatch(userActions.updateUserData(userData));
         // setting time to delete token from localstorage
         const timeout = expirationTime - Date.now();
@@ -101,7 +102,7 @@ function App() {
           <Route path="reset-password/:token" element={<ResetPassword />} />
         </Route>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/*" element={<Landing />} />
+        {/* <Route path="/*" element={<Landing />} /> */}
       </Routes>
     </Suspense>
   );

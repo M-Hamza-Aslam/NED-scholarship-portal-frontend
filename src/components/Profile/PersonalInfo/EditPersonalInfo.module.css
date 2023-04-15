@@ -7,6 +7,25 @@
 .headingDiv > h2 {
   font-size: 16px;
 }
+.imgDiv {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+}
+.imgDiv > img {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #0f2d25;
+}
+.imgDiv > input {
+  display: none;
+}
+.error {
+  color: red;
+}
 .inputContainer {
   margin: 2rem 0;
   display: flex;

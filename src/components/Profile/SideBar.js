@@ -9,7 +9,8 @@ import { useState } from "react";
 import LinearProgressWithLabel from "./ProgressBar";
 import { useEffect } from "react";
 
-const myImg = require("../../images/myimg.jpeg");
+// const myImg = require("../../images/myimg.jpeg");
+import defaultProfileImg from "../../images/defaultProfileImg.jpg";
 
 const SideBar = (props) => {
   const userData = useSelector((state) => {
@@ -19,9 +20,12 @@ const SideBar = (props) => {
       email: state.user.user.email,
       phoneNumber: state.user.user.phoneNumber,
       profileStatus: state.user.user.profileStatus,
+      profileImg: state.user.user.profileImg,
+      token: state.user.user.token,
     };
   });
   const [progress, setProgress] = useState(userData.profileStatus);
+  const [imageUrl, setImageUrl] = useState(defaultProfileImg);
   const selectedSection = props.selectedSection;
   const setSelectedSection = props.setSelectedSection;
   const setEditMode = props.setEditMode;
@@ -32,16 +36,32 @@ const SideBar = (props) => {
       setSelectedSection(sectionName);
     }
   };
+
+  useEffect(() => {
+    if (userData.profileImg !== "") {
+      fetch(`https://ned-scholarship-portal.onrender.com/profileImg`, {
+        headers: {
+          Authorization: "Bearer " + userData.token,
+        },
+      })
+        .then((res) => res.blob())
+        .then((blobData) => URL.createObjectURL(blobData))
+        .then((imageUrl) => setImageUrl(imageUrl))
+        .catch((error) => console.log(error));
+    }
+  }, [userData.profileImg, userData.token]);
+
   useEffect(() => {
     setProgress(userData.profileStatus);
   }, [userData.profileStatus]);
+
   return (
     <div className={classes.mainDiv}>
       <h2>Profile Status:</h2>
       <LinearProgressWithLabel value={progress} />
       <div className={classes.infoBar}>
         <div className={classes.imgDiv}>
-          <img src={myImg} alt="profile" />
+          <img src={imageUrl} alt="profile" />
           <div className={classes.nameDiv}>
             <h3>{userData.firstName}</h3>
             <h3>{userData.lastName}</h3>

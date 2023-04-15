@@ -1,4 +1,5 @@
 import classes from "./EditPersonalInfo.module.css";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import {
   FormControl,
   InputLabel,
@@ -11,22 +12,52 @@ import {
 import useInput from "../../../Hooks/UseInput.js";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
-// import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import defaultProfileImg from "../../../images/defaultProfileImg.jpg";
 
 const EditPersonalInfo = (props) => {
+  const dispatch = useDispatch();
+  const [profileImg, setProfileImg] = useState({
+    value: null,
+    error: null,
+  });
+  //data from redux
   const personalInfo = useSelector((state) => {
     return {
       firstName: state.user.user.firstName,
       lastName: state.user.user.lastName,
       phoneNumber: state.user.user.phoneNumber,
+      profileImg: state.user.user.profileImg,
       ...state.user.user.personalInfo,
     };
   });
   const token = useSelector((state) => state.user.user.token);
-  const dispatch = useDispatch();
+  //show edit form handler
   const setEditMode = (value) => {
     props.setEditMode(value);
   };
+  //image upload handler
+  const profileImageUploadHandler = (event) => {
+    const image = event.target.files[0];
+    if (!image) {
+      return;
+    }
+    if (image.type !== "image/jpeg" && image.type !== "image/png") {
+      //show error here
+      setProfileImg((prevState) => {
+        return { value: null, error: "Only jpg and png types allowed!" };
+      });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setProfileImg((prevState) => {
+        return { value: image, error: null };
+      });
+    };
+    reader.readAsDataURL(image);
+  };
+  //input properties
   const {
     value: firstNameInputValue,
     isValid: enteredFirstNameisValid,
@@ -287,7 +318,7 @@ const EditPersonalInfo = (props) => {
           permanentProvince: permanentProvinceInputValue,
         },
       };
-      //sending data
+      //sending personalInfo data to server
       const res = await fetch(
         "https://ned-scholarship-portal.onrender.com/personal-info",
         {
@@ -306,13 +337,39 @@ const EditPersonalInfo = (props) => {
         return;
       }
       const resData = await res.json();
-      console.log("getting response:", resData);
+      let dataObj = { ...resData.updateUserData };
+
+      //sending image to server
+      if (profileImg.value) {
+        const formData = new FormData();
+        formData.append("profileImg", profileImg.value);
+        //sending data
+        const resImg = await fetch(
+          "https://ned-scholarship-portal.onrender.com/upload-profileImg",
+          {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            body: formData,
+          }
+        );
+        if (resImg.status !== 201) {
+          //here show an error through notification
+          const resData = await resImg.json();
+          console.log(resData.message);
+          return;
+        }
+        const ImgData = await resImg.json();
+        dataObj.profileImg = ImgData.profileImg;
+      }
       //here show success msg through notification
-      dispatch(
-        userActions.updateUserData({
-          ...resData.updatedUserData,
-        })
-      );
+      dispatch(userActions.updateUserData(dataObj));
+
+      setProfileImg({
+        value: null,
+        error: null,
+      });
       resetFirstNameInput();
       resetLastNameInput();
       resetCnicInput();
@@ -348,6 +405,35 @@ const EditPersonalInfo = (props) => {
           <h2>Tell Us About Yourself</h2>
         </div>
         <hr></hr>
+        <div className={classes.imgDiv}>
+          <img
+            src={
+              profileImg.value
+                ? URL.createObjectURL(profileImg.value)
+                : defaultProfileImg
+            }
+            alt="upload"
+          />
+          <Button
+            startIcon={<AddCircleOutlineOutlinedIcon />}
+            variant="contained"
+            onClick={() => {
+              document.getElementById("imageUpload").click();
+            }}
+          >
+            Upload a new Photo
+          </Button>
+          <input
+            type="file"
+            id="imageUpload"
+            accept=".png, .jpg, .jpeg"
+            onChange={profileImageUploadHandler}
+          />
+        </div>
+        {profileImg.error && (
+          <p className={classes.error}>{profileImg.error}</p>
+        )}
+        {profileImg.value && <p>{profileImg.value.name}</p>}
         <div className={classes.inputContainer}>
           <TextField
             id="outlined-adornment-firstname"

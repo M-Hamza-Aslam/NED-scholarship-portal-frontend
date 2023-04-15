@@ -7,6 +7,7 @@ const userInitialState = {
     firstName: "",
     lastName: "",
     phoneNumber: "",
+    profileImg: "",
     token: "",
     profileStatus: 0,
     userRole: "",
