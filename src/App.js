@@ -5,6 +5,7 @@ import Landing from "./components/Landing/Landing";
 import Registeration from "./components/Registeration/Registeration";
 import ScholarshipList from "./components/Scholarship/ScholarshipList";
 import ScholarshipDetail from "./components/Scholarship/ScholarshipDetail";
+import UserList from "./components/Admin/Users/UserList";
 // import Login from "./components/Registeration/Login";
 // import Signup from "./components/Registeration/Signup";
 // import ForgotPassword from "./components/Registeration/ForgotPassword";
@@ -108,6 +109,7 @@ function App() {
           path="/scholarship-list/:scholarshipId"
           element={<ScholarshipDetail />}
         />
+        <Route path="/user-list" element={<UserList />} />
         <Route path="/" element={<h1>Home Page</h1>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/*" element={<Landing />} />

@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import logo from "../../../assets/images/logo.png";
 
 import classes from "./ScholarshipCards.module.css";
-import { Link } from "react-router-dom";
 
 const ScholarshipCards = ({ currentItems }) => {
   return (
@@ -21,7 +20,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "20px",
                   }}
                 >
-                  {scholarship.date.split(" ")[0]}th
+                  {scholarship.date.day}th
                 </p>
                 <p
                   style={{
@@ -29,7 +28,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "16px",
                   }}
                 >
-                  {scholarship.date.split(" ")[1]}
+                  {scholarship.date.month}
                 </p>
               </div>
               <hr />
