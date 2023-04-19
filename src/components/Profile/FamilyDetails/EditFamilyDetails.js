@@ -11,8 +11,12 @@ import {
 import useInput from "../../../Hooks/UseInput.js";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../config";
+import useLoader from "../../../Hooks/UseLoader";
 
 const EditFamilyDetails = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+
   const familyDetails = useSelector((state) => {
     return {
       firstName: state.user.user.firstName,
@@ -273,18 +277,16 @@ const EditFamilyDetails = (props) => {
           totalNoOfDepandants: totalNoOfDepandantsInputValue,
         },
       };
+      handleLoader(true);
       //sending data
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/family-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const res = await fetch(`${BACKEND_DOMAIN}/family-details`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(userData),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -317,14 +319,17 @@ const EditFamilyDetails = (props) => {
       resetTotalFamilyIncomeInput();
       resetTotalNoOfDepandantsInput();
 
+      handleLoader(false);
       setEditMode(false);
     } catch (err) {
       console.log(err);
+      handleLoader(false);
       throw new Error("User Signup failed!");
     }
   };
   return (
     <div className={classes.section}>
+      {loader && LoadingComponent}
       <form onSubmit={formSubmitHandler}>
         <div className={classes.headingDiv}>
           <h2>Parent Status</h2>

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import LinearProgressWithLabel from "./ProgressBar";
 import { useEffect } from "react";
+import { BACKEND_DOMAIN } from "../../config";
 
 // const myImg = require("../../images/myimg.jpeg");
 import defaultProfileImg from "../../images/defaultProfileImg.jpg";
@@ -28,18 +29,16 @@ const SideBar = (props) => {
   const [imageUrl, setImageUrl] = useState(defaultProfileImg);
   const selectedSection = props.selectedSection;
   const setSelectedSection = props.setSelectedSection;
-  const setEditMode = props.setEditMode;
 
   const sectionSelectionHandler = (sectionName) => {
     if (selectedSection !== sectionName) {
-      setEditMode(false);
       setSelectedSection(sectionName);
     }
   };
 
   useEffect(() => {
     if (userData.profileImg !== "") {
-      fetch(`https://ned-scholarship-portal.onrender.com/profileImg`, {
+      fetch(BACKEND_DOMAIN + "/profileImg", {
         headers: {
           Authorization: "Bearer " + userData.token,
         },

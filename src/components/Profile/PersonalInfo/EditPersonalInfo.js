@@ -14,8 +14,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
 import { useState } from "react";
 import defaultProfileImg from "../../../images/defaultProfileImg.jpg";
+import { BACKEND_DOMAIN } from "../../../config";
+import useLoader from "../../../Hooks/UseLoader";
 
 const EditPersonalInfo = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
   const dispatch = useDispatch();
   const [profileImg, setProfileImg] = useState({
     value: null,
@@ -318,18 +321,16 @@ const EditPersonalInfo = (props) => {
           permanentProvince: permanentProvinceInputValue,
         },
       };
+      handleLoader(true);
       //sending personalInfo data to server
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/personal-info",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const res = await fetch(`${BACKEND_DOMAIN}/personal-info`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(userData),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -337,23 +338,19 @@ const EditPersonalInfo = (props) => {
         return;
       }
       const resData = await res.json();
-      let dataObj = { ...resData.updateUserData };
-
+      let dataObj = { ...resData.updatedUserData };
       //sending image to server
       if (profileImg.value) {
         const formData = new FormData();
         formData.append("profileImg", profileImg.value);
         //sending data
-        const resImg = await fetch(
-          "https://ned-scholarship-portal.onrender.com/upload-profileImg",
-          {
-            method: "POST",
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-            body: formData,
-          }
-        );
+        const resImg = await fetch(`${BACKEND_DOMAIN}/upload-profileImg`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          body: formData,
+        });
         if (resImg.status !== 201) {
           //here show an error through notification
           const resData = await resImg.json();
@@ -390,16 +387,19 @@ const EditPersonalInfo = (props) => {
       resetPermanentCityInput();
       resetPermanentProvinceInput();
 
+      handleLoader(false);
       setEditMode(false);
 
       //
     } catch (err) {
       console.log(err);
+      handleLoader(false);
       throw new Error("User Signup failed!");
     }
   };
   return (
     <div className={classes.section}>
+      {loader && LoadingComponent}
       <form onSubmit={formSubmitHandler}>
         <div className={classes.headingDiv}>
           <h2>Tell Us About Yourself</h2>

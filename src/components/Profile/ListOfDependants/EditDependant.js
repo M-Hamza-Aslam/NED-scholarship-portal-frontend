@@ -3,8 +3,12 @@ import useInput from "../../../Hooks/UseInput.js";
 import { Button, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../config";
+import useLoader from "../../../Hooks/UseLoader";
 
 const EditDependant = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+
   const index = props.index;
   let dependantDetails = useSelector((state) => {
     return {
@@ -91,18 +95,16 @@ const EditDependant = (props) => {
         },
         index,
       };
+      handleLoader(true);
       //sending dependantData
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/dependant-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const res = await fetch(`${BACKEND_DOMAIN}/dependant-details`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(userData),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -121,14 +123,17 @@ const EditDependant = (props) => {
       resetRelationInput();
       resetOccupationInput();
 
+      handleLoader(false);
       setIsEdit(false);
     } catch (err) {
       console.log(err);
+      handleLoader(false);
       throw new Error("User Signup failed!");
     }
   };
   return (
     <form onSubmit={formSubmitHandler}>
+      {loader && LoadingComponent}
       <div className={classes.inputContainer}>
         <TextField
           id="outlined-adornment-name"

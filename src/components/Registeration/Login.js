@@ -18,10 +18,14 @@ import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
 import { userActions } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
+import { BACKEND_DOMAIN } from "../../config";
+import { useOutletContext } from "react-router-dom";
 
 const logo = require("../../images/ned_logo.png");
 
-const Login = (props) => {
+const Login = () => {
+  const [handleLoader] = useOutletContext();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -83,20 +87,23 @@ const Login = (props) => {
         password: passwordInputValue,
         userRole: userRole,
       };
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userAuthData),
-        }
-      );
+      //making loading true
+      handleLoader(true);
+      //sending request
+      const res = await fetch(`${BACKEND_DOMAIN}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userAuthData),
+      });
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();
         console.log(resData.message);
+        //making loading false
+        handleLoader(false);
+
         return;
       }
       const resData = await res.json();
@@ -111,11 +118,14 @@ const Login = (props) => {
         ...resData.userDetails,
       };
       dispatch(userActions.updateUserData(userData));
+      //making loading false
+      handleLoader(false);
 
       resetEmailInput();
       resetPasswordInput();
       navigate("/profile");
     } catch (err) {
+      console.log(err);
       throw new Error("User login Failed!");
     }
   };

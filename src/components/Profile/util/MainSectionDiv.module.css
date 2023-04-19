@@ -2,13 +2,12 @@
   margin-bottom: 2rem;
   background-color: white;
   box-shadow: 0 0 5px #d4d4d4;
-  padding-top: 1rem;
   border-radius: 5px;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
 }
 .headingDiv {
   display: flex;
   justify-content: space-between;
-  margin: 1.5rem 1.5rem 0 1.5rem;
 }
 .headingDiv > h2 {
   font-size: 16px;
@@ -22,19 +21,5 @@
   font-size: 20px;
 }
 .headingDiv + hr {
-  margin: 0px 25px;
-}
-.mainDiv {
-  padding: 2rem;
-}
-.addBtn {
-  margin-bottom: 1rem !important;
-}
-@media screen and (max-width: 500px) {
-  .addBtn {
-    font-size: 12px !important;
-  }
-  .headingDiv > h2 {
-    font-size: 14px;
-  }
+  margin: 0px;
 }

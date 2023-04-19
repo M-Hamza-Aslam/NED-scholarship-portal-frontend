@@ -1,45 +1,37 @@
 import classes from "./SectionDiv.module.css";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import MainSectionDiv from "../util/MainSectionDiv";
+import LoadingDiv from "../util/LoadingDiv";
 
 const SectionDiv = (props) => {
-  const showEditIcon = props.showEditIcon;
-  const infoArr = props.infoArr;
-  const heading = props.heading;
-  const setEditMode = props.setEditMode;
-  const setEditModeHandler = () => {
-    setEditMode(true);
-  };
+  const { infoArr, loading } = props;
   return (
-    <div className={classes.section}>
-      <div className={classes.headingDiv}>
-        <h2>{heading}</h2>
-        {showEditIcon && (
-          <button
-            type="button"
-            className={classes.editBtn}
-            onClick={setEditModeHandler}
-          >
-            <EditOutlinedIcon />
-          </button>
+    <MainSectionDiv
+      showEditIcon={loading ? false : props.showEditIcon}
+      heading={props.heading}
+      setEditMode={props.setEditMode}
+    >
+      <div
+        className={`${classes.mainDiv} ${loading && classes.loadingMainDiv}`}
+      >
+        {loading ? (
+          <LoadingDiv />
+        ) : (
+          infoArr.map((info, index) => {
+            return (
+              <div
+                key={index}
+                className={`${classes.infoDiv} ${
+                  info.heading.includes("Address") && classes.addressField
+                }`}
+              >
+                <h5>{info.heading}</h5>
+                <p>{info.value}</p>
+              </div>
+            );
+          })
         )}
       </div>
-      <hr></hr>
-      <div className={classes.mainDiv}>
-        {infoArr.map((info, index) => {
-          return (
-            <div
-              key={index}
-              className={`${classes.infoDiv} ${
-                info.heading.includes("Address") && classes.addressField
-              }`}
-            >
-              <h5>{info.heading}</h5>
-              <p>{info.value}</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </MainSectionDiv>
   );
 };
 export default SectionDiv;

@@ -8,8 +8,12 @@ import {
 } from "@mui/material";
 import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_DOMAIN } from "../../config";
+import { useOutletContext } from "react-router-dom";
 
 const ForgotPassword = (props) => {
+  const [handleLoader] = useOutletContext();
+
   const navigate = useNavigate();
   const ForgotPasswordHandler = () => {
     // props.setForgotPassword(false);
@@ -40,20 +44,19 @@ const ForgotPassword = (props) => {
       }
       //add your logic
       const email = emailInputValue;
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+      handleLoader(true);
+      const res = await fetch(`${BACKEND_DOMAIN}/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();
         console.log(resData.message);
+        handleLoader(false);
         return;
       }
       const resData = await res.json();
@@ -61,6 +64,7 @@ const ForgotPassword = (props) => {
       console.log(resData.message);
       resetEmailInput();
       // redirect to login
+      handleLoader(false);
       navigate("/auth/login");
     } catch (err) {
       throw new Error("Password reset failed!");

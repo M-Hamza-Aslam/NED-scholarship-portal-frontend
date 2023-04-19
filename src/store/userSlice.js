@@ -13,9 +13,10 @@ const userInitialState = {
     userRole: "",
     personalInfo: {},
     familyDetails: {},
-    educationalDetails: {
+    education: {
       hasFetched: false,
-      educationalDetailsArr: [],
+      educationalDetails: [],
+      documents: [],
     },
     dependantDetails: {
       hasFetched: false,

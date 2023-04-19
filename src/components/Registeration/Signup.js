@@ -12,8 +12,12 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState } from "react";
 import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_DOMAIN } from "../../config";
+import { useOutletContext } from "react-router-dom";
 
 const Signup = (props) => {
+  const [handleLoader] = useOutletContext();
+
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -114,20 +118,19 @@ const Signup = (props) => {
         email: emailInputValue,
         password: passwordInputValue,
       };
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userAuthData),
-        }
-      );
+      handleLoader(true);
+      const res = await fetch(`${BACKEND_DOMAIN}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userAuthData),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
         console.log(resData.message);
+        handleLoader(false);
         return;
       }
       const resData = await res.json();
@@ -140,6 +143,7 @@ const Signup = (props) => {
       resetLastNameInput();
       resetPhoneNumberInput();
       // redirect to login page
+      handleLoader(false);
       navigate("/auth/login");
     } catch (err) {
       console.log(err);

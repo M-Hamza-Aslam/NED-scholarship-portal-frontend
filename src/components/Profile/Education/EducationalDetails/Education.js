@@ -4,9 +4,13 @@ import EditEducation from "./EditEducation";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../../store/userSlice";
+import { userActions } from "../../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../../config";
+import useLoader from "../../../../Hooks/UseLoader";
 
 const Education = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+
   const token = useSelector((state) => state.user.user.token);
   const dispatch = useDispatch();
   const { detailArr, index } = props;
@@ -16,17 +20,15 @@ const Education = (props) => {
   };
   const deleteEducationHandler = async () => {
     try {
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/delete-education",
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ index: index }),
-        }
-      );
+      handleLoader(true);
+      const res = await fetch(`${BACKEND_DOMAIN}/delete-education`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ index: index }),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -41,13 +43,16 @@ const Education = (props) => {
           ...resData.updatedUserData,
         })
       );
+      handleLoader(false);
     } catch (error) {
       console.log(error);
+      handleLoader(false);
       throw new Error("education deletion failed!");
     }
   };
   return (
     <Fragment>
+      {loader && LoadingComponent}
       {editEducation ? (
         <EditEducation index={index} setIsEdit={setEditEducationHandler} />
       ) : (

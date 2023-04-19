@@ -1,5 +1,5 @@
 // import { useEffect } from "react";
-// import { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/userSlice";
 
@@ -7,10 +7,10 @@ const useFetch = (url, options) => {
   const dispatch = useDispatch();
   // const [response, setResponse] = useState(null);
   // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(null);
 
   const fetchData = async (token = null) => {
-    // setLoading(true);
+    setLoading(true);
     const headers = {
       "Content-Type": "application/json",
     };
@@ -33,15 +33,16 @@ const useFetch = (url, options) => {
           ...data.userData,
         })
       );
+      setLoading(false);
       return { status: 200, data };
       // setResponse(data);
     } catch (error) {
       // setError(error);
+      setLoading(false);
       return error;
     }
-    // setLoading(false);
   };
   // return { fetchData, response, error, loading };
-  return { fetchData };
+  return { fetchData, loading };
 };
 export default useFetch;

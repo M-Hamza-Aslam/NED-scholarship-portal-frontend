@@ -5,7 +5,12 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditDependant from "./EditDependant";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../config";
+import useLoader from "../../../Hooks/UseLoader";
+
 const Dependant = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+
   const token = useSelector((state) => state.user.user.token);
   const dispatch = useDispatch();
   const { detailArr, index } = props;
@@ -15,17 +20,15 @@ const Dependant = (props) => {
   };
   const deleteDependantHandler = async () => {
     try {
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/delete-dependant",
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ index: index }),
-        }
-      );
+      handleLoader(true);
+      const res = await fetch(`${BACKEND_DOMAIN}/delete-dependant`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ index: index }),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -39,13 +42,16 @@ const Dependant = (props) => {
           ...resData.updatedUserData,
         })
       );
+      handleLoader(false);
     } catch (error) {
       console.log(error);
+      handleLoader(false);
       throw new Error("dependant deletion failed!");
     }
   };
   return (
     <Fragment>
+      {loader && LoadingComponent}
       {editDependant ? (
         <EditDependant
           index={index}

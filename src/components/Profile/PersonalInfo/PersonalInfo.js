@@ -5,11 +5,10 @@ import EditPersonalInfo from "./EditPersonalInfo";
 import { Fragment } from "react";
 import useFetch from "../../../Hooks/UseFetch";
 import { useSelector } from "react-redux";
+import { BACKEND_DOMAIN } from "../../../config";
 
 const PersonalInfo = () => {
-  const { fetchData } = useFetch(
-    "https://ned-scholarship-portal.onrender.com/personal-info"
-  );
+  const { fetchData, loading } = useFetch(`${BACKEND_DOMAIN}/personal-info`);
   const [editMode, setEditMode] = useState(false);
   const token = useSelector((state) => state.user.user.token);
   const userData = useSelector((state) => {
@@ -28,7 +27,7 @@ const PersonalInfo = () => {
       }
     };
     fetch();
-  }, [userData.personalInfo, token, fetchData]);
+  }, []);
 
   const infoArr = [
     { heading: "First Name", value: userData.firstName },
@@ -81,21 +80,25 @@ const PersonalInfo = () => {
             heading={"Tell Us About Yourself"}
             infoArr={infoArr}
             setEditMode={setEditMode}
+            loading={loading}
           />
           <SectionDiv
             showEditIcon={false}
             heading={"Contact Details"}
             infoArr={contactInfoArr}
+            loading={loading}
           />
           <SectionDiv
             showEditIcon={false}
             heading={"Residential Address"}
             infoArr={ResidentialAddressInfoArr}
+            loading={loading}
           />
           <SectionDiv
             showEditIcon={false}
             heading={"Permanent Address"}
             infoArr={permanentAddressInfoArr}
+            loading={loading}
           />
         </Fragment>
       )}

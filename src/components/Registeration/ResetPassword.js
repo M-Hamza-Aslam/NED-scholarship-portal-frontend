@@ -13,8 +13,12 @@ import {
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 import { useState } from "react";
+import { BACKEND_DOMAIN } from "../../config";
+import { useOutletContext } from "react-router-dom";
 
 const ResetPassword = (props) => {
+  const [handleLoader] = useOutletContext();
+
   const params = useParams();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -63,20 +67,19 @@ const ResetPassword = (props) => {
       //add your logic
       const token = params.token;
       const newPassword = passwordInputValue;
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token, newPassword }),
-        }
-      );
+      handleLoader(true);
+      const res = await fetch(`${BACKEND_DOMAIN}/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, newPassword }),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
         console.log(resData);
+        handleLoader(false);
         return;
       }
       const resData = await res.json();
@@ -86,6 +89,7 @@ const ResetPassword = (props) => {
       resetPasswordInput();
       resetConfirmPasswordInput();
 
+      handleLoader(false);
       navigate("/auth/login");
     } catch (error) {
       throw new Error("Password reset failed!");

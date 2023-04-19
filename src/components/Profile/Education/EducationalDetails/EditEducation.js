@@ -1,20 +1,23 @@
 import classes from "./EditEducation.module.css";
-import useInput from "../../../Hooks/UseInput.js";
+import useInput from "../../../../Hooks/UseInput.js";
 import { Button, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { userActions } from "../../../store/userSlice";
+import { userActions } from "../../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../../config";
+import useLoader from "../../../../Hooks/UseLoader";
 
 const EditEducation = (props) => {
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+
   const index = props.index;
   let educationalDetails = useSelector((state) => {
     return {
-      ...state.user.user.educationalDetails,
+      ...state.user.user.education.educationalDetails,
     };
   });
-  if (index === -1) {
-    educationalDetails = {};
-  } else {
-    educationalDetails = educationalDetails.educationalDetailsArr[index];
+  let educationalDetailsObj = {};
+  if (index !== -1) {
+    educationalDetailsObj = educationalDetails[index];
   }
   const token = useSelector((state) => state.user.user.token);
   const dispatch = useDispatch();
@@ -29,7 +32,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: classKeyStrockHandler,
     inputBlurHandler: classInputBlurHandler,
     reset: resetClassInput,
-  } = useInput(educationalDetails.class || "", (value) => {
+  } = useInput(educationalDetailsObj.class || "", (value) => {
     const Regex = /^[0-9]{4}$/;
     return Regex.test(value.trim());
   });
@@ -40,7 +43,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: seatNoKeyStrockHandler,
     inputBlurHandler: seatNoInputBlurHandler,
     reset: resetSeatNoInput,
-  } = useInput(educationalDetails.seatNo || "", (value) => {
+  } = useInput(educationalDetailsObj.seatNo || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim());
   });
@@ -51,7 +54,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: totalMarksCGPAKeyStrockHandler,
     inputBlurHandler: totalMarksCGPAInputBlurHandler,
     reset: resetTotalMarksCGPAInput,
-  } = useInput(educationalDetails.totalMarksCGPA || "", (value) => {
+  } = useInput(educationalDetailsObj.totalMarksCGPA || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim());
   });
@@ -62,7 +65,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: obtainedMarksCGPAKeyStrockHandler,
     inputBlurHandler: obtainedMarksCGPAInputBlurHandler,
     reset: resetObtainedMarksCGPAInput,
-  } = useInput(educationalDetails.obtainedMarksCGPA || "", (value) => {
+  } = useInput(educationalDetailsObj.obtainedMarksCGPA || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim());
   });
@@ -73,7 +76,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: percentageKeyStrockHandler,
     inputBlurHandler: percentageInputBlurHandler,
     reset: resetPercentageInput,
-  } = useInput(educationalDetails.percentage || "", (value) => {
+  } = useInput(educationalDetailsObj.percentage || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim()) && value.trim() <= 100;
   });
@@ -84,7 +87,7 @@ const EditEducation = (props) => {
     inputKeyStrockHandler: meritPositionKeyStrockHandler,
     inputBlurHandler: meritPositionInputBlurHandler,
     reset: resetMeritPositionInput,
-  } = useInput(educationalDetails.meritPosition || "", (value) => {
+  } = useInput(educationalDetailsObj.meritPosition || "", (value) => {
     const Regex = /^[A-Za-z]+$/;
     return Regex.test(value.trim());
   });
@@ -118,18 +121,16 @@ const EditEducation = (props) => {
         },
         index,
       };
+      handleLoader(true);
       //sending educationData
-      const res = await fetch(
-        "https://ned-scholarship-portal.onrender.com/education-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const res = await fetch(`${BACKEND_DOMAIN}/education-details`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(userData),
+      });
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -150,14 +151,17 @@ const EditEducation = (props) => {
       resetPercentageInput();
       resetMeritPositionInput();
 
+      handleLoader(false);
       setIsEdit(false);
     } catch (err) {
       console.log(err);
+      handleLoader(false);
       throw new Error("User Signup failed!");
     }
   };
   return (
     <form onSubmit={formSubmitHandler}>
+      {loader && LoadingComponent}
       <div className={classes.inputContainer}>
         <TextField
           id="outlined-adornment-class"

@@ -6,10 +6,9 @@ import { useSelector } from "react-redux";
 import SectionDiv from "../SectionDiv/SectionDiv";
 import EditFamilyDetails from "./EditFamilyDetails";
 import { Fragment } from "react";
+import { BACKEND_DOMAIN } from "../../../config";
 const FamilyDetails = () => {
-  const { fetchData } = useFetch(
-    "https://ned-scholarship-portal.onrender.com/family-details"
-  );
+  const { fetchData, loading } = useFetch(`${BACKEND_DOMAIN}/family-details`);
   const [editMode, setEditMode] = useState(false);
   const token = useSelector((state) => state.user.user.token);
   const userData = useSelector((state) => {
@@ -25,7 +24,7 @@ const FamilyDetails = () => {
       }
     };
     fetch();
-  }, [userData.familyDetails, token, fetchData]);
+  }, []);
   const parentDetailArr = [
     {
       heading: "Father Health Status",
@@ -97,16 +96,19 @@ const FamilyDetails = () => {
             heading={"Parent Status"}
             infoArr={parentDetailArr}
             setEditMode={setEditMode}
+            loading={loading}
           />
           <SectionDiv
             showEditIcon={false}
             heading={"Father/Guardian Details"}
             infoArr={guardianDetailArr}
+            loading={loading}
           />
           <SectionDiv
             showEditIcon={false}
             heading={"Family Details"}
             infoArr={familyDetailArr}
+            loading={loading}
           />
         </Fragment>
       )}
