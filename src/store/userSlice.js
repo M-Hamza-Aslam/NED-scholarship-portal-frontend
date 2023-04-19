@@ -22,6 +22,10 @@ const userInitialState = {
       hasFetched: false,
       dependantDetailsArr: [],
     },
+    scholarship: {
+      hasFetched: false,
+      scholarshipList: [],
+    },
   },
 };
 

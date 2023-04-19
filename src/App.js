@@ -1,7 +1,11 @@
 import React, { useEffect, useCallback, Suspense } from "react";
 import Navbar from "./components/Navigation/Navbar";
+import Footer from "./components/Navigation/Footer";
 import Landing from "./components/Landing/Landing";
 import Registeration from "./components/Registeration/Registeration";
+import ScholarshipList from "./components/Scholarship/ScholarshipList";
+import ScholarshipDetail from "./components/Scholarship/ScholarshipDetail";
+import UserList from "./components/Admin/Users/UserList";
 import { useLocation } from "react-router";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -98,7 +102,7 @@ function App() {
   return (
     <>
       {loading ? (
-        <div className="loading">
+        <div className="loadingDiv">
           <CircularProgress />
           <h5>Please Wait...</h5>
         </div>
@@ -113,9 +117,17 @@ function App() {
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password/:token" element={<ResetPassword />} />
             </Route>
+            <Route path="/scholarship-list" element={<ScholarshipList />} />
+            <Route
+              path="/scholarship-list/:scholarshipId"
+              element={<ScholarshipDetail />}
+            />
+            <Route path="/user-list" element={<UserList />} />
+            <Route path="/" element={<h1>Home Page</h1>} />
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/*" element={<Landing />} /> */}
           </Routes>
+          {!location.pathname.includes("/auth") && <Footer />}
         </Suspense>
       )}
     </>

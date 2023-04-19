@@ -10,12 +10,19 @@
 .row-content {
   font-family: "Nunito";
 }
-.loading {
+.loadingDiv {
   width: 100vw;
   height: 100vh;
   display: flex;
   gap: 1rem;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  margin: 10% 0;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

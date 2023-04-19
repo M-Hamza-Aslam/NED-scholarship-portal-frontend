@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import EastIcon from "@mui/icons-material/East";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -10,11 +11,18 @@ import carouselImage3 from "../../../assets/images/carousel-3.jpg";
 import classes from "./InitialDisplay.module.css";
 
 const InitialDisplay = () => {
+  const navigate = useNavigate();
+
   const imageHelper = {
     carousel1: carouselImage1,
     carousel2: carouselImage2,
     carousel3: carouselImage3,
   };
+
+  const navigateToScholarshipListHandler = () => {
+    navigate("/scholarship-list");
+  };
+
   return (
     <div className={classes["initial-display"]}>
       {window.innerWidth > 600 ? (
@@ -37,7 +45,10 @@ const InitialDisplay = () => {
                   vital resource for students seeking financial assistance.
                 </p>
                 <br />
-                <button className={classes.btn}>
+                <button
+                  onClick={navigateToScholarshipListHandler}
+                  className={classes.btn}
+                >
                   <span className={classes["btn-text"]}>
                     View Scholarship List{" "}
                     <EastIcon sx={{ marginLeft: "5px" }} />

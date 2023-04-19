@@ -1,0 +1,43 @@
+.details {
+  max-width: 1100px;
+  margin: 3rem auto;
+}
+
+.images img {
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+.details h1 {
+  font-size: 40px;
+  margin: 1rem 0;
+}
+
+.details h3 {
+  font-size: xx-large;
+}
+
+.details h1,
+.details h3 {
+  font-family: "Crimson Text";
+}
+
+.details p,
+.details li {
+  /* color: #efeaea; */
+  color: rgba(0, 0, 0, 0.87);
+  font-family: "Nunito";
+}
+
+.text {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .details {
+    margin: 3rem 2rem;
+  }
+}

@@ -1,0 +1,107 @@
+.user-list-main {
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+.user-list {
+  display: flex;
+  margin-top: 2rem;
+  text-align: center;
+  column-gap: 2%;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  row-gap: 2rem;
+}
+
+.user-card {
+  font-family: "Poppins";
+  width: 23%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.5rem;
+  justify-content: space-between;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  border-radius: 10px;
+}
+
+.user-card > a {
+  text-decoration: none;
+  /* color: #1976d2; */
+  color: #077e8c;
+}
+
+.user-image {
+  width: 200px;
+  height: 200px;
+}
+
+.user-image > img {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  border: 8px solid white;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.status {
+  font-family: "Nunito";
+  margin: 0;
+  /* margin-top: -5px; */
+}
+
+.rejected,
+.pending,
+.accepted {
+  text-transform: capitalize;
+}
+
+.rejected {
+  color: red;
+}
+
+.pending {
+  color: #f29339;
+}
+
+.accepted {
+  color: #077e8c;
+}
+
+.details {
+  border-color: #0f2d25 !important;
+  background-color: white !important;
+  color: #0f2d25 !important;
+  font-family: "Crimson Text" !important;
+}
+
+.details:hover {
+  background-color: #18544e !important;
+  border-color: #0f2d25 !important;
+  color: white !important;
+}
+
+@media screen and (max-width: 1050px) {
+  .user-card {
+    width: 32%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-card {
+    width: 48%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .user-card {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .user-list-main {
+    margin: 2rem;
+  }
+}
