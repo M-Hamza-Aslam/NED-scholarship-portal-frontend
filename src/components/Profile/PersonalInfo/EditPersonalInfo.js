@@ -295,6 +295,7 @@ const EditPersonalInfo = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        //show error
         return;
       }
       //preparing inputData to send
@@ -420,6 +421,7 @@ const EditPersonalInfo = (props) => {
             onClick={() => {
               document.getElementById("imageUpload").click();
             }}
+            className={classes.submitDiv}
           >
             Upload a new Photo
           </Button>
@@ -686,13 +688,18 @@ const EditPersonalInfo = (props) => {
           />
         </div>
         <div className={classes.btnDiv}>
-          <Button type="submit" variant="contained">
+          <Button
+            type="submit"
+            variant="contained"
+            className={classes.submitDiv}
+          >
             Save Personal Info
           </Button>
           <Button
             type="button"
             variant="outlined"
             onClick={() => setEditMode(false)}
+            className={classes.cencelDiv}
           >
             Cancel
           </Button>

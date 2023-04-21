@@ -16,6 +16,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import "./App.css";
 import { BACKEND_DOMAIN } from "./config";
 import { useState } from "react";
+import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
+import { adminActions } from "./store/adminSlice";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
 const Signup = React.lazy(() => import("./components/Registeration/Signup"));
@@ -40,9 +42,14 @@ function App() {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.userRole;
       const expirationTime = decodedToken.expiration;
       if (Date.now() < expirationTime) {
-        const res = await fetch(`${BACKEND_DOMAIN}/getLoginData`, {
+        let apiEndPoint = `${BACKEND_DOMAIN}/getLoginData`;
+        if (userRole === "admin") {
+          apiEndPoint = `${BACKEND_DOMAIN}/admin/getLoginData`;
+        }
+        const res = await fetch(apiEndPoint, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -64,18 +71,30 @@ function App() {
           ...resData.userDetails,
         };
         console.log(userData);
-        dispatch(userActions.updateUserData(userData));
+        if (userData.userRole === "admin") {
+          dispatch(adminActions.updateAdminData(userData));
+        } else if (userData.userRole === "student") {
+          dispatch(userActions.updateUserData(userData));
+        }
         // setting time to delete token from localstorage
         const timeout = expirationTime - Date.now();
         setTimeout(() => {
           localStorage.removeItem("token");
-          dispatch(userActions.clearUserData());
+          if (userData.userRole === "admin") {
+            dispatch(adminActions.clearAdminData());
+          } else if (userData.userRole === "student") {
+            dispatch(userActions.clearUserData());
+          }
           navigate("/auth/login");
         }, timeout);
         setLoading(false);
       } else {
         localStorage.removeItem("token");
-        dispatch(userActions.clearUserData());
+        if (userRole === "admin") {
+          dispatch(adminActions.clearAdminData());
+        } else if (userRole === "student") {
+          dispatch(userActions.clearUserData());
+        }
         if (openURL.includes(location.pathname)) {
           setLoading(false);
           return;
@@ -117,6 +136,10 @@ function App() {
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password/:token" element={<ResetPassword />} />
             </Route>
+            <Route
+              path="/admin/create-scholarship"
+              element={<CreateScholarship />}
+            />
             <Route path="/scholarship-list" element={<ScholarshipList />} />
             <Route
               path="/scholarship-list/:scholarshipId"
