@@ -18,7 +18,6 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { BACKEND_DOMAIN } from "./config";
 import UserDetails from "./components/Admin/Users/UserDetails";
-import { useState } from "react";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
 import { adminActions } from "./store/adminSlice";
 

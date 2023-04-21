@@ -1,0 +1,36 @@
+.container {
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.itemDiv {
+  display: flex;
+  align-items: center;
+}
+.itemDiv > h5 {
+  margin: 0 5px 0 0;
+}
+.itemDiv > p {
+  font-size: 14px;
+  margin: 0;
+}
+.iconDiv > button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.iconDiv svg {
+  font-size: 25px;
+  margin-right: 1rem;
+}
+@media screen and (max-width: 500px) {
+  .iconDiv {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+  }
+  .container {
+    display: block;
+  }
+}

@@ -1,0 +1,15 @@
+.mainDiv {
+  padding-top: 2rem;
+}
+.addBtn {
+  margin-bottom: 1rem !important;
+  background-image: var(--primaryGradientColor) !important;
+}
+@media screen and (max-width: 500px) {
+  .addBtn {
+    font-size: 12px !important;
+  }
+  .headingDiv > h2 {
+    font-size: 14px;
+  }
+}

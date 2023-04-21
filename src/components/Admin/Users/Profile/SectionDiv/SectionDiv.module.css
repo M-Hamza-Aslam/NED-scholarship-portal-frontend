@@ -1,0 +1,33 @@
+.mainDiv {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.infoDiv {
+  flex: 0 0 33.33%;
+  margin-bottom: 2rem;
+}
+.infoDiv > h5 {
+  margin: 0;
+}
+.infoDiv > p {
+  margin: 0;
+  font-size: 14px;
+}
+.addressField {
+  flex: 0 0 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .infoDiv {
+    flex: 0 0 50%;
+  }
+}
+.loadingMainDiv {
+  display: block;
+}
+@media screen and (max-width: 650px) {
+  .infoDiv {
+    flex: 0 0 100%;
+  }
+}
