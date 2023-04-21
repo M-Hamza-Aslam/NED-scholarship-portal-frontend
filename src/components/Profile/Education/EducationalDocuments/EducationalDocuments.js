@@ -195,6 +195,7 @@ const EducationalDocument = (props) => {
                 disabled={files.length === 0}
                 endIcon={<SendIcon />}
                 onClick={submiitFilesHandler}
+                className={classes.sendBtn}
               >
                 Save Files
               </Button>

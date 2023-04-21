@@ -11,6 +11,16 @@
 .btnDiv > button {
   margin: 0 1rem 1rem 0;
 }
+.submitDiv {
+  background-image: var(--primaryGradientColor) !important;
+}
+.cencelDiv {
+  color: #0f2d25;
+  border-color: #0f2d25;
+}
+.cencelDiv:hover {
+  border-color: #0f2d25;
+}
 @media screen and (max-width: 900px) {
   .formInput {
     flex: 0 0 48.5%;

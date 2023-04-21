@@ -182,13 +182,14 @@ const EditDependant = (props) => {
         />
       </div>
       <div className={classes.btnDiv}>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" className={classes.submitDiv}>
           Save Dependant
         </Button>
         <Button
           type="button"
           variant="outlined"
           onClick={() => setIsEdit(false)}
+          className={classes.cencelDiv}
         >
           Cancel
         </Button>

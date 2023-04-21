@@ -20,6 +20,7 @@ import { userActions } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
 import { BACKEND_DOMAIN } from "../../config";
 import { useOutletContext } from "react-router-dom";
+import { adminActions } from "../../store/adminSlice";
 
 const logo = require("../../images/ned_logo.png");
 
@@ -90,7 +91,11 @@ const Login = () => {
       //making loading true
       handleLoader(true);
       //sending request
-      const res = await fetch(`${BACKEND_DOMAIN}/login`, {
+      let apiEndPoint = `${BACKEND_DOMAIN}/login`;
+      if (userRole === "admin") {
+        apiEndPoint = `${BACKEND_DOMAIN}/admin/login`;
+      }
+      const res = await fetch(apiEndPoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,13 +122,21 @@ const Login = () => {
         token: resData.token,
         ...resData.userDetails,
       };
-      dispatch(userActions.updateUserData(userData));
+      if (userData.userRole === "admin") {
+        dispatch(adminActions.updateAdminData(userData));
+      } else if (userData.userRole === "student") {
+        dispatch(userActions.updateUserData(userData));
+      }
       //making loading false
       handleLoader(false);
 
       resetEmailInput();
       resetPasswordInput();
-      navigate("/profile");
+      if (userData.userRole === "admin") {
+        navigate("/admin/create-scholarship");
+      } else if (userData.userRole === "student") {
+        navigate("/profile");
+      }
     } catch (err) {
       console.log(err);
       throw new Error("User login Failed!");

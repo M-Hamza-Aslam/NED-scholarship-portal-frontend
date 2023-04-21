@@ -3,6 +3,7 @@
 }
 .addBtn {
   margin-bottom: 1rem !important;
+  background-image: var(--primaryGradientColor) !important;
 }
 @media screen and (max-width: 500px) {
   .addBtn {
