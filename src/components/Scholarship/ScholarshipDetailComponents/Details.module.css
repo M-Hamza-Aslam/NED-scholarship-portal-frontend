@@ -29,6 +29,11 @@
   font-family: "Nunito";
 }
 
+.details pre {
+  margin-left: 2rem;
+  font-family: "Nunito";
+}
+
 .text {
   margin-top: 2rem;
   display: flex;

@@ -3,6 +3,24 @@
   margin-top: 64px;
 }
 
+.drawer > div {
+  background: linear-gradient(135deg, #0f2d25 11.2%, #217a77 100%);
+  justify-content: space-between;
+}
+
+.active {
+  background-color: white;
+  color: #00505d;
+  margin-left: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.deactive {
+  color: white;
+  margin-left: 10px;
+}
+
 @media screen and (max-width: 600px) {
   .navbar {
     margin-top: 48px;

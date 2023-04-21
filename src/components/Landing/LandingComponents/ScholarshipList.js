@@ -117,13 +117,11 @@ const ScholarshipList = () => {
                   <h2>{sc.title}</h2>
                 </div>
                 <div className={classes["sc-details"]}>
-                  <p>
+                  <p className={classes["sc-details-text"]}>
                     <span className={classes["sc-details-heading"]}>
                       Description:{" "}
                     </span>
-                    <span className={classes["sc-details-text"]}>
-                      {sc.description}
-                    </span>
+                    <span>{sc.description}</span>
                   </p>
 
                   {/* <p>

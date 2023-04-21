@@ -22,6 +22,17 @@ const ScholarshipDetail = () => {
     ([url, token]) => globalFetcher(url, token)
   );
 
+  const {
+    data: imgData,
+    error: imgError,
+    isLoading: imgLoading,
+  } = useSWR(
+    [auth.token ? `/getScholarshipImg/${scholarshipId}` : null, auth.token],
+    ([url, token]) => globalFetcher(url, token)
+  );
+
+  console.log(imgData);
+
   useEffect(() => {
     if (!auth?.scholarship?.hasFetched) {
       getScholarshipList(auth.token).then(({ appliedScholarships }) => {
@@ -39,7 +50,7 @@ const ScholarshipDetail = () => {
   }, []);
 
   useEffect(() => {
-    const canApply = auth.scholarship.scholarshipList.findIndex(
+    const canApply = auth?.scholarship?.scholarshipList.findIndex(
       (scholarship) =>
         scholarship.scholarshipId === scholarshipId ||
         scholarship.status === "approved"
@@ -64,8 +75,10 @@ const ScholarshipDetail = () => {
     <div className={classes["scholarship-detail"]}>
       <InitialDisplay title="Scholarship Details" />
       <Details data={data} />
-      {/* {data.status === "active" && <ApplyForm data={data} canApply={canApply} />} */}
-      <ApplyForm data={data} canApply={canApply} />
+      {data.status.toLowerCase() === "active" && (
+        <ApplyForm data={data} canApply={canApply} />
+      )}
+      {/* <ApplyForm data={data} canApply={canApply} /> */}
     </div>
   );
 };

@@ -18,7 +18,6 @@ export const postApplyScholarship = async (scholarshipId, token) => {
     body,
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) return responseData;
 };
 
