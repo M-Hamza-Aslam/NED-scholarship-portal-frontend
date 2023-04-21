@@ -8,12 +8,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import EastIcon from "@mui/icons-material/East";
 
 import classes from "./ApplyForm.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { postApplyScholarship } from "../../../api";
+import { toast } from "react-toastify";
+import { userActions } from "../../../store/userSlice";
 
-const ApplyForm = ({ data }) => {
+const ApplyForm = ({ data, canApply }) => {
   const [open, setOpen] = useState(false);
   const auth = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,10 +27,34 @@ const ApplyForm = ({ data }) => {
     setOpen(false);
   };
 
+  const handleError = () => {
+    toast.error("You cannot apply to a scholarship again!");
+  };
+
+  const applyScholarshipHandler = async () => {
+    const success = await postApplyScholarship(data._id, auth.token);
+    if (success) {
+      dispatch(
+        userActions.updateUserData({
+          scholarship: {
+            hasFetched: false,
+            scholarshipList: [],
+          },
+        })
+      );
+      toast.success("You have successsfully applied to the scholarship!");
+      handleClose();
+    }
+  };
+
   return (
     <Fragment>
       <div className={classes["apply-button"]}>
-        <button onClick={handleClickOpen} className={classes.btn}>
+        <button
+          onClick={canApply ? handleClickOpen : handleError}
+          id={!canApply && classes.disable}
+          className={classes.btn}
+        >
           <span className={classes["btn-text"]}>
             Apply on Scholarship <EastIcon sx={{ marginLeft: "5px" }} />
           </span>
@@ -71,7 +99,7 @@ const ApplyForm = ({ data }) => {
                   borderColor: "#0f2d25",
                 },
               }}
-              onClick={handleClose}
+              onClick={applyScholarshipHandler}
               autoFocus
             >
               Agree

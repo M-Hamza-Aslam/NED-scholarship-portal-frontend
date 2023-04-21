@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import Navbar from "./components/Navigation/Navbar";
 import Footer from "./components/Navigation/Footer";
 import Landing from "./components/Landing/Landing";
@@ -11,11 +11,13 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 import { userActions } from "./store/userSlice";
+import { ToastContainer } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { BACKEND_DOMAIN } from "./config";
-import { useState } from "react";
+import UserDetails from "./components/Admin/Users/UserDetails";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
 const Signup = React.lazy(() => import("./components/Registeration/Signup"));
@@ -63,7 +65,7 @@ function App() {
           token: token,
           ...resData.userDetails,
         };
-        console.log(userData);
+        // console.log(userData);
         dispatch(userActions.updateUserData(userData));
         // setting time to delete token from localstorage
         const timeout = expirationTime - Date.now();
@@ -123,11 +125,13 @@ function App() {
               element={<ScholarshipDetail />}
             />
             <Route path="/user-list" element={<UserList />} />
+            <Route path="/user-list/:id" element={<UserDetails />} />
             <Route path="/" element={<h1>Home Page</h1>} />
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/*" element={<Landing />} /> */}
           </Routes>
           {!location.pathname.includes("/auth") && <Footer />}
+          <ToastContainer />
         </Suspense>
       )}
     </>

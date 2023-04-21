@@ -43,6 +43,14 @@
   color: white;
 }
 
+#disable::before {
+  background: grey;
+}
+
+#disable .btn-text {
+  color: black;
+}
+
 .btn span {
   z-index: 10;
 }
