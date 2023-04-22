@@ -1,118 +1,76 @@
-// import classes from "./FamilyDetails.module.css";
-import { useEffect, useState } from "react";
-import useFetch from "../../../Hooks/UseFetch";
-import { useSelector } from "react-redux";
-
 import SectionDiv from "../SectionDiv/SectionDiv";
-import EditFamilyDetails from "./EditFamilyDetails";
 import { Fragment } from "react";
-import { BACKEND_DOMAIN } from "../../../config";
-const FamilyDetails = () => {
-  const { fetchData, loading } = useFetch(`${BACKEND_DOMAIN}/family-details`);
-  const [editMode, setEditMode] = useState(false);
-  const token = useSelector((state) => state.user.user.token);
-  const userData = useSelector((state) => {
-    return {
-      familyDetails: { ...state.user.user.familyDetails },
-    };
-  });
-  useEffect(() => {
-    const fetch = async () => {
-      if (Object.keys(userData.familyDetails).length === 0) {
-        const res = await fetchData(token);
-        console.log(res);
-      }
-    };
-    fetch();
-  }, []);
+const FamilyDetails = (props) => {
+  const familyDetails = props.data;
   const parentDetailArr = [
     {
       heading: "Father Health Status",
-      value: userData.familyDetails.fatherHealthStatus,
+      value: familyDetails.fatherHealthStatus,
     },
     {
       heading: "Father Work Status",
-      value: userData.familyDetails.fatherWorkStatus,
+      value: familyDetails.fatherWorkStatus,
     },
     {
       heading: "Mother Health Status",
-      value: userData.familyDetails.motherHealthStatus,
+      value: familyDetails.motherHealthStatus,
     },
     {
       heading: "Mother Work Status",
-      value: userData.familyDetails.motherWorkStatus,
+      value: familyDetails.motherWorkStatus,
     },
   ];
   const guardianDetailArr = [
-    { heading: "Name", value: userData.familyDetails.fatherName },
+    { heading: "Name", value: familyDetails.fatherName },
     {
       heading: "Relation with Applicant",
-      value: userData.familyDetails.relationWithApplicant,
+      value: familyDetails.relationWithApplicant,
     },
-    { heading: "Occupation", value: userData.familyDetails.occupation },
+    { heading: "Occupation", value: familyDetails.occupation },
     {
       heading: "Gross Salary/Income",
-      value: userData.familyDetails.grossIncome,
+      value: familyDetails.grossIncome,
     },
     {
       heading: "Residential Phone Number",
-      value: userData.familyDetails.residentialPhoneNumber,
+      value: familyDetails.residentialPhoneNumber,
     },
     {
       heading: "Office Phone Number",
-      value: userData.familyDetails.officePhoneNumber,
+      value: familyDetails.officePhoneNumber,
     },
     {
       heading: "Monetary Assistance Amount",
-      value: userData.familyDetails.monetaryAssistanceAmount,
+      value: familyDetails.monetaryAssistanceAmount,
     },
     {
       heading: "Residential Address",
-      value: userData.familyDetails.address,
+      value: familyDetails.address,
     },
-    { heading: "District", value: userData.familyDetails.district },
-    { heading: "City", value: userData.familyDetails.city },
-    { heading: "Province", value: userData.familyDetails.province },
+    { heading: "District", value: familyDetails.district },
+    { heading: "City", value: familyDetails.city },
+    { heading: "Province", value: familyDetails.province },
   ];
   const familyDetailArr = [
-    { heading: "No. of Earners", value: userData.familyDetails.noOfEarners },
+    { heading: "No. of Earners", value: familyDetails.noOfEarners },
     {
       heading: "Total Family Income",
-      value: userData.familyDetails.totalFamilyIncome,
+      value: familyDetails.totalFamilyIncome,
     },
     {
       heading: "Total No. of Dependants in words",
-      value: userData.familyDetails.totalNoOfDepandants,
+      value: familyDetails.totalNoOfDepandants,
     },
   ];
   return (
-    <>
-      {editMode ? (
-        <EditFamilyDetails setEditMode={setEditMode} />
-      ) : (
-        <Fragment>
-          <SectionDiv
-            showEditIcon={true}
-            heading={"Parent Status"}
-            infoArr={parentDetailArr}
-            setEditMode={setEditMode}
-            loading={loading}
-          />
-          <SectionDiv
-            showEditIcon={false}
-            heading={"Father/Guardian Details"}
-            infoArr={guardianDetailArr}
-            loading={loading}
-          />
-          <SectionDiv
-            showEditIcon={false}
-            heading={"Family Details"}
-            infoArr={familyDetailArr}
-            loading={loading}
-          />
-        </Fragment>
-      )}
-    </>
+    <Fragment>
+      <SectionDiv heading={"Parent Status"} infoArr={parentDetailArr} />
+      <SectionDiv
+        heading={"Father/Guardian Details"}
+        infoArr={guardianDetailArr}
+      />
+      <SectionDiv heading={"Family Details"} infoArr={familyDetailArr} />
+    </Fragment>
   );
 };
 export default FamilyDetails;
