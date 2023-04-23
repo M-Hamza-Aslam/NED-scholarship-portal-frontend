@@ -21,6 +21,7 @@ import UserDetails from "./components/Admin/Users/UserDetails";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
 import { adminActions } from "./store/adminSlice";
 import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
+// import UserProfile from "./components/Admin/Users/Profile/UserProfile";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
 const Signup = React.lazy(() => import("./components/Registeration/Signup"));
@@ -31,6 +32,10 @@ const ResetPassword = React.lazy(() =>
   import("./components/Registeration/ResetPassword")
 );
 const Profile = React.lazy(() => import("./components/Profile/Profile"));
+
+const UserProfile = React.lazy(() =>
+  import("./components/Admin/Users/Profile/UserProfile")
+);
 
 const openURL = ["/", "/auth/login", "/auth/signup", "/auth/forget-password"];
 
@@ -153,7 +158,7 @@ function App() {
               element={<ScholarshipDetail />}
             />
             <Route path="/user-list" element={<UserList />} />
-            <Route path="/user-list/:id" element={<UserDetails />} />
+            <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/" element={<h1>Home Page</h1>} />
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/*" element={<Landing />} /> */}
