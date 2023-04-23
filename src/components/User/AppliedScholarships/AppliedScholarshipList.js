@@ -12,7 +12,7 @@ const AppliedScholarshipList = () => {
   const searchRef = useRef();
   const token = useSelector((state) => state.user.user.token);
   const { data, error, isLoading } = useSWR(
-    [token ? "/applied-scholarship-list" : null, token],
+    [token ? "/applied-scholarships" : null, token],
     ([url, token]) => globalFetcher(url, token)
   );
   const [status, setStatus] = useState("");
@@ -42,7 +42,7 @@ const AppliedScholarshipList = () => {
 
   useEffect(() => {
     if (data) {
-      setScholarshipData(data.appliedScholarships);
+      setScholarshipData(data);
     }
   }, [data]);
 

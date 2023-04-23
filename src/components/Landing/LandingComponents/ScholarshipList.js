@@ -1,5 +1,6 @@
 import React from "react";
 import useSWR from "swr";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { globalFetcher } from "../../../api";
 import Carousel from "react-multi-carousel";
@@ -9,46 +10,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import classes from "./ScholarshipList.module.css";
 import "react-multi-carousel/lib/styles.css";
 
-const SC_LIST_DATA = [
-  {
-    date: "5 July 2022",
-    name: "Scholarship #1",
-    description:
-      "Germany has become a popular destination for foreign students looking for an international education. German Universities offers internationally recognized programs at a relatively cheaper cost compared to UK, USA or Australia. Moreover, there are a significant number of available scholarships that allows foreign students to study in Germany for free.",
-  },
-  {
-    date: "5 July 2022",
-    name: " Fulbright Scholarship Program Merit Badge",
-    description:
-      "If you want to study anywhere or in your own country and at the same time want the benefit of an international education, distance learning education is for you.  It is cheaper than actually studying abroad because everything is done online.  scholars4dev.com made a list of online degree scholarships and free online courses to help you get an online education for free.",
-  },
-  {
-    date: "5 July 2022",
-    name: "Coca-Cola Scholarship",
-    description:
-      "The Australian Government and Australian Universities provide a large number of scholarships for international students wanting to study in Australia. scholars4dev.com lists the top Australia Scholarships for study at Australian Universities for international students",
-  },
-  {
-    date: "5 July 2022",
-    name: "Scholarship #4",
-    description:
-      "The Government of Flanders launches a new scholarship program, Master Mind Scholarships that aims to promote the internationalization of the Flemish Higher Education.  It awards up to 35 scholarships to outstanding Master students from all countries. The incoming student is awarded a scholarship of maximum 7.500 Euro per academic year. The Flemish Host Institution can ask the applicant for a tuition fee of maximum 100 Euro per year.",
-  },
-  {
-    date: "5 July 2022",
-    name: "Scholarship #5",
-    description:
-      "The Science@Leuven Scholarship are for motivated and talented international students, interested in participating in an international master programme of the Faculty of Science of the K.U.Leuven. The amount of the scholarship can be up to 10,000 Euro for 1 year. The scholarship will always cover the tuition fee for 1 year, the insurance and a basic health insurance coverage. The amount awarded for living expenses can vary.",
-  },
-  {
-    date: "5 July 2022",
-    name: "Scholarship #6",
-    description:
-      "Ghent University provides Top-up Grants to candidates from all countries on the OESO-DAC list, who wish to obtain a master’s degree at Ghent University. The scholarship consists of an allowance of 1,000 euro per month and all-in insurance.",
-  },
-];
-
 const ScholarshipList = () => {
+  const navigate = useNavigate();
   const token = useSelector((state) => state.user.user.token);
 
   const { data, error, isLoading } = useSWR(
@@ -103,14 +66,14 @@ const ScholarshipList = () => {
                   <div>
                     <p className={classes.date}>
                       {/* {new Date(sc.date).getDate()}th */}
-                      {sc.date.day}th
+                      {sc.issueDate.day}th
                     </p>
                     <p className={classes.month}>
                       {/* {new Date(sc.date).toLocaleString("default", {
                         month: "long",
                       })}{" "}
                       {new Date(sc.date).getFullYear()} */}
-                      {sc.date.month} {sc.date.year}
+                      {sc.issueDate.month} {sc.issueDate.year}
                     </p>
                   </div>
                   <span className={classes.vl}></span>
@@ -153,7 +116,10 @@ const ScholarshipList = () => {
         </Carousel>
       </div>
       {/* <Link to={"/scholarship-list"} style={{ textDecoration: "none" }}> */}
-      <button className={classes.btn}>
+      <button
+        onClick={() => navigate("/scholarship-list")}
+        className={classes.btn}
+      >
         <span className={classes["btn-text"]}>
           See All Scholarships <ArrowForwardIcon sx={{ marginLeft: "5px" }} />
         </span>

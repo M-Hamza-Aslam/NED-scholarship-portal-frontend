@@ -168,7 +168,7 @@ const CreateScholarship = () => {
         };
       });
       setClosedDate(null);
-      navigate("/admin");
+      // navigate("/admin/scholarship-list");
     } catch (err) {
       console.log(err);
       handleLoader(false);
@@ -285,10 +285,10 @@ const CreateScholarship = () => {
                 <Button
                   type="button"
                   variant="outlined"
-                  onClick={() => navigate("/admin")}
+                  onClick={() => navigate("/admin/scholarship-list")}
                   className={classes.cencelDiv}
                 >
-                  Cancel
+                  Back
                 </Button>
               </div>
             </form>

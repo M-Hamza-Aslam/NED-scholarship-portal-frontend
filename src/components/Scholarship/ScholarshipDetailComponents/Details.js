@@ -2,14 +2,15 @@ import React from "react";
 
 import classes from "./Details.module.css";
 
-const Details = ({ data }) => {
+const Details = ({ data, image }) => {
   return (
     <div className={classes.details}>
       <h1>{data.title}</h1>
 
       <div className={classes.images}>
         <img
-          src="https://www.hec.gov.pk/english/scholarshipsgrants/IDPS/PublishingImages/Pages/default/Revised_Banner%20-%2075%20National%20Top%20Talent%20Scholarship%20Program%20to%20Pakistani%20Students.jpg"
+          // src="https://www.hec.gov.pk/english/scholarshipsgrants/IDPS/PublishingImages/Pages/default/Revised_Banner%20-%2075%20National%20Top%20Talent%20Scholarship%20Program%20to%20Pakistani%20Students.jpg"
+          src={image}
           alt="Scholarship Display Picture"
         />
 

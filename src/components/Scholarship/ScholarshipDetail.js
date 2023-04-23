@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getScholarshipList, globalFetcher } from "../../api";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getScholarshipList, globalFetcher, imgFetcher } from "../../api";
 import { userActions } from "../../store/userSlice";
 import InitialDisplay from "./ScholarshipDetailComponents/InitialDisplay";
 import Details from "./ScholarshipDetailComponents/Details";
 import ApplyForm from "./ScholarshipDetailComponents/ApplyForm";
 import { CircularProgress } from "@mui/material";
+import EastIcon from "@mui/icons-material/East";
 
 import classes from "./ScholarshipDetail.module.css";
+import buttonClasses from "./ScholarshipDetailComponents/ApplyForm.module.css";
 
 const ScholarshipDetail = () => {
-  const { scholarshipId } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { scholarshipId } = useParams();
   const auth = useSelector((state) => state.user.user);
+  const userRole =
+    location.pathname.split("/")[1] === "scholarship-list" ? "user" : "admin";
+  const token = useSelector((state) => state[userRole][userRole].token);
   const [canApply, setCanApply] = useState(false);
 
   const { data, error, isLoading } = useSWR(
-    [auth.token ? `/scholarship-list/${scholarshipId}` : null, auth.token],
+    [token ? `/scholarship-list/${scholarshipId}` : null, token],
     ([url, token]) => globalFetcher(url, token)
   );
 
@@ -27,15 +34,13 @@ const ScholarshipDetail = () => {
     error: imgError,
     isLoading: imgLoading,
   } = useSWR(
-    [auth.token ? `/getScholarshipImg/${scholarshipId}` : null, auth.token],
-    ([url, token]) => globalFetcher(url, token)
+    [token ? `/scholarshipImg/${scholarshipId}` : null, token],
+    ([url, token]) => imgFetcher(url, token)
   );
-
-  console.log(data);
 
   useEffect(() => {
     if (!auth?.scholarship?.hasFetched) {
-      getScholarshipList(auth.token).then(({ appliedScholarships }) => {
+      getScholarshipList(token).then(({ appliedScholarships }) => {
         appliedScholarships &&
           dispatch(
             userActions.updateUserData({
@@ -74,9 +79,22 @@ const ScholarshipDetail = () => {
   return (
     <div className={classes["scholarship-detail"]}>
       <InitialDisplay title="Scholarship Details" />
-      <Details data={data} />
-      {data.status.toLowerCase() === "active" && (
-        <ApplyForm data={data} canApply={canApply} />
+      <Details data={data} image={imgData} />
+      {userRole === "user" ? (
+        data.status.toLowerCase() === "active" && (
+          <ApplyForm data={data} canApply={canApply} />
+        )
+      ) : (
+        <div className={buttonClasses["apply-button"]}>
+          <button
+            onClick={() => navigate(`/admin/user-list/${data._id}`)}
+            className={buttonClasses.btn}
+          >
+            <span className={buttonClasses["btn-text"]}>
+              See User List <EastIcon sx={{ marginLeft: "5px" }} />
+            </span>
+          </button>
+        </div>
       )}
       {/* <ApplyForm data={data} canApply={canApply} /> */}
     </div>

@@ -10,6 +10,13 @@ export const globalFetcher = (relativeURL, token) =>
     headers: getHeaders(token),
   }).then((res) => res.json());
 
+export const imgFetcher = (relativeURL, token) =>
+  fetch(`${baseURL}${relativeURL}`, {
+    headers: getHeaders(token),
+  })
+    .then((res) => res.blob())
+    .then((blobData) => URL.createObjectURL(blobData));
+
 export const postApplyScholarship = async (scholarshipId, token) => {
   const body = JSON.stringify({ scholarshipId });
   const response = await fetch(`${baseURL}/apply-scholarship`, {

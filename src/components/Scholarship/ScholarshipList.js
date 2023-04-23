@@ -7,10 +7,13 @@ import ScholarshipCards from "./ScholarshipListComponents/ScholarshipCards";
 import { CircularProgress } from "@mui/material";
 
 import classes from "./SchlarshipList.module.css";
+import { useLocation } from "react-router-dom";
 
 const ScholarshipList = () => {
   const searchRef = useRef();
-  const token = useSelector((state) => state.user.user.token);
+  const location = useLocation();
+  const userRole = location.pathname === "/scholarship-list" ? "user" : "admin";
+  const token = useSelector((state) => state[userRole][userRole].token);
   const { data, error, isLoading } = useSWR(
     [token ? "/scholarship-list" : null, token],
     ([url, token]) => globalFetcher(url, token)

@@ -33,7 +33,6 @@ const ApplyForm = ({ data, canApply }) => {
 
   const applyScholarshipHandler = async () => {
     const success = await postApplyScholarship(data._id, auth.token);
-    console.log(success);
     if (success) {
       dispatch(
         userActions.updateUserData({
