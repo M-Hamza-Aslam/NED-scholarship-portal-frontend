@@ -20,6 +20,7 @@ import { BACKEND_DOMAIN } from "./config";
 import UserDetails from "./components/Admin/Users/UserDetails";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
 import { adminActions } from "./store/adminSlice";
+import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
 const Signup = React.lazy(() => import("./components/Registeration/Signup"));
@@ -143,6 +144,10 @@ function App() {
               element={<CreateScholarship />}
             />
             <Route path="/scholarship-list" element={<ScholarshipList />} />
+            <Route
+              path="/applied-scholarship-list"
+              element={<AppliedScholarshipList />}
+            />
             <Route
               path="/scholarship-list/:scholarshipId"
               element={<ScholarshipDetail />}

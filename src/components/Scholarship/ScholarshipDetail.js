@@ -31,7 +31,7 @@ const ScholarshipDetail = () => {
     ([url, token]) => globalFetcher(url, token)
   );
 
-  console.log(imgData);
+  console.log(data);
 
   useEffect(() => {
     if (!auth?.scholarship?.hasFetched) {
