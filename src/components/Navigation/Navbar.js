@@ -17,12 +17,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ProfileIcon from "@mui/icons-material/Person";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateIcon from "@mui/icons-material/Create";
+import TopicIcon from "@mui/icons-material/Topic";
 
 import classes from "./Navbar.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -327,6 +326,40 @@ const Navbar = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary="Scholarship List"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/applied-scholarship-list"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  id="applied-scholarship-list"
+                  onClick={navbarNavigationHandler}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <TopicIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="My Scholarships"
                     sx={{ opacity: open ? 1 : 0 }}
                   />
                 </ListItemButton>

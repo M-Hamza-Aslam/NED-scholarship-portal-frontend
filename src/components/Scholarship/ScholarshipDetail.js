@@ -66,7 +66,7 @@ const ScholarshipDetail = () => {
     } else {
       setCanApply(false);
     }
-  }, [auth?.scholarship?.hasFetched]);
+  }, [auth?.scholarship]);
 
   if (!data) {
     return (

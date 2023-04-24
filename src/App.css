@@ -21,7 +21,7 @@
 }
 
 .loading {
-  margin: 10% 0;
+  margin: 10% auto;
   display: flex;
   justify-content: center;
   align-items: center;
