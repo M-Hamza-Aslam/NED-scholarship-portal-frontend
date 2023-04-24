@@ -37,8 +37,8 @@ const ApplyForm = ({ data, canApply }) => {
       dispatch(
         userActions.updateUserData({
           scholarship: {
-            hasFetched: false,
-            scholarshipList: [],
+            hasFetched: true,
+            scholarshipList: success.appliedScholarships,
           },
         })
       );

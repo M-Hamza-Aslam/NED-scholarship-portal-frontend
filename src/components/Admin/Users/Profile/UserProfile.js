@@ -9,6 +9,7 @@ import { BACKEND_DOMAIN } from "../../../../config";
 import useLoader from "../../../../Hooks/UseLoader";
 import { useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useParams } from "react-router-dom";
 
 const PersonalInfo = React.lazy(() => import("./PersonalInfo/PersonalInfo"));
 
@@ -16,6 +17,7 @@ const UserProfile = (props) => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({});
   const token = useSelector((state) => state.admin.admin.token);
+  // const {userId} = useParams()
   // const userId = props.userId;
   const userId = "6443708ae57a981ed04609bc";
 

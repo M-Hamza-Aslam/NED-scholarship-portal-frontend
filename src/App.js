@@ -7,8 +7,8 @@ import ScholarshipList from "./components/Scholarship/ScholarshipList";
 import ScholarshipDetail from "./components/Scholarship/ScholarshipDetail";
 import UserList from "./components/Admin/Users/UserList";
 import { useLocation } from "react-router";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import jwtDecode from "jwt-decode";
 import { userActions } from "./store/userSlice";
 import { ToastContainer } from "react-toastify";
@@ -20,6 +20,7 @@ import { BACKEND_DOMAIN } from "./config";
 import UserDetails from "./components/Admin/Users/UserDetails";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
 import { adminActions } from "./store/adminSlice";
+import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
 // import UserProfile from "./components/Admin/Users/Profile/UserProfile";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
@@ -36,12 +37,13 @@ const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
 );
 
-const openURL = ["/", "/auth/login", "/auth/signup", "/auth/forget-password"];
+const openURL = ["/auth/login", "/auth/signup", "/auth/forget-password"];
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let status = useSelector((state) => state.user.user.userRole);
   const [loading, setLoading] = useState(false);
 
   const fetchUserData = useCallback(async () => {
@@ -62,7 +64,7 @@ function App() {
           },
         });
         if (res.status !== 200) {
-          console.log(res);
+          // console.log(res);
           localStorage.removeItem("token");
           if (openURL.includes(location.pathname)) {
             return;
@@ -77,9 +79,11 @@ function App() {
           token: token,
           ...resData.userDetails,
         };
-        console.log(userData);
+
+        // console.log(userData);
         if (userData.userRole === "admin") {
           dispatch(adminActions.updateAdminData(userData));
+          dispatch(userActions.updateUserData({ userRole: "admin" }));
         } else if (userData.userRole === "student") {
           dispatch(userActions.updateUserData(userData));
         }
@@ -135,29 +139,65 @@ function App() {
       ) : (
         <Suspense>
           {!location.pathname.includes("/auth") && <Navbar />}
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth/*" element={<Registeration />}>
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="forgot-password" element={<ForgotPassword />} />
-              <Route path="reset-password/:token" element={<ResetPassword />} />
-            </Route>
-            <Route
-              path="/admin/create-scholarship"
-              element={<CreateScholarship />}
-            />
-            <Route path="/scholarship-list" element={<ScholarshipList />} />
-            <Route
-              path="/scholarship-list/:scholarshipId"
-              element={<ScholarshipDetail />}
-            />
-            <Route path="/user-list" element={<UserList />} />
-            <Route path="/userProfile" element={<UserProfile />} />
-            <Route path="/" element={<h1>Home Page</h1>} />
-            <Route path="/profile" element={<Profile />} />
-            {/* <Route path="/*" element={<Landing />} /> */}
-          </Routes>
+          {status === "admin" ? (
+            <Routes>
+              <Route
+                path="/admin/create-scholarship"
+                element={<CreateScholarship />}
+              />
+              <Route
+                path="admin/scholarship-list"
+                element={<ScholarshipList />}
+              />
+              <Route
+                path="admin/scholarship-list/:scholarshipId"
+                element={<ScholarshipDetail />}
+              />
+              <Route
+                path="admin/user-list/:scholarshipId"
+                element={<UserList />}
+              />
+              <Route
+                path="admin/user-details/:userId"
+                element={<UserProfile />}
+              />
+              <Route
+                path="*"
+                element={<Navigate to="admin/scholarship-list" />}
+              />
+            </Routes>
+          ) : status === "student" ? (
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/scholarship-list" element={<ScholarshipList />} />
+              <Route
+                path="/applied-scholarship-list"
+                element={<AppliedScholarshipList />}
+              />
+              <Route
+                path="/scholarship-list/:scholarshipId"
+                element={<ScholarshipDetail />}
+              />
+              <Route path="/" element={<h1>Home Page</h1>} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<Navigate to="/" />} />
+              {/* <Route path="/*" element={<Landing />} /> */}
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/auth/*" element={<Registeration />}>
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route
+                  path="reset-password/:token"
+                  element={<ResetPassword />}
+                />
+                <Route path="*" element={<Navigate to="/auth/login" />} />
+              </Route>
+            </Routes>
+          )}
+
           {!location.pathname.includes("/auth") && <Footer />}
           <ToastContainer />
         </Suspense>

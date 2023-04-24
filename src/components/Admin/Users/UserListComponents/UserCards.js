@@ -14,7 +14,7 @@ const UserCards = ({ userList }) => {
               <div className={classes["user-image"]}>
                 <img src={user.image} alt={user.name} />
               </div>
-              <Link to={`/users-list/${user.name}`}>
+              <Link to={`/admin/user-details/${user.name}`}>
                 <Typography variant="h5" component="h2">
                   {user.name}
                 </Typography>
@@ -24,23 +24,25 @@ const UserCards = ({ userList }) => {
                 <span className={classes[user.status]}>{user.status}</span>
               </p>
               {/* <Button variant="outlined">Read Details</Button> */}
-              <Button
-                variant="outlined"
-                className={classes.details}
-                // sx={{
-                //   borderColor: "#0f2d25",
-                //   backgroundColor: "white",
-                //   color: "#0f2d25",
-                //   "&:hover": {
-                //     backgroundColor: "#18544e",
-                //     borderColor: "#0f2d25",
-                //     color: "white",
-                //   },
-                // }}
-                autoFocus
-              >
-                Show Details
-              </Button>
+              <Link to={`/admin/user-details/${user.name}`}>
+                <Button
+                  variant="outlined"
+                  className={classes.details}
+                  // sx={{
+                  //   borderColor: "#0f2d25",
+                  //   backgroundColor: "white",
+                  //   color: "#0f2d25",
+                  //   "&:hover": {
+                  //     backgroundColor: "#18544e",
+                  //     borderColor: "#0f2d25",
+                  //     color: "white",
+                  //   },
+                  // }}
+                  autoFocus
+                >
+                  Show Details
+                </Button>
+              </Link>
             </div>
           ))}
         </div>

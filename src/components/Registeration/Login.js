@@ -126,6 +126,7 @@ const Login = () => {
       };
       if (userData.userRole === "admin") {
         dispatch(adminActions.updateAdminData(userData));
+        dispatch(userActions.updateUserData({ userRole: "admin" }));
       } else if (userData.userRole === "student") {
         dispatch(userActions.updateUserData(userData));
       }
@@ -135,7 +136,7 @@ const Login = () => {
       resetEmailInput();
       resetPasswordInput();
       if (userData.userRole === "admin") {
-        navigate("/admin/create-scholarship");
+        navigate("admin/scholarship-list");
       } else if (userData.userRole === "student") {
         navigate("/profile");
       }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -19,9 +19,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import ProfileIcon from "@mui/icons-material/Person";
 import SchoolIcon from "@mui/icons-material/School";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CreateIcon from "@mui/icons-material/Create";
 
 import classes from "./Navbar.module.css";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -93,6 +97,8 @@ const Drawer = styled(MuiDrawer, {
 const Navbar = () => {
   // const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+  let status = useSelector((state) => state.user.user.userRole);
   const [open, setOpen] = useState(false);
 
   const navbarNavigationHandler = (event) => {
@@ -106,7 +112,7 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  console.log(location.pathname);
   return (
     <Box className={classes["navbar"]}>
       <CssBaseline />
@@ -135,123 +141,213 @@ const Navbar = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          {/* <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
-            {open ? <ChevronLeftIcon /> : <MenuIcon />}
-          </IconButton> */}
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              id=""
-              onClick={navbarNavigationHandler}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
+      <Drawer className={classes.drawer} variant="permanent" open={open}>
+        <div>
+          <DrawerHeader className={classes.deactive}>
+            <IconButton sx={{ color: "inherit" }} onClick={handleDrawerClose}>
+              <ChevronLeftIcon color="inherit" />
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          {status === "admin" ? (
+            <List>
+              <ListItem
+                className={
+                  location.pathname !== "/admin/create-scholarship"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              id="scholarship-list"
-              onClick={navbarNavigationHandler}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <SchoolIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Scholarship List"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+                <ListItemButton
+                  id="admin/scholarship-list"
+                  onClick={navbarNavigationHandler}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <HomeIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/admin/create-scholarship"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  id="admin/create-scholarship"
+                  onClick={navbarNavigationHandler}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <CreateIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Create Scholarship"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          ) : (
+            <List>
+              <ListItem
+                className={
+                  location.pathname === "/" ? classes.active : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  id=""
+                  onClick={navbarNavigationHandler}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <HomeIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/profile"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  id="profile"
+                  onClick={navbarNavigationHandler}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <ProfileIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Profile"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/scholarship-list"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  id="scholarship-list"
+                  onClick={navbarNavigationHandler}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "inherit",
+                    }}
+                  >
+                    <SchoolIcon color="inherit" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Scholarship List"
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          )}
+          <Divider sx={{ color: "white" }} />
+        </div>
+        <List>
+          <ListItem
+            className={classes.deactive}
+            disablePadding
+            sx={{ display: "block" }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                  color: "inherit",
+                }}
+              >
+                <LogoutIcon color="inherit" />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
-      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box> */}
     </Box>
   );
 };

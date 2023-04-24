@@ -72,25 +72,24 @@
 }
 
 .sc-details {
-  height: 136px;
+  /* height: 136px; */
   position: relative;
   overflow: hidden !important;
   text-overflow: ellipsis;
 }
 
-.sc-details:after {
+/* .sc-details:after {
   font-family: "Nunito";
   content: "...read more";
   padding: 0 5px;
   background: inherit;
   cursor: pointer;
-  /* text-decoration: underline; */
   color: #0f2d25;
   background-color: white;
   position: absolute;
   bottom: 0;
   right: 20px;
-}
+} */
 
 .sc-details-heading {
   /* font-size: large; */
@@ -100,6 +99,9 @@
 .sc-details-text {
   font-family: "Nunito";
   overflow: hidden !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
   text-overflow: ellipsis;
 }
 

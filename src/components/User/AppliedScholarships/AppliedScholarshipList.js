@@ -1,27 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useSWR from "swr";
-import { globalFetcher } from "../../api";
-import InitialDisplay from "./ScholarshipListComponents/InitialDisplay";
-import ScholarshipCards from "./ScholarshipListComponents/ScholarshipCards";
+import { globalFetcher } from "../../../api";
+import InitialDisplay from "./AppliedScholarshipListComponents/InitialDisplay";
+import ScholarshipCards from "./AppliedScholarshipListComponents/ScholarshipCards";
 import { CircularProgress } from "@mui/material";
 
-import classes from "./SchlarshipList.module.css";
-import { useLocation } from "react-router-dom";
+import classes from "./AppliedScholarshipList.module.css";
 
-const ScholarshipList = () => {
+const AppliedScholarshipList = () => {
   const searchRef = useRef();
-  const location = useLocation();
-  const userRole = location.pathname === "/scholarship-list" ? "user" : "admin";
-  const token = useSelector((state) => state[userRole][userRole].token);
+  const token = useSelector((state) => state.user.user.token);
   const { data, error, isLoading } = useSWR(
-    [token ? "/scholarship-list" : null, token],
+    [token ? "/applied-scholarships" : null, token],
     ([url, token]) => globalFetcher(url, token)
   );
   const [status, setStatus] = useState("");
   const [scholarshipData, setScholarshipData] = useState(data);
   const isSearchActive = Boolean(searchRef?.current?.value || status);
-
+  console.log(data);
   const filterByKeywordHandler = (event) => {
     setScholarshipData(
       data.filter((scholarship) =>
@@ -75,4 +72,4 @@ const ScholarshipList = () => {
   );
 };
 
-export default ScholarshipList;
+export default AppliedScholarshipList;
