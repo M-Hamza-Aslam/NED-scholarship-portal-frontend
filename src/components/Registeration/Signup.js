@@ -14,6 +14,7 @@ import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_DOMAIN } from "../../config";
 import { useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = (props) => {
   const [handleLoader] = useOutletContext();
@@ -108,6 +109,7 @@ const Signup = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //add your logic
@@ -129,13 +131,14 @@ const Signup = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         handleLoader(false);
         return;
       }
       const resData = await res.json();
-      console.log(resData.message);
       //here show success msg through notification
+      toast.success(resData.message);
+
       resetEmailInput();
       resetPasswordInput();
       resetConfirmPasswordInput();
@@ -147,6 +150,7 @@ const Signup = (props) => {
       navigate("/auth/login");
     } catch (err) {
       console.log(err);
+      toast.error("User Signup failed!");
       throw new Error("User Signup failed!");
     }
   };

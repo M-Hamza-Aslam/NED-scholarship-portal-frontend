@@ -9,6 +9,7 @@ import { userActions } from "../../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../../config";
 import LoadingDiv from "../../util/LoadingDiv";
 import useLoader from "../../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const EducationalDocument = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -29,6 +30,14 @@ const EducationalDocument = (props) => {
     const selectedFiles = event.target.files;
     const newFiles = [...files];
     for (let i = 0; i < selectedFiles.length; i++) {
+      if (
+        selectedFiles[i].type !==
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+        selectedFiles[i].type !== "application/pdf"
+      ) {
+        toast.error("Invalid file type! please upload pdf or docx");
+        return;
+      }
       const fileName = selectedFiles[i].name;
       const isDuplicate = newFiles.some((file) => file.name === fileName);
       if (!isDuplicate) {
@@ -83,7 +92,7 @@ const EducationalDocument = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -93,15 +102,21 @@ const EducationalDocument = (props) => {
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
       handleLoader(false);
     } catch (err) {
       handleLoader(false);
+      toast.error("Failed to remove file!");
       console.log(err);
     }
   };
 
   const submiitFilesHandler = async () => {
     const formData = new FormData();
+    if (files.length === 0) {
+      toast.error("Please select a file first");
+      return;
+    }
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
@@ -117,7 +132,7 @@ const EducationalDocument = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -127,11 +142,14 @@ const EducationalDocument = (props) => {
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
+
       handleLoader(false);
       //resetting input
       setFiles([]);
     } catch (error) {
       console.error(error);
+      toast.error("Failed to upload file");
       handleLoader(false);
     }
   };

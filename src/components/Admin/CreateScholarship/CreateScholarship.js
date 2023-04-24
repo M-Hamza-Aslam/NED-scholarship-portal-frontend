@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useLoader from "../../../Hooks/UseLoader";
 import { BACKEND_DOMAIN } from "../../../config";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const CreateScholarship = () => {
   //hooks and variables
@@ -70,6 +71,11 @@ const CreateScholarship = () => {
 
   //Handlers
   const handleDateChange = (date) => {
+    if (new Date(date.$d).getTime() < Date.now()) {
+      toast.error("Selected Close date has been passed!");
+      setClosedDate(null);
+      return;
+    }
     setClosedDate(date);
   };
   const handleFileInputChange = (event) => {
@@ -98,6 +104,7 @@ const CreateScholarship = () => {
       event.preventDefault();
       if (!formIsValid) {
         //show error
+        toast.error("Fill all inputs with valid data");
         return;
       }
       //preparing data
@@ -121,7 +128,7 @@ const CreateScholarship = () => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -146,14 +153,13 @@ const CreateScholarship = () => {
         if (resImg.status !== 201) {
           //here show an error through notification
           const resData = await resImg.json();
-          console.log(resData.message);
+          toast.error(resData.message);
           return;
         }
         const ImgData = await resImg.json();
         dataObj.image = ImgData.image;
       }
-      //save the upcoming new scholarship data into redux store
-      console.log(dataObj);
+      toast.success("Scholarship created successfully!");
 
       handleLoader(false);
       //resetting inputs
@@ -172,7 +178,8 @@ const CreateScholarship = () => {
     } catch (err) {
       console.log(err);
       handleLoader(false);
-      throw new Error("User Signup failed!");
+      toast.error("Scholarship creation failed");
+      throw new Error("Scholarship creation failed");
     }
   };
   return (

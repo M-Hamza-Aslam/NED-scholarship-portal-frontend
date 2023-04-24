@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../../config";
 import useLoader from "../../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const EditEducation = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -107,6 +108,7 @@ const EditEducation = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //preparing educationData to send
@@ -134,7 +136,7 @@ const EditEducation = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -144,6 +146,8 @@ const EditEducation = (props) => {
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
+
       resetClassInput();
       resetSeatNoInput();
       resetTotalMarksCGPAInput();
@@ -156,6 +160,7 @@ const EditEducation = (props) => {
     } catch (err) {
       console.log(err);
       handleLoader(false);
+      toast.error("Failed to update Educational Details");
       throw new Error("User Signup failed!");
     }
   };

@@ -24,7 +24,10 @@ import CreateIcon from "@mui/icons-material/Create";
 import TopicIcon from "@mui/icons-material/Topic";
 
 import classes from "./Navbar.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useLoader from "../../Hooks/UseLoader";
+import { userActions } from "../../store/userSlice";
+import { adminActions } from "../../store/adminSlice";
 
 const drawerWidth = 240;
 
@@ -95,6 +98,8 @@ const Drawer = styled(MuiDrawer, {
 
 const Navbar = () => {
   // const theme = useTheme();
+  const { LoadingComponent, loader, handleLoader } = useLoader();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   let status = useSelector((state) => state.user.user.userRole);
@@ -111,9 +116,19 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogout = () => {
+    handleLoader(true);
+    localStorage.removeItem("token");
+    dispatch(userActions.clearUserData());
+    dispatch(adminActions.clearAdminData());
+    navigate("/auth/login");
+    handleLoader(false);
+  };
   console.log(location.pathname);
   return (
     <Box className={classes["navbar"]}>
+      {loader && LoadingComponent}
       <CssBaseline />
       <AppBar
         sx={{
@@ -374,7 +389,7 @@ const Navbar = () => {
                   color: "inherit",
                 }}
               >
-                <LogoutIcon color="inherit" />
+                <LogoutIcon color="inherit" onClick={handleLogout} />
               </ListItemIcon>
               <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

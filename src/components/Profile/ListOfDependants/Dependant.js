@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const Dependant = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -32,7 +33,7 @@ const Dependant = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -42,10 +43,12 @@ const Dependant = (props) => {
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
       handleLoader(false);
     } catch (error) {
       console.log(error);
       handleLoader(false);
+      toast.error("dependant deletion failed!");
       throw new Error("dependant deletion failed!");
     }
   };

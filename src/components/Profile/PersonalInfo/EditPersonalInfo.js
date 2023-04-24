@@ -16,6 +16,7 @@ import { useState } from "react";
 import defaultProfileImg from "../../../images/defaultProfileImg.jpg";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const EditPersonalInfo = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -296,6 +297,7 @@ const EditPersonalInfo = (props) => {
       event.preventDefault();
       if (!formIsValid) {
         //show error
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //preparing inputData to send
@@ -335,7 +337,7 @@ const EditPersonalInfo = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -355,14 +357,16 @@ const EditPersonalInfo = (props) => {
         if (resImg.status !== 201) {
           //here show an error through notification
           const resData = await resImg.json();
-          console.log(resData.message);
+          toast.error(resData.message);
+
           return;
         }
         const ImgData = await resImg.json();
         dataObj.profileImg = ImgData.profileImg;
       }
-      //here show success msg through notification
       dispatch(userActions.updateUserData(dataObj));
+      //here show success msg through notification
+      toast.success("Personal information has been updated!");
 
       setProfileImg({
         value: null,
@@ -395,7 +399,8 @@ const EditPersonalInfo = (props) => {
     } catch (err) {
       console.log(err);
       handleLoader(false);
-      throw new Error("User Signup failed!");
+      toast.error("Updation failed");
+      throw new Error("Updation failed");
     }
   };
   return (

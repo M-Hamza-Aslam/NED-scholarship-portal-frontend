@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../../config";
 import useLoader from "../../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const Education = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -32,21 +33,23 @@ const Education = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
-      console.log("getting response:", resData);
       //here show success msg through notification
       dispatch(
         userActions.updateUserData({
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
+
       handleLoader(false);
     } catch (error) {
       console.log(error);
       handleLoader(false);
+      toast.error("education deletion failed!");
       throw new Error("education deletion failed!");
     }
   };

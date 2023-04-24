@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { BACKEND_DOMAIN } from "../../config";
 import { useOutletContext } from "react-router-dom";
 import { adminActions } from "../../store/adminSlice";
+import { toast } from "react-toastify";
 
 const logo = require("../../images/ned_logo.png");
 
@@ -80,6 +81,7 @@ const Login = () => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //add your logic
@@ -105,7 +107,7 @@ const Login = () => {
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         //making loading false
         handleLoader(false);
 
@@ -140,6 +142,7 @@ const Login = () => {
       }
     } catch (err) {
       console.log(err);
+      toast.error("User login Failed!");
       throw new Error("User login Failed!");
     }
   };
