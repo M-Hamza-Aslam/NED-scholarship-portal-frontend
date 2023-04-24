@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const EditDependant = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -83,6 +84,7 @@ const EditDependant = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //preparing dependantData to send
@@ -108,7 +110,7 @@ const EditDependant = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
@@ -118,6 +120,8 @@ const EditDependant = (props) => {
           ...resData.updatedUserData,
         })
       );
+      toast.success(resData.message);
+
       resetNameInput();
       resetAgeInput();
       resetRelationInput();
@@ -128,7 +132,8 @@ const EditDependant = (props) => {
     } catch (err) {
       console.log(err);
       handleLoader(false);
-      throw new Error("User Signup failed!");
+      toast.error("Failed to add dependant info");
+      throw new Error("Failed to add dependant info");
     }
   };
   return (

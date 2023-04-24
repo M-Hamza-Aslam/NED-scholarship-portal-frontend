@@ -10,6 +10,7 @@ import useInput from "../../Hooks/UseInput";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_DOMAIN } from "../../config";
 import { useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ForgotPassword = (props) => {
   const [handleLoader] = useOutletContext();
@@ -40,6 +41,7 @@ const ForgotPassword = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //add your logic
@@ -55,18 +57,19 @@ const ForgotPassword = (props) => {
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         handleLoader(false);
         return;
       }
       const resData = await res.json();
       //add a notifaction
-      console.log(resData.message);
+      toast.success(resData.message);
       resetEmailInput();
       // redirect to login
       handleLoader(false);
       navigate("/auth/login");
     } catch (err) {
+      toast.error("Password reset failed!");
       throw new Error("Password reset failed!");
     }
   };

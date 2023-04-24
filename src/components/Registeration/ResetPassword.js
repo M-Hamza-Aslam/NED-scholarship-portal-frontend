@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 import { useState } from "react";
 import { BACKEND_DOMAIN } from "../../config";
@@ -45,7 +46,7 @@ const ResetPassword = (props) => {
     inputKeyStrockHandler: passwordKeyStrockHandler,
     inputBlurHandler: passwordInputBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value) => !(value.trim().length < 6));
+  } = useInput("", (value) => !(value.trim().length < 6));
   const {
     value: confirmPasswordInputValue,
     isValid: enteredConfirmPasswordisValid,
@@ -53,7 +54,7 @@ const ResetPassword = (props) => {
     inputKeyStrockHandler: confirmPasswordKeyStrockHandler,
     inputBlurHandler: confirmPasswordInputBlurHandler,
     reset: resetConfirmPasswordInput,
-  } = useInput((value) => value === passwordInputValue);
+  } = useInput("", (value) => value === passwordInputValue);
   let formIsValid = false;
   if (enteredPasswordisValid && enteredConfirmPasswordisValid) {
     formIsValid = true;
@@ -62,6 +63,7 @@ const ResetPassword = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //add your logic
@@ -78,13 +80,13 @@ const ResetPassword = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData);
+        toast.error(resData.message);
         handleLoader(false);
         return;
       }
       const resData = await res.json();
       //add success message
-      console.log(resData.message);
+      toast.success(resData.message);
       //reset inputs
       resetPasswordInput();
       resetConfirmPasswordInput();
@@ -92,6 +94,7 @@ const ResetPassword = (props) => {
       handleLoader(false);
       navigate("/auth/login");
     } catch (error) {
+      toast.error("Password reset failed!");
       throw new Error("Password reset failed!");
     }
   };

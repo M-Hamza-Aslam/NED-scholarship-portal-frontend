@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
+import { toast } from "react-toastify";
 
 const EditFamilyDetails = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -252,6 +253,7 @@ const EditFamilyDetails = (props) => {
     try {
       event.preventDefault();
       if (!formIsValid) {
+        toast.error("Fill all inputs with valid values!");
         return;
       }
       //preparing inputData to send
@@ -290,16 +292,18 @@ const EditFamilyDetails = (props) => {
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
-        console.log(resData.message);
+        toast.error(resData.message);
         return;
       }
       const resData = await res.json();
-      //here show success msg through notification
       dispatch(
         userActions.updateUserData({
           ...resData.updatedUserData,
         })
       );
+      //here show success msg through notification
+      toast.success(resData.message);
+
       resetFatherHealthStatusInput();
       resetMotherHealthStatusInput();
       resetFatherWorkStatusInput();
@@ -324,7 +328,8 @@ const EditFamilyDetails = (props) => {
     } catch (err) {
       console.log(err);
       handleLoader(false);
-      throw new Error("User Signup failed!");
+      toast.error("Updation failed!");
+      throw new Error("Updation failed!");
     }
   };
   return (
