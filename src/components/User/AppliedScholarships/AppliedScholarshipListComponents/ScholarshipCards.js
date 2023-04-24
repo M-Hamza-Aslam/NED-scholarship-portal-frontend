@@ -10,7 +10,7 @@ const ScholarshipCards = ({ currentItems }) => {
       {currentItems.map((scholarship) => (
         <div className={classes["scholarship-card"]}>
           <div className={classes.heading}>
-            <h1>{scholarship.title}</h1>
+            <h1>{scholarship.scholarshipDetails.title}</h1>
             <div className={classes.info}>
               {/* <img src={logo} alt="Masked Logo" /> */}
               <div className={classes.date}>
@@ -20,7 +20,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "20px",
                   }}
                 >
-                  {scholarship.issueDate.day}th
+                  {scholarship.scholarshipDetails.issueDate.day}th
                 </p>
                 <p
                   style={{
@@ -28,7 +28,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "16px",
                   }}
                 >
-                  {scholarship.issueDate.month}
+                  {scholarship.scholarshipDetails.issueDate.month}
                 </p>
               </div>
               <hr />
@@ -42,9 +42,11 @@ const ScholarshipCards = ({ currentItems }) => {
               </div>
             </div>
           </div>
-          <p>{scholarship.description}</p>
+          <p>{scholarship.scholarshipDetails.description}</p>
           <div className={classes.view}>
-            <Link to={`${scholarship._id}`}>
+            <Link
+              to={`/scholarship-list/${scholarship.scholarshipDetails._id}`}
+            >
               <span>View Details</span>
             </Link>
           </div>

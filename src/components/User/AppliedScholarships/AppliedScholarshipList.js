@@ -18,11 +18,10 @@ const AppliedScholarshipList = () => {
   const [status, setStatus] = useState("");
   const [scholarshipData, setScholarshipData] = useState(data);
   const isSearchActive = Boolean(searchRef?.current?.value || status);
-  console.log(data);
   const filterByKeywordHandler = (event) => {
     setScholarshipData(
       data.filter((scholarship) =>
-        scholarship.title
+        scholarship.scholarshipDetails.title
           .toLowerCase()
           .includes(event.target.value.toLowerCase().trim())
       )
@@ -57,7 +56,7 @@ const AppliedScholarshipList = () => {
   return (
     <div className={classes["scholarship-list"]}>
       <InitialDisplay
-        title="Scholarship List"
+        title="My Scholarships"
         status={status}
         searchRef={searchRef}
         filterByStatus={filterByStatus}

@@ -8,15 +8,9 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import SearchIcon from "@mui/icons-material/Search";
 
-import classes from "../InitialDisplay.module.css";
+import classes from "./InitialDisplay.module.css";
 
-const InitialDisplay = ({
-  title,
-  status,
-  searchRef,
-  filterByStatus,
-  filterByKeywordHandler,
-}) => {
+const InitialDisplay = ({ title }) => {
   return (
     <div className={classes["initial-display"]}>
       <div className={classes["initial-text"]}>
@@ -36,46 +30,19 @@ const InitialDisplay = ({
             <YouTubeIcon />
           </span>
           <div>
-            <Paper
-              component="form"
-              sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "transparent",
-                color: "white",
-                border: "1px solid white",
-                borderRadius: "100px",
-                width: 300,
-                maxWidth: "90%",
-              }}
-            >
-              <IconButton sx={{ p: "10px", color: "white" }} aria-label="menu">
-                <SearchIcon />
-              </IconButton>
-              <InputBase
-                sx={{ ml: 1, flex: 1, color: "white" }}
-                placeholder={`Search ${title}`}
-                inputProps={{ "aria-label": `search ${title}` }}
-                onChange={filterByKeywordHandler}
-                inputRef={searchRef}
-              />
-            </Paper>
             <FormControl sx={{ height: "50px !important", maxWidth: "90%" }}>
               <InputLabel
                 sx={{ color: "#7AA09D !important", top: "-3px" }}
                 id="demo-simple-select-label"
               >
-                Filter By
+                Change Status
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                label="Filter By"
+                label="Change Status"
                 className={classes.filter}
-                value={status}
-                // inputRef={statusRef}
-                onChange={filterByStatus}
+                // defaultValue={}
                 sx={{ maxWidth: "100%" }}
               >
                 <MenuItem value="awaiting">Awaiting</MenuItem>
