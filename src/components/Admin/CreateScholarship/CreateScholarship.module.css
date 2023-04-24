@@ -32,6 +32,9 @@
   /* padding: 2rem 0; */
   cursor: pointer;
 }
+.imageInput > img {
+  object-fit: contain;
+}
 .imageInput > p {
   margin: 0;
   color: blue;

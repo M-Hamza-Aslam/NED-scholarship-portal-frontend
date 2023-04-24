@@ -71,6 +71,11 @@ const CreateScholarship = () => {
 
   //Handlers
   const handleDateChange = (date) => {
+    if (new Date(date.$d).getTime() < Date.now()) {
+      toast.error("Selected Close date has been passed!");
+      setClosedDate(null);
+      return;
+    }
     setClosedDate(date);
   };
   const handleFileInputChange = (event) => {
@@ -99,7 +104,7 @@ const CreateScholarship = () => {
       event.preventDefault();
       if (!formIsValid) {
         //show error
-        toast.error("Fil all inputs with valid data");
+        toast.error("Fill all inputs with valid data");
         return;
       }
       //preparing data

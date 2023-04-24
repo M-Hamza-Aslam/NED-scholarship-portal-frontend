@@ -1,4 +1,5 @@
-const baseURL = "https://ned-scholarship-portal.onrender.com";
+import { BACKEND_DOMAIN } from "../config";
+const baseURL = BACKEND_DOMAIN;
 
 const getHeaders = (token) => ({
   Authorization: `Bearer ${token}`,
