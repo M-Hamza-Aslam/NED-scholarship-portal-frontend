@@ -13,14 +13,14 @@ const adminInitialState = {
 };
 
 const adminSlice = createSlice({
-  name: "admin",
+  name: "adminState",
   initialState: adminInitialState,
   reducers: {
     updateAdminData(state, action) {
       state.admin = { ...state.admin, ...action.payload };
     },
     clearAdminData(state) {
-      state.admin = adminInitialState;
+      state.admin = adminInitialState.admin;
     },
   },
 });

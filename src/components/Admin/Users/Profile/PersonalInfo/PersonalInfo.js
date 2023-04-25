@@ -3,7 +3,6 @@ import { Fragment } from "react";
 
 const PersonalInfo = (props) => {
   const { firstName, lastName, phoneNumber, personalInfo } = props.data;
-  console.log(props.data);
   const infoArr = [
     { heading: "First Name", value: firstName },
     { heading: "Last Name", value: lastName },

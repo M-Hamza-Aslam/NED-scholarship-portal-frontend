@@ -30,14 +30,14 @@ const userInitialState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "userState",
   initialState: userInitialState,
   reducers: {
     updateUserData(state, action) {
       state.user = { ...state.user, ...action.payload };
     },
     clearUserData(state) {
-      state.user = userInitialState;
+      state.user = userInitialState.user;
     },
   },
 });

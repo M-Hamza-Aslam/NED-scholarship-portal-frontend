@@ -12,6 +12,8 @@ import useLoader from "../../../Hooks/UseLoader";
 import { BACKEND_DOMAIN } from "../../../config";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import InitialDisplay from "../Users/UserListComponents/InitialDisplay";
 
 const CreateScholarship = () => {
   //hooks and variables
@@ -71,11 +73,6 @@ const CreateScholarship = () => {
 
   //Handlers
   const handleDateChange = (date) => {
-    if (new Date(date.$d).getTime() < Date.now()) {
-      toast.error("Selected Close date has been passed!");
-      setClosedDate(null);
-      return;
-    }
     setClosedDate(date);
   };
   const handleFileInputChange = (event) => {
@@ -184,6 +181,7 @@ const CreateScholarship = () => {
   };
   return (
     <div className={classes.container}>
+      <InitialDisplay title="Create new scholarship" />
       {loader && LoadingComponent}
       <div className={classes.mainDiv}>
         <MainSectionDiv heading="Create a New Scholarship">
@@ -242,6 +240,7 @@ const CreateScholarship = () => {
                     label="Close Date"
                     value={closedDate}
                     onChange={handleDateChange}
+                    minDate={dayjs().add(1, "day")} // set minimum date to tomorrow
                   />
                 </LocalizationProvider>
               </div>

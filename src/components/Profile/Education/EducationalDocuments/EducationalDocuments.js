@@ -22,7 +22,7 @@ const EducationalDocument = (props) => {
   const { token, documents } = useSelector((state) => {
     return {
       token: state.user.user.token,
-      documents: state.user.user.education.documents,
+      documents: state.user.user.education?.documents,
     };
   });
 

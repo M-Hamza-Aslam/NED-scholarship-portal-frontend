@@ -23,7 +23,6 @@ const PersonalInfo = () => {
     const fetch = async () => {
       if (Object.keys(userData.personalInfo).length === 0) {
         const res = await fetchData(token);
-        console.log(res);
       }
     };
     fetch();
