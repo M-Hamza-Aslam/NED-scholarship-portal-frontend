@@ -379,6 +379,7 @@ const Navbar = () => {
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
               }}
+              onClick={handleLogout}
             >
               <ListItemIcon
                 sx={{
@@ -388,7 +389,7 @@ const Navbar = () => {
                   color: "inherit",
                 }}
               >
-                <LogoutIcon color="inherit" onClick={handleLogout} />
+                <LogoutIcon color="inherit" />
               </ListItemIcon>
               <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

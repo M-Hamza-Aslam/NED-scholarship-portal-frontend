@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "NED Scholarship",
+  "name": "NED Scholarship Portal",
+  "description": "Scholarship Portal for the students of NED University of Engineering and Technology",
   "icons": [
     {
       "src": "favicon.ico",
