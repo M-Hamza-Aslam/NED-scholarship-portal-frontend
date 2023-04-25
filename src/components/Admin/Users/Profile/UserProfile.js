@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import InitialDisplay from "./InitialDisplay";
+import { postChangeUserStatus } from "../../../../api";
+import { toast } from "react-toastify";
 
 const PersonalInfo = React.lazy(() => import("./PersonalInfo/PersonalInfo"));
 
@@ -18,12 +20,23 @@ const UserProfile = (props) => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({});
   const token = useSelector((state) => state.admin.admin.token);
-  const { userId } = useParams();
-  // const userId = props.userId;
-  // const userId = "6443708ae57a981ed04609bc";
+  const { userId, scholarshipId } = useParams();
 
-  // const { LoadingComponent, loader, handleLoader } = useLoader();
-  //fetch data from backend
+  const changeUserStatusHandler = async (event) => {
+    toast.info("Changing... Please wait.");
+    const success = await postChangeUserStatus(
+      userId,
+      scholarshipId,
+      event.target.value,
+      token
+    );
+    if (success) {
+      toast.success("User Status Changed Successfully!");
+    } else {
+      toast.error("Status Change Unsucessful.");
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     fetch(`${BACKEND_DOMAIN}/admin/user-data?userId=${userId}`, {
@@ -59,7 +72,10 @@ const UserProfile = (props) => {
         </div>
       ) : (
         <div className={classes.container}>
-          <InitialDisplay title="User Details" />
+          <InitialDisplay
+            onChange={changeUserStatusHandler}
+            title="User Details"
+          />
           <div className={classes.mainDiv}>
             <div className={classes.leftDiv}>
               <SideBar
