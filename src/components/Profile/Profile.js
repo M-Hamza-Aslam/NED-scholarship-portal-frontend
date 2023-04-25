@@ -6,12 +6,15 @@ import FamilyDetails from "./FamilyDetails/FamilyDetails";
 import ListOfDependants from "./ListOfDependants/ListOfDependants";
 import Education from "./Education/Education";
 import { Fragment } from "react";
+import InitialDisplay from "../Admin/Users/UserListComponents/InitialDisplay";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [selectedSection, setSelectedSection] = useState("personalInfo");
 
   return (
     <div className={classes.container}>
+      <InitialDisplay title="My profile" />
       <div className={classes.mainDiv}>
         <div className={classes.leftDiv}>
           <SideBar

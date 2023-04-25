@@ -39,7 +39,7 @@ const userSlice = createSlice({
       console.log(state.user);
     },
     clearUserData(state) {
-      state.user = userInitialState;
+      state.user = userInitialState.user;
     },
   },
 });

@@ -20,7 +20,7 @@ const Education = () => {
     const fetch = async () => {
       if (!education.hasFetched) {
         const res = await fetchData(token);
-        console.log(res);
+        // console.log(res);
       }
     };
     fetch();

@@ -11,7 +11,7 @@ import LoadingDiv from "../../util/LoadingDiv";
 const EducationalDetails = (props) => {
   const { loading } = props;
   const educationalDetails = useSelector((state) => {
-    return state.user.user.education.educationalDetails;
+    return state.user.user.education?.educationalDetails;
   });
 
   const [showNewAcademicRecordForm, setShowNewAcademicRecordForm] =
@@ -20,7 +20,7 @@ const EducationalDetails = (props) => {
     setShowNewAcademicRecordForm(value);
   };
   let educationalDetailsArr = [];
-  if (educationalDetails) {
+  if (educationalDetails.length !== 0) {
     educationalDetailsArr = educationalDetails.map((item) => {
       return [
         { heading: "Class/Year", value: item.class },

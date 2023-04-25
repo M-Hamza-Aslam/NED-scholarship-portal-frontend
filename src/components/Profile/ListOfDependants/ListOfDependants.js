@@ -24,7 +24,6 @@ const ListOfDependants = (props) => {
     const fetch = async () => {
       if (!dependantDetails.hasFetched) {
         const res = await fetchData(token);
-        console.log(res);
       }
     };
     fetch();

@@ -18,10 +18,19 @@
   font-size: 18px;
 }
 
-
+.emptyMsg {
+  text-align: center;
+  margin: 10rem 7rem;
+  font-size: 2rem;
+}
 
 @media screen and (max-width: 600px) {
   .scholarship-list {
     margin-left: 48px;
+  }
+  .emptyMsg {
+    text-align: center;
+    margin: 6rem 3rem;
+    font-size: 1.2rem;
   }
 }

@@ -20,7 +20,6 @@ const FamilyDetails = () => {
     const fetch = async () => {
       if (Object.keys(userData.familyDetails).length === 0) {
         const res = await fetchData(token);
-        console.log(res);
       }
     };
     fetch();

@@ -62,11 +62,17 @@ const AppliedScholarshipList = () => {
         filterByStatus={filterByStatus}
         filterByKeywordHandler={filterByKeywordHandler}
       />
-      <ScholarshipCards
-        isSearchActive={isSearchActive}
-        items={scholarshipData}
-        itemsPerPage={3}
-      />
+      {scholarshipData.length === 0 ? (
+        <p className={classes.emptyMsg}>
+          You haven't applied on any scholarship
+        </p>
+      ) : (
+        <ScholarshipCards
+          isSearchActive={isSearchActive}
+          items={scholarshipData}
+          itemsPerPage={3}
+        />
+      )}
     </div>
   );
 };

@@ -125,7 +125,6 @@ const Navbar = () => {
     navigate("/auth/login");
     handleLoader(false);
   };
-  console.log(location.pathname);
   return (
     <Box className={classes["navbar"]}>
       {loader && LoadingComponent}

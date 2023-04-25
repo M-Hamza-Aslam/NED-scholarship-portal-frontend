@@ -80,7 +80,6 @@ function App() {
           ...resData.userDetails,
         };
 
-        // console.log(userData);
         if (userData.userRole === "admin") {
           dispatch(adminActions.updateAdminData(userData));
           dispatch(userActions.updateUserData({ userRole: "admin" }));
