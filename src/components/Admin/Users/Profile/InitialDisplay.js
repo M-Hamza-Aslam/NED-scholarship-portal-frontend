@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import classes from "./InitialDisplay.module.css";
 
-const InitialDisplay = ({ title }) => {
+const InitialDisplay = ({ onChange, title }) => {
   return (
     <div className={classes["initial-display"]}>
       <div className={classes["initial-text"]}>
@@ -44,6 +44,7 @@ const InitialDisplay = ({ title }) => {
                 className={classes.filter}
                 // defaultValue={}
                 sx={{ maxWidth: "100%" }}
+                onChange={onChange}
               >
                 <MenuItem value="awaiting">Awaiting</MenuItem>
                 <MenuItem value="approved">Approved</MenuItem>

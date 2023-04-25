@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 
 import classes from "./UserCards.module.css";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const UserCards = ({ userList }) => {
   const token = useSelector((state) => state.admin.admin.token);
+  const scholarshipId = useParams().scholarshipId;
   return (
     <main className={classes["user-list-main"]}>
       <div className={classes["user-list-section"]}>
@@ -28,7 +29,7 @@ const UserCards = ({ userList }) => {
                   <span className={classes[user.status]}>{user.status}</span>
                 </p>
                 {/* <Button variant="outlined">Read Details</Button> */}
-                <Link to={`/admin/user-details/${user._id}`}>
+                <Link to={`/admin/user-details/${user._id}/${scholarshipId}`}>
                   <Button
                     variant="outlined"
                     className={classes.details}

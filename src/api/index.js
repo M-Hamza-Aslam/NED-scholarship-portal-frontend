@@ -37,3 +37,19 @@ export const getScholarshipList = async (token) => {
   const responseData = await response.json();
   return responseData;
 };
+
+export const postChangeUserStatus = async (
+  userId,
+  scholarshipId,
+  updatedStatus,
+  token
+) => {
+  const body = JSON.stringify({ userId, scholarshipId, updatedStatus });
+  const response = await fetch(`${baseURL}/admin/update-scholarship-status`, {
+    method: "POST",
+    headers: getHeaders(token),
+    body,
+  });
+  // const responseData = await response.json();
+  if (response.ok) return true;
+};

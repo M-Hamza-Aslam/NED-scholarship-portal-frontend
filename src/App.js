@@ -158,7 +158,7 @@ function App() {
                 element={<UserList />}
               />
               <Route
-                path="admin/user-details/:userId"
+                path="admin/user-details/:userId/:scholarshipId"
                 element={<UserProfile />}
               />
               <Route
