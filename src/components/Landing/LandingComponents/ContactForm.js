@@ -53,6 +53,7 @@ const ContactForm = () => {
 
   return (
     <div className={classes.contact}>
+      <div id="contact" style={{ position: "absolute", top: "-100px" }}></div>
       <h1 className={classes["main-heading"]}>Contact Form</h1>
       <section className={classes["contact-form"]}>
         <div className={classes.inputs}>

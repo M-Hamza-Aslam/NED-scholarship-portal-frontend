@@ -1,4 +1,8 @@
 import React, { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../store/userSlice";
+import { adminActions } from "../../store/adminSlice";
 import logo from "../../assets/images/logo.png";
 import logoMask from "../../assets/images/logo-mask.png";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -10,12 +14,36 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import classes from "./Footer.module.css";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userRole = useSelector((state) => state.user.user.userRole);
+  const footerNavigationHandler = (event) => {
+    navigate(`/${event.target.id}`);
+    window.scrollTo(0, 0);
+  };
+
+  const contactFormNavigationHandler = () => {
+    navigate("/");
+    setTimeout(() => {
+      document
+        .getElementById("contact")
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(userActions.clearUserData());
+    dispatch(adminActions.clearAdminData());
+    navigate("/auth/login");
+  };
+
   return (
     <Fragment>
       <div className={classes.footer}>
-        <div className={classes["masked-logo"]}>
+        {/* <div className={classes["masked-logo"]}>
           <img src={logoMask} alt="" />
-        </div>
+        </div> */}
         <img style={{ margin: "1rem 0" }} src={logo} alt="" />
         <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -23,29 +51,64 @@ const Footer = () => {
           since the 1500s,
         </p>
         <div className={classes["footer-links"]}>
-          <div>
-            <span>Home</span>
-            <span>Scholarship List</span>
-            <span>Members</span>
-          </div>
-          <div>
-            <span className={classes["stick"]}>Farms</span>
-            <span>Events</span>
-            <span>About NED</span>
-          </div>
+          {userRole === "student" ? (
+            <div>
+              <span id="" onClick={footerNavigationHandler}>
+                Home
+              </span>
+              <span id="scholarship-list" onClick={footerNavigationHandler}>
+                Scholarship List
+              </span>
+              <span id="profile" onClick={footerNavigationHandler}>
+                Profile
+              </span>
+            </div>
+          ) : (
+            <div>
+              <span
+                id="admin/scholarship-list"
+                onClick={footerNavigationHandler}
+              >
+                Home
+              </span>
+              <span
+                id="admin/create-scholarship"
+                onClick={footerNavigationHandler}
+              >
+                Create Scholarship
+              </span>
+              <span onClick={handleLogout}>Logout</span>
+            </div>
+          )}
+
+          {userRole === "student" && (
+            <div>
+              <span
+                id="applied-scholarship-list"
+                onClick={footerNavigationHandler}
+                className={classes["stick"]}
+              >
+                My Scholarships
+              </span>
+              <span onClick={contactFormNavigationHandler}>Contact</span>
+              <span id="applied-scholarship-list" onClick={handleLogout}>
+                Logout
+              </span>
+            </div>
+          )}
         </div>
         <div className={classes.contact}>
           <span>
             <PhoneIcon sx={{ margin: "0 15px" }} />
-            +7 386-418-6395
+            (92-21) 99261261-8
           </span>
           <span>
-            <LocationOnIcon sx={{ margin: "0 15px" }} />
-            +7 386-418-6395
+            <LocationOnIcon sx={{ margin: "0 10px" }} />
+            24.9324° N, 67.1127° E
           </span>
           <span>
             <MailIcon sx={{ margin: "0 15px" }} />
-            +7 386-418-6395
+            registrar@neduet.edu.pk
           </span>
         </div>
         <div className={classes["social-handles"]}>

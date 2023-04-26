@@ -109,6 +109,7 @@ const Navbar = () => {
 
   const navbarNavigationHandler = (event) => {
     navigate(`/${event?.currentTarget?.id}`);
+    handleDrawerClose();
   };
 
   const handleDrawerOpen = () => {

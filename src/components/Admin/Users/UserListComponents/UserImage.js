@@ -13,14 +13,34 @@ const UserImage = ({ userId, token }) => {
           Authorization: "Bearer " + token,
         },
       })
-        .then((res) => res.blob())
+        .then((res) => {
+          if (!res.ok) {
+            return setImageUrl(
+              "https://img.freepik.com/free-vector/question-mark-sign-brush-stroke-trash-style-typography-vector_53876-140880.jpg"
+            );
+          }
+          return res.blob();
+        })
         .then((blobData) => URL.createObjectURL(blobData))
-        .then((imageUrl) => setImageUrl(imageUrl))
-        .catch((error) => console.log(error));
+        .then((imageUrl) =>
+          imageUrl ? setImageUrl(imageUrl) : console.log(imageUrl)
+        )
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
 
-  return <img style={{ objectFit: "cover" }} src={imageUrl} alt={userId} />;
+  return (
+    <img
+      style={{ objectFit: "cover" }}
+      src={
+        imageUrl ||
+        "https://img.freepik.com/free-vector/question-mark-sign-brush-stroke-trash-style-typography-vector_53876-140880.jpg"
+      }
+      alt={userId}
+    />
+  );
 };
 
 export default UserImage;

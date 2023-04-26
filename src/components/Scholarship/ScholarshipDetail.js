@@ -55,13 +55,17 @@ const ScholarshipDetail = () => {
   }, []);
 
   useEffect(() => {
-    const canApply = auth?.scholarship?.scholarshipList.findIndex(
+    const canApplyDummy = auth?.scholarship?.scholarshipList.findIndex(
       (scholarship) =>
         scholarship.scholarshipId === scholarshipId ||
         scholarship.status === "approved"
     );
 
-    if (canApply === -1 && auth?.scholarship?.hasFetched) {
+    if (
+      canApplyDummy === -1 &&
+      auth?.scholarship?.hasFetched &&
+      auth.profileStatus === 100
+    ) {
       setCanApply(true);
     } else {
       setCanApply(false);

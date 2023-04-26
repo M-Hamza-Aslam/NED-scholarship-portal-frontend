@@ -1,6 +1,7 @@
 .contact {
   margin: 0 auto;
   margin-top: 6%;
+  position: relative;
 }
 
 .contact-form {

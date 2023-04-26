@@ -28,6 +28,10 @@ const ApplyForm = ({ data, canApply }) => {
   };
 
   const handleError = () => {
+    if (auth.profileStatus !== 100) {
+      toast.error("Please make sure your profile is 100% completed.");
+      return;
+    }
     toast.error("You cannot apply to a scholarship again!");
   };
 

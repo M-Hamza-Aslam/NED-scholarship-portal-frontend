@@ -72,7 +72,7 @@ const ScholarshipList = () => {
         <ScholarshipCards
           isSearchActive={isSearchActive}
           items={scholarshipData}
-          itemsPerPage={3}
+          itemsPerPage={10}
         />
       )}
     </div>
