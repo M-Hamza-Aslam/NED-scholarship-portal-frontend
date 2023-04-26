@@ -57,15 +57,15 @@
   text-transform: capitalize;
 }
 
-.rejected {
+.declined {
   color: red;
 }
 
-.pending {
+.awaiting {
   color: #f29339;
 }
 
-.accepted {
+.approved {
   color: #077e8c;
 }
 

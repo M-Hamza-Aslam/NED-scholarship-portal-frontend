@@ -63,9 +63,7 @@ const AppliedScholarshipList = () => {
         filterByKeywordHandler={filterByKeywordHandler}
       />
       {scholarshipData.length === 0 ? (
-        <p className={classes.emptyMsg}>
-          You haven't applied on any scholarship
-        </p>
+        <p className={classes.emptyMsg}>No scholarship Found!</p>
       ) : (
         <ScholarshipCards
           isSearchActive={isSearchActive}

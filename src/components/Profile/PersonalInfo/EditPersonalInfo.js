@@ -363,6 +363,7 @@ const EditPersonalInfo = (props) => {
         }
         const ImgData = await resImg.json();
         dataObj.profileImg = ImgData.profileImg;
+        dataObj.profileStatus = ImgData.profileStatus;
       }
       dispatch(userActions.updateUserData(dataObj));
       //here show success msg through notification
