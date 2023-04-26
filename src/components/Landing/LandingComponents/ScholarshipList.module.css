@@ -56,7 +56,7 @@
 }
 
 .sc-header h2 {
-  font-size: 28px;
+  font-size: 25px;
   font-weight: normal;
   overflow: hidden;
   white-space: nowrap;
@@ -146,6 +146,7 @@
   width: max-content;
   position: relative;
   padding: 1rem 2rem;
+  cursor: pointer;
 }
 
 .btn-text {
@@ -181,7 +182,22 @@
 .btn span {
   z-index: 10;
 }
-
+@media screen and (max-width: 700px) {
+  .sc-header h2 {
+    font-size: 16px;
+    max-width: 65%;
+    margin: 0;
+    overflow: hidden !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    white-space: break-spaces;
+  }
+  .date {
+    font-size: 20px;
+  }
+}
 @media screen and (max-width: 376px) {
   .sc-header p {
     margin-right: 1rem;

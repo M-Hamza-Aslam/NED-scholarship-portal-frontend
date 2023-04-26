@@ -7,8 +7,8 @@ import classes from "./ScholarshipCards.module.css";
 const ScholarshipCards = ({ currentItems }) => {
   return (
     <div className={classes["scholarship-cards"]}>
-      {currentItems.map((scholarship) => (
-        <div className={classes["scholarship-card"]}>
+      {currentItems.map((scholarship, index) => (
+        <div key={index} className={classes["scholarship-card"]}>
           <div className={classes.heading}>
             <h1>{scholarship.scholarshipDetails.title}</h1>
             <div className={classes.info}>

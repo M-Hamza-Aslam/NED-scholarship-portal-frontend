@@ -7,6 +7,8 @@ import LocationIcon from "@mui/icons-material/LocationOn";
 import EastIcon from "@mui/icons-material/East";
 
 import classes from "./ContactForm.module.css";
+import { BACKEND_DOMAIN } from "../../../config";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,25 @@ const ContactForm = () => {
     event.preventDefault();
     setLoading(true);
     console.log("Submit Form");
+    const res = await fetch(`${BACKEND_DOMAIN}/send-contact-form`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+    if (res.status !== 201) {
+      const resData = await res.json();
+      toast.error(resData.message);
+      return;
+    }
+    const resData = await res.json();
+    toast.success(resData.message);
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
     setLoading(false);
   };
 

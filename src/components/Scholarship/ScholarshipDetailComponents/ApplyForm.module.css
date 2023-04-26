@@ -11,6 +11,7 @@
   width: max-content;
   position: relative;
   padding: 1rem 2rem;
+  cursor: pointer;
 }
 
 .btn-text {

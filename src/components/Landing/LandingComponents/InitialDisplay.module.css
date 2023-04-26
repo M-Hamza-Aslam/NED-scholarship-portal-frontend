@@ -87,6 +87,7 @@
   width: max-content;
   position: relative;
   padding: 1rem 2rem;
+  cursor: pointer;
 }
 
 .btn-text {
@@ -163,9 +164,15 @@
   .container {
     padding: 0 1rem;
   }
+  .initial-display h1 {
+    font-size: 25px;
+  }
 }
 
 @media screen and (max-width: 600px) {
+  .initial-display h1:after {
+    display: none;
+  }
   .initial-display {
     background: linear-gradient(135deg, #0f2d25 11.2%, #217a77 100%);
   }
@@ -197,7 +204,6 @@
     width: 90%;
   }
 }
-
 @media screen and (max-width: 376px) {
   .container {
     padding: 0 0.4rem;

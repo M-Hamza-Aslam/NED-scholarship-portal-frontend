@@ -17,12 +17,12 @@ const Details = ({ data, image }) => {
         <div className={classes.text}>
           <div>
             <h3>Description:</h3>
-            <p>{data.description}</p>
+            <pre className={classes.preText}>{data.description}</pre>
           </div>
 
           <div>
             <h3>Eligibility Criteria:</h3>
-            <pre>{data.eligibilityCriteria}</pre>
+            <pre className={classes.preText}>{data.eligibilityCriteria}</pre>
             {/* <ol>
               <li> Only duly filled Application forms will be entertained.</li>
               <li>
@@ -43,9 +43,7 @@ const Details = ({ data, image }) => {
 
           <div>
             <h3>Instructions:</h3>
-            Following documents must be uploaded at the time of submitting the
-            Application.
-            <pre>{data.instructions}</pre>
+            <pre className={classes.preText}>{data.instructions}</pre>
             {/* <ol>
             <li> Photograph of Applicant.</li>
             <li> Copy of Applicant CNIC.</li>
