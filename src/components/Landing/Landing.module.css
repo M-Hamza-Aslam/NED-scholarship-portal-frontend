@@ -6,6 +6,7 @@
 
 @media screen and (max-width: 600px) {
   .landing {
-    margin-left: 48px;
+    /* margin-left: 48px; */
+    margin-left: 0px;
   }
 }

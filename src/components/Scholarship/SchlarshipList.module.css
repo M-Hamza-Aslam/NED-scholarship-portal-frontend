@@ -18,10 +18,8 @@
   font-size: 18px;
 }
 
-
-
 @media screen and (max-width: 600px) {
   .scholarship-list {
-    margin-left: 48px;
+    margin-left: 0px;
   }
 }
