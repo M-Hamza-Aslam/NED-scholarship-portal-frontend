@@ -14,10 +14,17 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import InitialDisplay from "../Users/UserListComponents/InitialDisplay";
+import { useEffect } from "react";
 
-const CreateScholarship = () => {
+const CreateScholarship = (props) => {
+  const scholarshipDetails = props.scholarshipData || {};
+  const isCreating = scholarshipDetails.title ? false : true;
   //hooks and variables
-  const [closedDate, setClosedDate] = useState(null);
+  const [closeDate, setCloseDate] = useState(
+    scholarshipDetails.closeDate
+      ? dayjs(scholarshipDetails.closeDate.slice(0, -1))
+      : null
+  );
   const [scholarshipImg, setScholarshipImg] = useState({
     value: null,
     error: null,
@@ -25,6 +32,39 @@ const CreateScholarship = () => {
   const navigate = useNavigate();
   const { handleLoader, LoadingComponent, loader } = useLoader();
   const token = useSelector((state) => state.admin.admin.token);
+  useEffect(() => {
+    if (scholarshipDetails.image) {
+      fetch(BACKEND_DOMAIN + `/scholarshipImg/${scholarshipDetails._id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((res) => {
+          return res.blob();
+        })
+        .then((blobData) => {
+          const file = new File(
+            [blobData],
+            `${scholarshipDetails.title}.${blobData.type.split("/")[1]}`,
+            { type: blobData.type }
+          );
+          setScholarshipImg((prevState) => {
+            return {
+              value: file,
+              error: null,
+            };
+          });
+        })
+        .catch((error) =>
+          setScholarshipImg((prevState) => {
+            return {
+              value: null,
+              error: error.message,
+            };
+          })
+        );
+    }
+  }, []);
   //input properties
   const {
     value: titleInputValue,
@@ -33,7 +73,10 @@ const CreateScholarship = () => {
     inputKeyStrockHandler: titleKeyStrockHandler,
     inputBlurHandler: titleInputBlurHandler,
     reset: resetTitleInput,
-  } = useInput("", (value) => !(value.trim().length < 1));
+  } = useInput(
+    scholarshipDetails.title || "",
+    (value) => !(value.trim().length < 1)
+  );
   const {
     value: descriptionInputValue,
     isValid: enteredDescriptionisValid,
@@ -41,7 +84,10 @@ const CreateScholarship = () => {
     inputKeyStrockHandler: descriptionKeyStrockHandler,
     inputBlurHandler: descriptionInputBlurHandler,
     reset: resetDescriptionInput,
-  } = useInput("", (value) => !(value.trim().length < 1));
+  } = useInput(
+    scholarshipDetails.description || "",
+    (value) => !(value.trim().length < 1)
+  );
   const {
     value: eligibilityInputValue,
     isValid: enteredEligibilityisValid,
@@ -49,7 +95,10 @@ const CreateScholarship = () => {
     inputKeyStrockHandler: eligibilityKeyStrockHandler,
     inputBlurHandler: eligibilityInputBlurHandler,
     reset: resetEligibilityInput,
-  } = useInput("", (value) => !(value.trim().length < 1));
+  } = useInput(
+    scholarshipDetails.eligibilityCriteria || "",
+    (value) => !(value.trim().length < 1)
+  );
   const {
     value: instructionsInputValue,
     isValid: enteredInstructionsisValid,
@@ -57,7 +106,10 @@ const CreateScholarship = () => {
     inputKeyStrockHandler: instructionsKeyStrockHandler,
     inputBlurHandler: instructionsInputBlurHandler,
     reset: resetInstructionsInput,
-  } = useInput("", (value) => !(value.trim().length < 1));
+  } = useInput(
+    scholarshipDetails.instructions || "",
+    (value) => !(value.trim().length < 1)
+  );
 
   let formIsValid = false;
   if (
@@ -66,14 +118,14 @@ const CreateScholarship = () => {
     enteredEligibilityisValid &&
     enteredInstructionsisValid &&
     scholarshipImg.value &&
-    closedDate
+    closeDate
   ) {
     formIsValid = true;
   }
 
   //Handlers
   const handleDateChange = (date) => {
-    setClosedDate(date);
+    setCloseDate(date);
   };
   const handleFileInputChange = (event) => {
     const image = event.target.files[0];
@@ -107,21 +159,26 @@ const CreateScholarship = () => {
       //preparing data
       const scholarshipData = {
         title: titleInputValue,
-        closeDate: Date.parse(closedDate.$d),
+        closeDate: Date.parse(closeDate.$d),
         description: descriptionInputValue,
         eligibilityCriteria: eligibilityInputValue,
         instructions: instructionsInputValue,
       };
       handleLoader(true);
       //send json data to to server
-      const res = await fetch(`${BACKEND_DOMAIN}/admin/create-scholarship`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(scholarshipData),
-      });
+      const res = await fetch(
+        isCreating
+          ? `${BACKEND_DOMAIN}/admin/create-scholarship`
+          : `${BACKEND_DOMAIN}/admin/update-scholarship?scholarshipId=${scholarshipDetails._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(scholarshipData),
+        }
+      );
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -156,7 +213,11 @@ const CreateScholarship = () => {
         const ImgData = await resImg.json();
         dataObj.image = ImgData.image;
       }
-      toast.success("Scholarship created successfully!");
+      toast.success(
+        isCreating
+          ? "Scholarship created successfully!"
+          : "Scholarship updated successfully!"
+      );
 
       handleLoader(false);
       //resetting inputs
@@ -170,8 +231,10 @@ const CreateScholarship = () => {
           error: null,
         };
       });
-      setClosedDate(null);
-      // navigate("/admin/scholarship-list");
+      setCloseDate(null);
+      if (!isCreating) {
+        navigate("/admin/scholarship-list");
+      }
     } catch (err) {
       console.log(err);
       handleLoader(false);
@@ -238,7 +301,7 @@ const CreateScholarship = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Close Date"
-                    value={closedDate}
+                    value={closeDate}
                     onChange={handleDateChange}
                     minDate={dayjs().add(1, "day")} // set minimum date to tomorrow
                   />
@@ -286,12 +349,12 @@ const CreateScholarship = () => {
                   variant="contained"
                   className={classes.submitDiv}
                 >
-                  Create Scholarship
+                  {isCreating ? "Create Scholarship" : "Update Scholarship"}
                 </Button>
                 <Button
                   type="button"
                   variant="outlined"
-                  onClick={() => navigate("/admin/scholarship-list")}
+                  onClick={() => navigate(-1)}
                   className={classes.cencelDiv}
                 >
                   Back

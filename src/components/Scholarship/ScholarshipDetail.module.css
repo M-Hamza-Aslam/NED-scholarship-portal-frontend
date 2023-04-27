@@ -1,6 +1,25 @@
 .scholarship-detail {
   margin-left: 65px;
 }
+.btnDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.btnDiv > button {
+  margin: 0 1rem 1rem 0;
+}
+.submitDiv {
+  background-image: var(--primaryGradientColor) !important;
+}
+.cencelDiv {
+  color: red !important;
+  border-color: red !important;
+}
+.cencelDiv:hover {
+  border-color: #0f2d25 !important;
+}
 @media screen and (max-width: 600px) {
   .scholarship-detail {
     margin-left: 0px;
