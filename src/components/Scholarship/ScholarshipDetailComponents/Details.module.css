@@ -41,8 +41,21 @@
   row-gap: 1rem;
 }
 
+.preText {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 @media screen and (max-width: 1200px) {
   .details {
     margin: 3rem 2rem;
+  }
+}
+@media screen and (max-width: 700px) {
+  .details h1 {
+    font-size: 30px;
+  }
+  .details h3 {
+    font-size: 20px;
   }
 }

@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useLoader from "../../Hooks/UseLoader";
 import { userActions } from "../../store/userSlice";
 import { adminActions } from "../../store/adminSlice";
+import useWindowSize from "../../Hooks/UseWindowSize";
 
 const drawerWidth = 240;
 
@@ -102,11 +103,13 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const size = useWindowSize();
   let status = useSelector((state) => state.user.user.userRole);
   const [open, setOpen] = useState(false);
 
   const navbarNavigationHandler = (event) => {
     navigate(`/${event?.currentTarget?.id}`);
+    handleDrawerClose();
   };
 
   const handleDrawerOpen = () => {
@@ -154,7 +157,12 @@ const Navbar = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer className={classes.drawer} variant="permanent" open={open}>
+      <Drawer
+        sx={!open && size.width < 601 && { visibility: "hidden" }}
+        className={classes.drawer}
+        variant="permanent"
+        open={open}
+      >
         <div>
           <DrawerHeader className={classes.deactive}>
             <IconButton sx={{ color: "inherit" }} onClick={handleDrawerClose}>

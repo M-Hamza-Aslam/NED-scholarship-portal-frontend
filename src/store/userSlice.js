@@ -34,9 +34,7 @@ const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     updateUserData(state, action) {
-      console.log(action.payload);
       state.user = { ...state.user, ...action.payload };
-      console.log(state.user);
     },
     clearUserData(state) {
       state.user = userInitialState.user;

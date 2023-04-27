@@ -41,6 +41,10 @@
   justify-content: center;
 }
 
+.footer-links span {
+  cursor: pointer;
+}
+
 .footer-links span:not(:first-child)::before {
   margin: 0 10px;
   content: "|";

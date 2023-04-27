@@ -21,7 +21,7 @@
 }
 @media screen and (max-width: 600px) {
   .container {
-    margin-left: 48px;
+    margin-left: 0px;
   }
   .mainDiv {
     padding: 1rem;

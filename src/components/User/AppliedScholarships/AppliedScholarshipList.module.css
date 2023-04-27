@@ -26,7 +26,7 @@
 
 @media screen and (max-width: 600px) {
   .scholarship-list {
-    margin-left: 48px;
+    margin-left: 0px;
   }
   .emptyMsg {
     text-align: center;
