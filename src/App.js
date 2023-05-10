@@ -37,7 +37,12 @@ const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
 );
 
-const openURL = ["/auth/login", "/auth/signup", "/auth/forget-password"];
+const openURL = [
+  "/auth/login",
+  "/auth/signup",
+  "/auth/forget-password",
+  "/auth/reset-password/:token",
+];
 
 function App() {
   const location = useLocation();
@@ -115,6 +120,9 @@ function App() {
       }
     } else {
       if (openURL.includes(location.pathname)) {
+        setLoading(false);
+        return;
+      } else if (location.pathname.split("/")[2] === "reset-password") {
         setLoading(false);
         return;
       }
