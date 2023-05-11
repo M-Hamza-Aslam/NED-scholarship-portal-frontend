@@ -138,7 +138,11 @@ const Login = () => {
       if (userData.userRole === "admin") {
         navigate("admin/scholarship-list");
       } else if (userData.userRole === "student") {
-        navigate("/profile");
+        if (userData.isVerified === true) {
+          navigate("/profile");
+        } else {
+          navigate("/auth/verify-email");
+        }
       }
     } catch (err) {
       console.log(err);

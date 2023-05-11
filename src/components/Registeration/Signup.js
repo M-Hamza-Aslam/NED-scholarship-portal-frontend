@@ -15,11 +15,14 @@ import { useNavigate } from "react-router-dom";
 import { BACKEND_DOMAIN } from "../../config";
 import { useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../store/userSlice";
 
 const Signup = (props) => {
   const [handleLoader] = useOutletContext();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -136,18 +139,50 @@ const Signup = (props) => {
         return;
       }
       const resData = await res.json();
+
+      //store token in local storage
+      localStorage.setItem("token", resData.token);
+
+      // update in redux store.
+      const userData = {
+        _id: resData.userId,
+        token: resData.token,
+        ...resData.userDetails,
+      };
+      dispatch(userActions.updateUserData(userData));
+
       //here show success msg through notification
       toast.success(resData.message);
 
+      //resetting inputs
       resetEmailInput();
       resetPasswordInput();
       resetConfirmPasswordInput();
       resetFirstNameInput();
       resetLastNameInput();
       resetPhoneNumberInput();
-      // redirect to login page
+
+      // redirect to verification page
+      const verifyResponse = await fetch(
+        `${BACKEND_DOMAIN}/emailVerification`,
+        {
+          headers: {
+            Authorization: "Bearer " + resData.token,
+          },
+        }
+      );
+      if (verifyResponse.status !== 201) {
+        //here show an error through notification
+        const verifyResData = await verifyResponse.json();
+        toast.error(verifyResData.message);
+        handleLoader(false);
+        return;
+      }
+      const verifyResData = await verifyResponse.json();
+      toast.success(verifyResData.message);
+      navigate("/auth/verify-email");
+
       handleLoader(false);
-      navigate("/auth/login");
     } catch (err) {
       console.log(err);
       toast.error("User Signup failed!");

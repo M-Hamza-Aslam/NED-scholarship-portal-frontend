@@ -27,6 +27,7 @@ const userInitialState = {
       scholarshipList: [],
     },
   },
+  isVerified: false,
 };
 
 const userSlice = createSlice({
