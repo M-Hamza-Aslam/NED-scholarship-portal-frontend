@@ -79,11 +79,14 @@ function App() {
           navigate("/auth/login");
         }
         const resData = await res.json();
+
+        localStorage.setItem("token", resData.token);
+
         // add data in redux store.
 
         const userData = {
           _id: resData.userId,
-          token: token,
+          token: resData.token,
           ...resData.userDetails,
         };
 
@@ -94,7 +97,6 @@ function App() {
           dispatch(userActions.updateUserData(userData));
         }
         // setting time to delete token from localstorage
-        const timeout = expirationTime - Date.now();
         setTimeout(() => {
           localStorage.removeItem("token");
           if (userData.userRole === "admin") {
@@ -103,7 +105,7 @@ function App() {
             dispatch(userActions.clearUserData());
           }
           navigate("/auth/login");
-        }, timeout);
+        }, 3600000);
         setLoading(false);
 
         if (userData.userRole === "student" && userData.isVerified === false) {
