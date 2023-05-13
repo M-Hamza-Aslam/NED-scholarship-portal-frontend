@@ -16,6 +16,9 @@ const userInitialState = {
     education: {
       hasFetched: false,
       educationalDetails: [],
+      matric: {},
+      intermediate: {},
+      bachelor: {},
       documents: [],
     },
     dependantDetails: {

@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 // import classes from "./Education.module.css";
 import EducationalDetails from "./EducationalDetails/EducationalDetails";
-import EducationalDocument from "./EducationalDocuments/EducationalDocuments";
+// import EducationalDocument from "./EducationalDocuments/EducationalDocuments";
 import useFetch from "../../../Hooks/UseFetch";
 import { useSelector } from "react-redux";
 import { BACKEND_DOMAIN } from "../../../config";
@@ -19,8 +19,7 @@ const Education = () => {
   useEffect(() => {
     const fetch = async () => {
       if (!education.hasFetched) {
-        const res = await fetchData(token);
-        // console.log(res);
+        await fetchData(token);
       }
     };
     fetch();
@@ -28,7 +27,7 @@ const Education = () => {
   return (
     <Fragment>
       <EducationalDetails loading={loading} />
-      <EducationalDocument loading={loading} />
+      {/* <EducationalDocument loading={loading} /> */}
     </Fragment>
   );
 };
