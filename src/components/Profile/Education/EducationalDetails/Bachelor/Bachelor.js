@@ -1,6 +1,6 @@
 // import classes from "./bachelor.module.css";
-import MainSectionDiv from "../../../../Admin/Users/Profile/util/MainSectionDiv";
-import Education from "../../../../Admin/Users/Profile/Education/EducationalDetails/Education";
+import MainSectionDiv from "../../../util/MainSectionDiv";
+import Education from "../Education";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import EditBachelor from "./EditBachelor";
