@@ -10,13 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import classes from "../InitialDisplay.module.css";
 
-const InitialDisplay = ({
-  title,
-  status,
-  searchRef,
-  filterByStatus,
-  filterByKeywordHandler,
-}) => {
+const InitialDisplay = ({ title, setFilters }) => {
   return (
     <div className={classes["initial-display"]}>
       <div className={classes["initial-text"]}>
@@ -38,6 +32,13 @@ const InitialDisplay = ({
           <div>
             <Paper
               component="form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                setFilters(
+                  (prevMap) =>
+                    new Map(prevMap.set("title", event.target[0].value))
+                );
+              }}
               sx={{
                 p: "2px 4px",
                 display: "flex",
@@ -50,16 +51,24 @@ const InitialDisplay = ({
                 maxWidth: "90%",
               }}
             >
-              <IconButton sx={{ p: "10px", color: "white" }} aria-label="menu">
-                <SearchIcon />
-              </IconButton>
               <InputBase
                 sx={{ ml: 1, flex: 1, color: "white" }}
                 placeholder={`Search ${title}`}
                 inputProps={{ "aria-label": `search ${title}` }}
-                onChange={filterByKeywordHandler}
-                inputRef={searchRef}
+                onChange={(event) =>
+                  !event.target.value &&
+                  setFilters((prevState) => new Map(prevState.set("title", "")))
+                }
+                // onChange={filterByKeywordHandler}
+                // inputRef={searchRef}
               />
+              <IconButton
+                type="submit"
+                sx={{ p: "10px", color: "white" }}
+                aria-label="menu"
+              >
+                <SearchIcon />
+              </IconButton>
             </Paper>
             <FormControl sx={{ height: "50px !important", maxWidth: "90%" }}>
               <InputLabel
@@ -73,9 +82,15 @@ const InitialDisplay = ({
                 id="demo-simple-select"
                 label="Filter By"
                 className={classes.filter}
-                value={status}
+                // value={status}
                 // inputRef={statusRef}
-                onChange={filterByStatus}
+                // onChange={filterByStatus}
+                onChange={(event) =>
+                  setFilters(
+                    (prevMap) =>
+                      new Map(prevMap.set("status", event.target.value))
+                  )
+                }
                 sx={{ maxWidth: "100%" }}
               >
                 <MenuItem value="active">Active</MenuItem>

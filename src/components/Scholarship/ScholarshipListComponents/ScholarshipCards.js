@@ -1,10 +1,21 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
 import classes from "./ScholarshipCards.module.css";
+import { postScholarshipReport } from "../../../api";
+import { useSelector } from "react-redux";
 
 const ScholarshipCards = ({ currentItems }) => {
+  const location = useLocation();
+  const userRole = location.pathname === "/scholarship-list" ? "user" : "admin";
+  const token = useSelector((state) => state[userRole][userRole].token);
+
+  const viewReportHandler = async (id) => {
+    const report = await postScholarshipReport(id, token);
+    console.log(report);
+  };
+
   return (
     <div className={classes["scholarship-cards"]}>
       {currentItems.map((scholarship, index) => (
@@ -47,6 +58,15 @@ const ScholarshipCards = ({ currentItems }) => {
             <Link to={`${scholarship._id}`}>
               <span>View Details</span>
             </Link>
+
+            {userRole === "admin" && (
+              <a
+                target="_blank"
+                onClick={() => viewReportHandler(scholarship._id)}
+              >
+                <span>View Report</span>
+              </a>
+            )}
           </div>
         </div>
       ))}

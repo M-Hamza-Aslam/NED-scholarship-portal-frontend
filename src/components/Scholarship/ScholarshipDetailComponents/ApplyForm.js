@@ -14,7 +14,7 @@ import { postApplyScholarship } from "../../../api";
 import { toast } from "react-toastify";
 import { userActions } from "../../../store/userSlice";
 
-const ApplyForm = ({ data, canApply }) => {
+const ApplyForm = ({ message, data, canApply }) => {
   const [open, setOpen] = useState(false);
   const auth = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -28,11 +28,7 @@ const ApplyForm = ({ data, canApply }) => {
   };
 
   const handleError = () => {
-    if (auth.profileStatus !== 100) {
-      toast.error("Please make sure your profile is 100% completed.");
-      return;
-    }
-    toast.error("You cannot apply to a scholarship again!");
+    toast.error(message);
   };
 
   const applyScholarshipHandler = async () => {

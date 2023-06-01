@@ -29,6 +29,9 @@ import useLoader from "../../Hooks/UseLoader";
 import { userActions } from "../../store/userSlice";
 import { adminActions } from "../../store/adminSlice";
 import useWindowSize from "../../Hooks/UseWindowSize";
+import { Tooltip } from "@mui/material";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const drawerWidth = 240;
 
@@ -106,6 +109,7 @@ const Navbar = () => {
   const size = useWindowSize();
   let status = useSelector((state) => state.user.user.userRole);
   const [open, setOpen] = useState(false);
+  const drawerRef = useRef();
 
   const navbarNavigationHandler = (event) => {
     navigate(`/${event?.currentTarget?.id}`);
@@ -119,6 +123,18 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    drawerRef.current.children[0].id = "navbar";
+
+    const handleClick = (event) => {
+      if (open && event.target.id !== "navbar") handleDrawerClose();
+    };
+
+    document.body.addEventListener("click", handleClick, true);
+
+    return () => document.body.removeEventListener("click", handleClick, true);
+  }, [open]);
 
   const handleLogout = () => {
     handleLoader(true);
@@ -150,7 +166,7 @@ const Navbar = () => {
               ...(open && { display: "none" }),
             }}
           >
-            <MenuIcon />
+            <MenuIcon id="navbar" />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             NED Scholarship Program
@@ -162,6 +178,7 @@ const Navbar = () => {
         className={classes.drawer}
         variant="permanent"
         open={open}
+        ref={drawerRef}
       >
         <div>
           <DrawerHeader className={classes.deactive}>
@@ -181,27 +198,33 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id="admin/scholarship-list"
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="Scholarship List">
+                  <ListItemButton
+                    id="admin/scholarship-list"
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <HomeIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <HomeIcon color="inherit" />
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary="Home"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
               <ListItem
                 className={
@@ -212,30 +235,32 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id="admin/create-scholarship"
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="Create Scholarship">
+                  <ListItemButton
+                    id="admin/create-scholarship"
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <CreateIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Create Scholarship"
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <CreateIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Create Scholarship"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
             </List>
           ) : (
@@ -247,27 +272,32 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id=""
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="Home">
+                  <ListItemButton
+                    id=""
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <HomeIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <HomeIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Home"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
               <ListItem
                 className={
@@ -278,30 +308,32 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id="profile"
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="Profile">
+                  <ListItemButton
+                    id="profile"
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <ProfileIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Profile"
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <ProfileIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Profile"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
               <ListItem
                 className={
@@ -312,30 +344,32 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id="scholarship-list"
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="Scholarship List">
+                  <ListItemButton
+                    id="scholarship-list"
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <SchoolIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Scholarship List"
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <SchoolIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Scholarship List"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
               <ListItem
                 className={
@@ -346,30 +380,32 @@ const Navbar = () => {
                 disablePadding
                 sx={{ display: "block" }}
               >
-                <ListItemButton
-                  id="applied-scholarship-list"
-                  onClick={navbarNavigationHandler}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
+                <Tooltip title="My Scholarship List">
+                  <ListItemButton
+                    id="applied-scholarship-list"
+                    onClick={navbarNavigationHandler}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "inherit",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    <TopicIcon color="inherit" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="My Scholarships"
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <TopicIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="My Scholarships"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
               </ListItem>
             </List>
           )}

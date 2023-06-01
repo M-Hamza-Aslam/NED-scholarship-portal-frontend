@@ -42,6 +42,7 @@ const openURL = [
   "/auth/signup",
   "/auth/forget-password",
   "/auth/reset-password/:token",
+  "/",
 ];
 
 function App() {
@@ -185,7 +186,6 @@ function App() {
                 path="/scholarship-list/:scholarshipId"
                 element={<ScholarshipDetail />}
               />
-              <Route path="/" element={<h1>Home Page</h1>} />
               <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" />} />
               {/* <Route path="/*" element={<Landing />} /> */}
@@ -200,8 +200,9 @@ function App() {
                   path="reset-password/:token"
                   element={<ResetPassword />}
                 />
-                <Route path="*" element={<Navigate to="/auth/login" />} />
               </Route>
+              <Route path="/" element={<Landing />} />
+              <Route path="*" element={<Navigate to="/auth/login" />} />
             </Routes>
           )}
 

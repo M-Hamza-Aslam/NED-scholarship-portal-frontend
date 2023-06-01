@@ -50,6 +50,18 @@ export const postChangeUserStatus = async (
     headers: getHeaders(token),
     body,
   });
-  // const responseData = await response.json();
-  if (response.ok) return true;
+
+  return response;
+};
+
+export const postScholarshipReport = async (id, token) => {
+  const body = JSON.stringify({ id });
+  const response = await fetch(`${baseURL}/scholarship-report`, {
+    method: "POST",
+    headers: getHeaders(token),
+    body,
+  });
+
+  const responseData = await response.json();
+  if (response.ok) return responseData;
 };

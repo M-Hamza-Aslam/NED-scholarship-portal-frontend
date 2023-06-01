@@ -115,11 +115,13 @@
 .view {
   margin-bottom: 1rem;
   padding: 0.1rem !important;
-  cursor: pointer;
+  justify-content: center !important;
+  column-gap: 10%;
   /* text-align: center; */
 }
 
 .view > a {
+  cursor: pointer;
   text-decoration: none;
 }
 
@@ -142,7 +144,4 @@
   .heading h1 {
     width: 100%;
   }
-}
-
-@media screen and (max-width: 500px) {
 }

@@ -10,7 +10,8 @@ import classes from "./SchlarshipList.module.css";
 import { useLocation } from "react-router-dom";
 
 const ScholarshipList = () => {
-  const searchRef = useRef();
+  // const searchRef = useRef();
+  // const [status, setStatus] = useState("");
   const location = useLocation();
   const userRole = location.pathname === "/scholarship-list" ? "user" : "admin";
   const token = useSelector((state) => state[userRole][userRole].token);
@@ -18,36 +19,51 @@ const ScholarshipList = () => {
     [token ? "/scholarship-list" : null, token],
     ([url, token]) => globalFetcher(url, token)
   );
-  const [status, setStatus] = useState("");
   const [scholarshipData, setScholarshipData] = useState(data);
-  const isSearchActive = Boolean(searchRef?.current?.value || status);
+  const [filters, setFilters] = useState(new Map([]));
+  const isSearchActive = Boolean(filters.size);
 
-  const filterByKeywordHandler = (event) => {
-    setScholarshipData(
-      data.filter((scholarship) =>
-        scholarship.title
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase().trim())
-      )
-    );
+  // const filterByKeywordHandler = (event) => {
+  //   setScholarshipData(
+  //     data.filter((scholarship) =>
+  //       scholarship.title
+  //         .toLowerCase()
+  //         .includes(event.target.value.toLowerCase().trim())
+  //     )
+  //   );
 
-    setStatus("");
-  };
+  //   setStatus("");
+  // };
 
-  const filterByStatus = (event) => {
-    setStatus(event.target.value);
-    setScholarshipData(
-      data.filter((scholarship) => scholarship.status === event.target.value)
-    );
+  // const filterByStatus = (event) => {
+  //   setStatus(event.target.value);
+  //   setScholarshipData(
+  //     data.filter((scholarship) => scholarship.status === event.target.value)
+  //   );
 
-    searchRef.current.value = "";
-  };
+  //   searchRef.current.value = "";
+  // };
 
   useEffect(() => {
     if (data) {
       setScholarshipData(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    let tempScList = data;
+    filters.forEach((value, key) => {
+      if (key === "title") {
+        tempScList = tempScList.filter((sc) =>
+          sc[key].toLowerCase().includes(value.toLowerCase().trim())
+        );
+        return;
+      }
+
+      tempScList = tempScList.filter((sc) => sc[key] === value);
+    });
+    setScholarshipData(tempScList);
+  }, [filters]);
 
   if (!scholarshipData) {
     return (
@@ -59,13 +75,7 @@ const ScholarshipList = () => {
 
   return (
     <div className={classes["scholarship-list"]}>
-      <InitialDisplay
-        title="Scholarship List"
-        status={status}
-        searchRef={searchRef}
-        filterByStatus={filterByStatus}
-        filterByKeywordHandler={filterByKeywordHandler}
-      />
+      <InitialDisplay title="Scholarship List" setFilters={setFilters} />
       {scholarshipData.length === 0 ? (
         <p className={classes.emptyMsg}>No scholarship Found!</p>
       ) : (

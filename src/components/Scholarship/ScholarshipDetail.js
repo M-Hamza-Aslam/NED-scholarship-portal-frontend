@@ -29,6 +29,7 @@ const ScholarshipDetail = () => {
     location.pathname.split("/")[1] === "scholarship-list" ? "user" : "admin";
   const token = useSelector((state) => state[userRole][userRole].token);
   const [canApply, setCanApply] = useState(false);
+  const [message, setMessage] = useState("");
   const [editScholarship, setEditScholarshiop] = useState(false);
 
   const { data, error, isLoading } = useSWR(
@@ -62,21 +63,30 @@ const ScholarshipDetail = () => {
   }, []);
 
   useEffect(() => {
-    const canApplyDummy = auth?.scholarship?.scholarshipList.findIndex(
-      (scholarship) =>
-        scholarship.scholarshipId === scholarshipId ||
-        scholarship.status === "approved"
+    if (!auth?.scholarship?.hasFetched) {
+      return;
+    }
+
+    if (auth.profileStatus !== 100) {
+      setMessage("Please make sure your profile is 100% completed.");
+      return;
+    }
+
+    const hasApplied = auth?.scholarship?.scholarshipList.findIndex(
+      (scholarship) => scholarship.scholarshipId === scholarshipId
     );
 
-    if (
-      canApplyDummy === -1 &&
-      auth?.scholarship?.hasFetched &&
-      auth.profileStatus === 100
-    ) {
-      setCanApply(true);
-    } else {
+    const hasBeenApproved = auth?.scholarship?.scholarshipList.findIndex(
+      (scholarship) => scholarship.status === "approved"
+    );
+
+    if (hasApplied !== -1) {
       setCanApply(false);
-    }
+      setMessage("You've already applied on this scholarship!");
+    } else if (hasBeenApproved !== -1) {
+      setCanApply(false);
+      setMessage("You've already been approved on a scholarship!");
+    } else setCanApply(true);
   }, [auth?.scholarship]);
 
   if (!data) {
@@ -122,7 +132,7 @@ const ScholarshipDetail = () => {
           <Details data={data} image={imgData} />
           {userRole === "user" ? (
             data.status.toLowerCase() === "active" && (
-              <ApplyForm data={data} canApply={canApply} />
+              <ApplyForm message={message} data={data} canApply={canApply} />
             )
           ) : (
             <div className={buttonClasses["apply-button"]}>
