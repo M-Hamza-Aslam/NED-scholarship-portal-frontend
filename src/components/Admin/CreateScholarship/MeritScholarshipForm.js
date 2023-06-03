@@ -81,7 +81,7 @@ const MeritScholarshipForm = (props) => {
     inputKeyStrockHandler: matricPercentageKeyStrockHandler,
     inputBlurHandler: matricPercentageInputBlurHandler,
     reset: resetMatricPercentageInput,
-  } = useInput(scholarshipDetails.title || "", (value) => {
+  } = useInput(scholarshipDetails.matricPercentage || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim()) && value.trim() <= 100;
   });
@@ -92,7 +92,7 @@ const MeritScholarshipForm = (props) => {
     inputKeyStrockHandler: intermediatePercentageKeyStrockHandler,
     inputBlurHandler: intermediatePercentageInputBlurHandler,
     reset: resetIntermediatePercentageInput,
-  } = useInput(scholarshipDetails.title || "", (value) => {
+  } = useInput(scholarshipDetails.intermediatePercentage || "", (value) => {
     const Regex = /^[0-9]+$/;
     return Regex.test(value.trim()) && value.trim() <= 100;
   });
@@ -103,7 +103,7 @@ const MeritScholarshipForm = (props) => {
     inputKeyStrockHandler: bachelorCGPAKeyStrockHandler,
     inputBlurHandler: bachelorCGPAInputBlurHandler,
     reset: resetBachelorCGPAInput,
-  } = useInput(scholarshipDetails.title || "", (value) => {
+  } = useInput(scholarshipDetails.bachelorCGPA || "", (value) => {
     const Regex = /^\d\.\d{1}$/;
     return Regex.test(value.trim());
   });
@@ -146,6 +146,7 @@ const MeritScholarshipForm = (props) => {
     enteredTitleisValid &&
     enteredMatricPercentageisValid &&
     enteredIntermediatePercentageisValid &&
+    enteredBachelorCGPAisValid &&
     enteredEligibilityisValid &&
     enteredDescriptionisValid &&
     enteredEligibilityisValid &&
@@ -191,8 +192,12 @@ const MeritScholarshipForm = (props) => {
       }
       //preparing data
       const scholarshipData = {
+        type: "merit",
         title: titleInputValue,
         closeDate: Date.parse(closeDate.$d),
+        matricPercentage: matricPercentageInputValue,
+        intermediatePercentage: intermediatePercentageInputValue,
+        bachelorCGPA: bachelorCGPAInputValue,
         description: descriptionInputValue,
         eligibilityCriteria: eligibilityInputValue,
         instructions: instructionsInputValue,
@@ -201,8 +206,8 @@ const MeritScholarshipForm = (props) => {
       //send json data to to server
       const res = await fetch(
         isCreating
-          ? `${BACKEND_DOMAIN}/admin/create-scholarship`
-          : `${BACKEND_DOMAIN}/admin/update-scholarship?scholarshipId=${scholarshipDetails._id}`,
+          ? `${BACKEND_DOMAIN}/admin/create-merit-scholarship`
+          : `${BACKEND_DOMAIN}/admin/update-merit-scholarship?scholarshipId=${scholarshipDetails._id}`,
         {
           method: "POST",
           headers: {
@@ -216,6 +221,7 @@ const MeritScholarshipForm = (props) => {
         //here show an error through notification
         const resData = await res.json();
         toast.error(resData.message);
+        handleLoader(false);
         return;
       }
       const resData = await res.json();
@@ -241,6 +247,7 @@ const MeritScholarshipForm = (props) => {
           //here show an error through notification
           const resData = await resImg.json();
           toast.error(resData.message);
+          handleLoader(false);
           return;
         }
         const ImgData = await resImg.json();

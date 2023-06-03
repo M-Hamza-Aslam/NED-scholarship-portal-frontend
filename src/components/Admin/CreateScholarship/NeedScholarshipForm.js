@@ -75,6 +75,17 @@ const NeedScholarshipForm = (props) => {
     (value) => !(value.trim().length < 1)
   );
   const {
+    value: familyIncomeInputValue,
+    isValid: enteredFamilyIncomeisValid,
+    isError: familyIncomeIsError,
+    inputKeyStrockHandler: familyIncomeKeyStrockHandler,
+    inputBlurHandler: familyIncomeInputBlurHandler,
+    reset: resetFamilyIncomeInput,
+  } = useInput(scholarshipDetails.familyIncome || "", (value) => {
+    const regex = /^[0-9]+$/;
+    return regex.test(value.trim());
+  });
+  const {
     value: descriptionInputValue,
     isValid: enteredDescriptionisValid,
     isError: descriptionIsError,
@@ -111,6 +122,7 @@ const NeedScholarshipForm = (props) => {
   let formIsValid = false;
   if (
     enteredTitleisValid &&
+    enteredFamilyIncomeisValid &&
     enteredDescriptionisValid &&
     enteredEligibilityisValid &&
     enteredInstructionsisValid &&
@@ -155,8 +167,10 @@ const NeedScholarshipForm = (props) => {
       }
       //preparing data
       const scholarshipData = {
+        type: "need",
         title: titleInputValue,
         closeDate: Date.parse(closeDate.$d),
+        familyIncome: familyIncomeInputValue,
         description: descriptionInputValue,
         eligibilityCriteria: eligibilityInputValue,
         instructions: instructionsInputValue,
@@ -165,8 +179,8 @@ const NeedScholarshipForm = (props) => {
       //send json data to to server
       const res = await fetch(
         isCreating
-          ? `${BACKEND_DOMAIN}/admin/create-scholarship`
-          : `${BACKEND_DOMAIN}/admin/update-scholarship?scholarshipId=${scholarshipDetails._id}`,
+          ? `${BACKEND_DOMAIN}/admin/create-need-scholarship`
+          : `${BACKEND_DOMAIN}/admin/update-need-scholarship?scholarshipId=${scholarshipDetails._id}`,
         {
           method: "POST",
           headers: {
@@ -180,6 +194,7 @@ const NeedScholarshipForm = (props) => {
         //here show an error through notification
         const resData = await res.json();
         toast.error(resData.message);
+        handleLoader(false);
         return;
       }
       const resData = await res.json();
@@ -205,6 +220,7 @@ const NeedScholarshipForm = (props) => {
           //here show an error through notification
           const resData = await resImg.json();
           toast.error(resData.message);
+          handleLoader(false);
           return;
         }
         const ImgData = await resImg.json();
@@ -219,6 +235,7 @@ const NeedScholarshipForm = (props) => {
       handleLoader(false);
       //resetting inputs
       resetTitleInput();
+      resetFamilyIncomeInput();
       resetDescriptionInput();
       resetEligibilityInput();
       resetInstructionsInput();
@@ -298,6 +315,17 @@ const NeedScholarshipForm = (props) => {
           />
         </LocalizationProvider>
       </div>
+      <TextField
+        id="outlined-multiline-flexible-familyIncome"
+        label="Gross family income per dependant*"
+        type="number"
+        error={familyIncomeIsError && true}
+        className={`${classes.formInput} ${classes.fullWidth}`}
+        value={familyIncomeInputValue}
+        onChange={familyIncomeKeyStrockHandler}
+        onBlur={familyIncomeInputBlurHandler}
+        helperText={"Enter gross family income per dependant"}
+      />
       <TextField
         id="outlined-multiline-flexible-description"
         label="Description*"

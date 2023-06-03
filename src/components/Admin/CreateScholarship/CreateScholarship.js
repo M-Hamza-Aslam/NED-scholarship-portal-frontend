@@ -15,7 +15,7 @@ const CreateScholarship = (props) => {
     <div className={classes.container}>
       <InitialDisplay
         title={isCreating ? "Create new scholarship" : "Update scholarship"}
-        type={scholarshipType}
+        type={isCreating ? scholarshipType : null}
         typeHandler={(value) => {
           setScholarshipType(value);
         }}

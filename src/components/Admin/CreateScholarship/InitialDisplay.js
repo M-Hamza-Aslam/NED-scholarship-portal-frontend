@@ -35,19 +35,21 @@ const InitialDisplay = ({ title, type, typeHandler }) => {
               >
                 Select Type
               </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Select Type"
-                className={classes.filter}
-                value={type}
-                // inputRef={statusRef}
-                onChange={(event) => typeHandler(event.target.value)}
-                sx={{ maxWidth: "100%" }}
-              >
-                <MenuItem value="merit">Merit</MenuItem>
-                <MenuItem value="need">Need</MenuItem>
-              </Select>
+              {type && (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Select Type"
+                  className={classes.filter}
+                  value={type}
+                  // inputRef={statusRef}
+                  onChange={(event) => typeHandler(event.target.value)}
+                  sx={{ maxWidth: "100%" }}
+                >
+                  <MenuItem value="merit">Merit</MenuItem>
+                  <MenuItem value="need">Need</MenuItem>
+                </Select>
+              )}
             </FormControl>
           </div>
         </div>
