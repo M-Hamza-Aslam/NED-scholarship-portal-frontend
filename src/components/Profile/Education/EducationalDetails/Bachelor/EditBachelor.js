@@ -1,20 +1,22 @@
-import classes from "./EditEducation.module.css";
-import useInput from "../../../../Hooks/UseInput.js";
+import classes from "./EditBachelor.module.css";
+import useInput from "../../../../../Hooks/UseInput.js";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { userActions } from "../../../../store/userSlice";
-import { BACKEND_DOMAIN } from "../../../../config";
-import useLoader from "../../../../Hooks/UseLoader";
+import { userActions } from "../../../../../store/userSlice";
+import { BACKEND_DOMAIN } from "../../../../../config";
+import useLoader from "../../../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { MuiFileInput } from "mui-file-input";
 import {
   classOptions,
   meritPositionOptions,
-} from "../../util/SelectInputOptions";
+  semesterOptions,
+} from "../../../util/SelectInputOptions";
 
-const EditEducation = (props) => {
-  const { setIsEdit, educationName } = props;
+const EditBachelor = (props) => {
+  const { setIsEdit } = props;
+  const educationName = "bachelor";
   const { LoadingComponent, loader, handleLoader } = useLoader();
   let educationalDetailsObj = useSelector((state) => {
     return state.user.user.education[educationName];
@@ -106,47 +108,41 @@ const EditEducation = (props) => {
     inputBlurHandler: seatNoInputBlurHandler,
     reset: resetSeatNoInput,
   } = useInput(educationalDetailsObj.seatNo || "", (value) => {
-    const Regex = /^[0-9]+$/;
+    const Regex = /^[A-Z]{2}-\d{5}$/;
     return Regex.test(value.trim());
   });
   const {
-    value: totalMarksCGPAInputValue,
-    isValid: enteredTotalMarksCGPAisValid,
-    isError: totalMarksCGPAIsError,
-    inputKeyStrockHandler: totalMarksCGPAKeyStrockHandler,
-    inputBlurHandler: totalMarksCGPAInputBlurHandler,
-    reset: resetTotalMarksCGPAInput,
-  } = useInput(educationalDetailsObj.totalMarksCGPA || "", (value) => {
-    const RegexMarks = /^[0-9]+$/;
-    const RegexCGPA = /^\d\.\d{1}$/;
-    return RegexMarks.test(value.trim()) || RegexCGPA.test(value.trim());
+    value: semesterInputValue,
+    isValid: enteredSemesterisValid,
+    isError: semesterIsError,
+    inputKeyStrockHandler: semesterKeyStrockHandler,
+    inputBlurHandler: semesterInputBlurHandler,
+    reset: resetSemesterInput,
+  } = useInput(educationalDetailsObj.semester || "", (value) => {
+    return value.trim().length !== 0;
   });
   const {
-    value: obtainedMarksCGPAInputValue,
-    isValid: enteredObtainedMarksCGPAisValid,
-    isError: obtainedMarksCGPAIsError,
-    inputKeyStrockHandler: obtainedMarksCGPAKeyStrockHandler,
-    inputBlurHandler: obtainedMarksCGPAInputBlurHandler,
-    reset: resetObtainedMarksCGPAInput,
-  } = useInput(educationalDetailsObj.obtainedMarksCGPA || "", (value) => {
-    const RegexMarks = /^[0-9]+$/;
-    const RegexCGPA = /^\d\.\d{1}$/;
-    const isLessThanTotal = +value.trim() <= +totalMarksCGPAInputValue;
-    return (
-      isLessThanTotal &&
-      (RegexMarks.test(value.trim()) || RegexCGPA.test(value.trim()))
-    );
+    value: totalCGPAInputValue,
+    isValid: enteredTotalCGPAisValid,
+    isError: totalCGPAIsError,
+    inputKeyStrockHandler: totalCGPAKeyStrockHandler,
+    inputBlurHandler: totalCGPAInputBlurHandler,
+    reset: resetTotalCGPAInput,
+  } = useInput(educationalDetailsObj.totalCGPA || "4.0", (value) => {
+    const Regex = /^\d\.\d{1}$/;
+    return Regex.test(value.trim());
   });
   const {
-    value: percentageInputValue,
-    isValid: enteredPercentageisValid,
-    isError: percentageIsError,
-    inputKeyStrockHandler: percentageKeyStrockHandler,
-    inputBlurHandler: percentageInputBlurHandler,
-    reset: resetPercentageInput,
-  } = useInput(educationalDetailsObj.percentage || "", (value) => {
-    const Regex = /^[0-9]+$/;
-    return Regex.test(value) && value <= 100;
+    value: obtainedCGPAInputValue,
+    isValid: enteredObtainedCGPAisValid,
+    isError: obtainedCGPAIsError,
+    inputKeyStrockHandler: obtainedCGPAKeyStrockHandler,
+    inputBlurHandler: obtainedCGPAInputBlurHandler,
+    reset: resetObtainedCGPAInput,
+  } = useInput(educationalDetailsObj.obtainedCGPA || "", (value) => {
+    const Regex = /^\d\.\d{1}$/;
+    const isLessThanTotal = value.trim() <= 4.0;
+    return isLessThanTotal && Regex.test(value.trim());
   });
   const {
     value: meritPositionInputValue,
@@ -164,9 +160,9 @@ const EditEducation = (props) => {
   if (
     enteredClassisValid &&
     enteredSeatNoisValid &&
-    enteredTotalMarksCGPAisValid &&
-    enteredObtainedMarksCGPAisValid &&
-    enteredPercentageisValid &&
+    enteredTotalCGPAisValid &&
+    enteredObtainedCGPAisValid &&
+    enteredSemesterisValid &&
     enteredMeritPositionisValid &&
     file.value
   ) {
@@ -184,9 +180,9 @@ const EditEducation = (props) => {
         educationData: {
           class: classInputValue,
           seatNo: seatNoInputValue,
-          totalMarksCGPA: totalMarksCGPAInputValue,
-          obtainedMarksCGPA: obtainedMarksCGPAInputValue,
-          percentage: percentageInputValue,
+          totalCGPA: totalCGPAInputValue,
+          obtainedCGPA: obtainedCGPAInputValue,
+          semester: semesterInputValue,
           meritPosition: meritPositionInputValue,
         },
         educationName,
@@ -194,7 +190,7 @@ const EditEducation = (props) => {
       };
       handleLoader(true);
       //sending educationData
-      const res = await fetch(`${BACKEND_DOMAIN}/education-details`, {
+      const res = await fetch(`${BACKEND_DOMAIN}/bachelor-details`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -243,9 +239,9 @@ const EditEducation = (props) => {
 
       resetClassInput();
       resetSeatNoInput();
-      resetTotalMarksCGPAInput();
-      resetObtainedMarksCGPAInput();
-      resetPercentageInput();
+      resetTotalCGPAInput();
+      resetObtainedCGPAInput();
+      resetSemesterInput();
       resetMeritPositionInput();
       setFile((prevState) => {
         return {
@@ -288,69 +284,70 @@ const EditEducation = (props) => {
           onChange={classKeyStrockHandler}
           onBlur={classInputBlurHandler}
           helperText={`e.g.:"2020"`}
-        />
+          select
+        >
+          {classOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           id="outlined-adornment-seatNo"
           label="Seat No.*"
           error={seatNoIsError && true}
           size="small"
-          type="number"
+          type="text"
           className={classes.formInput}
           value={seatNoInputValue}
           onChange={seatNoKeyStrockHandler}
           onBlur={seatNoInputBlurHandler}
-          helperText={`e.g.:"356987"`}
+          helperText={`e.g.:"CT-20061"`}
         />
         <TextField
-          id="outlined-adornment-totalMarksCGPA"
-          label="Total Max Marks/CGPA*"
-          error={totalMarksCGPAIsError && true}
+          id="outlined-adornment-totalCGPA"
+          label="Total CGPA*"
+          error={totalCGPAIsError && true}
           size="small"
           type="number"
           className={classes.formInput}
-          value={totalMarksCGPAInputValue}
-          onChange={totalMarksCGPAKeyStrockHandler}
-          onBlur={totalMarksCGPAInputBlurHandler}
-          helperText={`e.g.:"850"`}
-        />
-        <TextField
-          id="outlined-adornment-obtainedMarksCGPA"
-          label="obtained Marks/CGPA*"
-          error={obtainedMarksCGPAIsError && true}
-          size="small"
-          type="number"
-          className={classes.formInput}
-          value={obtainedMarksCGPAInputValue}
-          onChange={obtainedMarksCGPAKeyStrockHandler}
-          onBlur={(event) => {
-            obtainedMarksCGPAInputBlurHandler(event);
-            if (!obtainedMarksCGPAIsError || !totalMarksCGPAIsError) {
-              percentageKeyStrockHandler({
-                target: {
-                  value: Math.round(
-                    (+obtainedMarksCGPAInputValue * 100) /
-                      +totalMarksCGPAInputValue
-                  ),
-                },
-              });
-              percentageInputBlurHandler();
-            }
-          }}
-          helperText={`e.g.:"665"`}
-        />
-        <TextField
-          id="outlined-adornment-percentage"
-          label="Percentage*"
-          error={percentageIsError && true}
-          size="small"
-          type="number"
-          className={classes.formInput}
-          value={percentageInputValue}
-          onChange={percentageKeyStrockHandler}
-          onBlur={percentageInputBlurHandler}
-          helperText={`e.g.:"85"`}
+          value={totalCGPAInputValue}
+          onChange={totalCGPAKeyStrockHandler}
+          onBlur={totalCGPAInputBlurHandler}
+          helperText={`e.g.:"4.0"`}
           disabled
         />
+        <TextField
+          id="outlined-adornment-obtainedCGPA"
+          label="Obtained CGPA*"
+          error={obtainedCGPAIsError && true}
+          size="small"
+          type="number"
+          className={classes.formInput}
+          value={obtainedCGPAInputValue}
+          onChange={obtainedCGPAKeyStrockHandler}
+          onBlur={obtainedCGPAInputBlurHandler}
+          helperText={`e.g.:"3.0"`}
+        />
+        <TextField
+          id="outlined-adornment-semester"
+          label="Semester*"
+          error={semesterIsError && true}
+          size="small"
+          type="text"
+          className={classes.formInput}
+          value={semesterInputValue}
+          onChange={semesterKeyStrockHandler}
+          onBlur={semesterInputBlurHandler}
+          helperText={`e.g.:"First"`}
+          select
+        >
+          {semesterOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           id="outlined-adornment-meritPosition"
           label="Merit Position(if any)*"
@@ -386,4 +383,4 @@ const EditEducation = (props) => {
     </form>
   );
 };
-export default EditEducation;
+export default EditBachelor;

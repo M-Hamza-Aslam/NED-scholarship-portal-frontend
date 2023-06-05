@@ -18,8 +18,12 @@ export const imgFetcher = (relativeURL, token) =>
     .then((res) => res.blob())
     .then((blobData) => URL.createObjectURL(blobData));
 
-export const postApplyScholarship = async (scholarshipId, token) => {
-  const body = JSON.stringify({ scholarshipId });
+export const postApplyScholarship = async (
+  scholarshipId,
+  token,
+  additionalReqs
+) => {
+  const body = JSON.stringify({ scholarshipId, additionalReqs });
   const response = await fetch(`${baseURL}/apply-scholarship`, {
     method: "POST",
     headers: getHeaders(token),

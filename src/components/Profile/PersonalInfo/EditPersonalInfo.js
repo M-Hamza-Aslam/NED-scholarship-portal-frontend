@@ -17,6 +17,13 @@ import defaultProfileImg from "../../../images/defaultProfileImg.jpg";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
+import {
+  classOptions,
+  disciplineOptions,
+  cityOptions,
+  districtOptions,
+  provinceOptions,
+} from "../util/SelectInputOptions";
 
 const EditPersonalInfo = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -490,8 +497,15 @@ const EditPersonalInfo = (props) => {
             value={classInputValue}
             onChange={classKeyStrockHandler}
             onBlur={classInputBlurHandler}
-            helperText={classIsError ? "Incorrect Class!" : "Enter Class"}
-          />
+            helperText={classIsError ? "Incorrect Class!" : "Select Your Class"}
+            select
+          >
+            {classOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             id="outlined-adornment-rollNo"
             label="Roll No*"
@@ -513,7 +527,14 @@ const EditPersonalInfo = (props) => {
             onChange={disciplineKeyStrockHandler}
             onBlur={disciplineInputBlurHandler}
             helperText={"Enter Discipline"}
-          />
+            select
+          >
+            {disciplineOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             id="outlined-adornment-batch"
             label="Batch*"
@@ -524,7 +545,14 @@ const EditPersonalInfo = (props) => {
             onChange={batchKeyStrockHandler}
             onBlur={batchInputBlurHandler}
             helperText={'e.g.:"2020"'}
-          />
+            select
+          >
+            {classOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <FormControl
             error={categoryOfAdmissionIsError && true}
             variant="outlined"
@@ -608,6 +636,57 @@ const EditPersonalInfo = (props) => {
             helperText={"Enter Address"}
           />
           <TextField
+            id="outlined-multiline-flexible-residentialProvince"
+            label="Province*"
+            error={residentialProvinceIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={residentialProvinceInputValue}
+            // onChange={residentialProvinceKeyStrockHandler}
+            onBlur={residentialProvinceInputBlurHandler}
+            onChange={(event) => {
+              residentialProvinceKeyStrockHandler(event);
+              residentialCityKeyStrockHandler({ target: { value: "" } });
+              residentialDistrictKeyStrockHandler({ target: { value: "" } });
+            }}
+            helperText={'e.g: "Sindh"'}
+            select
+          >
+            {provinceOptions.map((option) => (
+              <MenuItem key={option.name} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-multiline-flexible-residentialCity"
+            label="City*"
+            error={residentialCityIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={residentialCityInputValue}
+            onChange={(event) => {
+              residentialCityKeyStrockHandler(event);
+              residentialDistrictKeyStrockHandler({ target: { value: "" } });
+            }}
+            onBlur={residentialCityInputBlurHandler}
+            helperText={
+              residentialProvinceInputValue.length < 1
+                ? "Select province first"
+                : 'e.g: "Select your city"'
+            }
+            select
+            disabled={residentialProvinceInputValue.length < 1 ? true : false}
+          >
+            {cityOptions
+              .filter((city) => city.province === residentialProvinceInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
+          <TextField
             id="outlined-multiline-flexible-residentialDistrict"
             label="District*"
             error={residentialDistrictIsError && true}
@@ -616,30 +695,22 @@ const EditPersonalInfo = (props) => {
             value={residentialDistrictInputValue}
             onChange={residentialDistrictKeyStrockHandler}
             onBlur={residentialDistrictInputBlurHandler}
-            helperText={'e.g: "Karachi-South"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-residentialCity"
-            label="City*"
-            error={residentialCityIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={residentialCityInputValue}
-            onChange={residentialCityKeyStrockHandler}
-            onBlur={residentialCityInputBlurHandler}
-            helperText={'e.g: "Karachi"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-residentialProvince"
-            label="Province*"
-            error={residentialProvinceIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={residentialProvinceInputValue}
-            onChange={residentialProvinceKeyStrockHandler}
-            onBlur={residentialProvinceInputBlurHandler}
-            helperText={'e.g: "Sindh"'}
-          />
+            helperText={
+              residentialCityInputValue.length < 1
+                ? "Select city first"
+                : 'e.g: "Select your district"'
+            }
+            select
+            disabled={residentialCityInputValue.length < 1 ? true : false}
+          >
+            {districtOptions
+              .filter((district) => district.city === residentialCityInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
         </div>
         <div className={classes.headingDiv}>
           <h2>Permanent Address</h2>
@@ -660,6 +731,56 @@ const EditPersonalInfo = (props) => {
             helperText={"Enter Address"}
           />
           <TextField
+            id="outlined-multiline-flexible-permanentProvince"
+            label="Province*"
+            error={permanentProvinceIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={permanentProvinceInputValue}
+            onBlur={permanentProvinceInputBlurHandler}
+            onChange={(event) => {
+              permanentProvinceKeyStrockHandler(event);
+              permanentCityKeyStrockHandler({ target: { value: "" } });
+              permanentDistrictKeyStrockHandler({ target: { value: "" } });
+            }}
+            helperText={'e.g: "Sindh"'}
+            select
+          >
+            {provinceOptions.map((option) => (
+              <MenuItem key={option.name} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-multiline-flexible-permanentCity"
+            label="City*"
+            error={permanentCityIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={permanentCityInputValue}
+            onChange={(event) => {
+              permanentCityKeyStrockHandler(event);
+              permanentDistrictKeyStrockHandler({ target: { value: "" } });
+            }}
+            onBlur={permanentCityInputBlurHandler}
+            helperText={
+              permanentProvinceInputValue.length < 1
+                ? "Select province first"
+                : 'e.g: "Select your city"'
+            }
+            select
+            disabled={permanentProvinceInputValue.length < 1 ? true : false}
+          >
+            {cityOptions
+              .filter((city) => city.province === permanentProvinceInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
+          <TextField
             id="outlined-multiline-flexible-permanentDistrict"
             label="District*"
             error={permanentDistrictIsError && true}
@@ -668,30 +789,22 @@ const EditPersonalInfo = (props) => {
             value={permanentDistrictInputValue}
             onChange={permanentDistrictKeyStrockHandler}
             onBlur={permanentDistrictInputBlurHandler}
-            helperText={'e.g: "Karachi-South"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-permanentCity"
-            label="City*"
-            error={permanentCityIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={permanentCityInputValue}
-            onChange={permanentCityKeyStrockHandler}
-            onBlur={permanentCityInputBlurHandler}
-            helperText={'e.g: "Karachi"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-permanentProvince"
-            label="Province*"
-            error={permanentProvinceIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={permanentProvinceInputValue}
-            onChange={permanentProvinceKeyStrockHandler}
-            onBlur={permanentProvinceInputBlurHandler}
-            helperText={'e.g: "Sindh"'}
-          />
+            helperText={
+              permanentCityInputValue.length < 1
+                ? "Select city first"
+                : 'e.g: "Select your district"'
+            }
+            select
+            disabled={permanentCityInputValue.length < 1 ? true : false}
+          >
+            {districtOptions
+              .filter((district) => district.city === permanentCityInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
         </div>
         <div className={classes.btnDiv}>
           <Button

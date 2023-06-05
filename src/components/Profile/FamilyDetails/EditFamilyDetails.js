@@ -14,6 +14,11 @@ import { userActions } from "../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
+import {
+  cityOptions,
+  districtOptions,
+  provinceOptions,
+} from "../util/SelectInputOptions";
 
 const EditFamilyDetails = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -539,6 +544,57 @@ const EditFamilyDetails = (props) => {
             helperText={"Enter Address"}
           />
           <TextField
+            id="outlined-multiline-flexible-province"
+            label="Province*"
+            error={provinceIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={provinceInputValue}
+            // onChange={residentialProvinceKeyStrockHandler}
+            onBlur={provinceInputBlurHandler}
+            onChange={(event) => {
+              provinceKeyStrockHandler(event);
+              cityKeyStrockHandler({ target: { value: "" } });
+              districtKeyStrockHandler({ target: { value: "" } });
+            }}
+            helperText={'e.g: "Sindh"'}
+            select
+          >
+            {provinceOptions.map((option) => (
+              <MenuItem key={option.name} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-multiline-flexible-city"
+            label="City*"
+            error={cityIsError && true}
+            size="small"
+            className={classes.formInput}
+            value={cityInputValue}
+            onChange={(event) => {
+              cityKeyStrockHandler(event);
+              districtKeyStrockHandler({ target: { value: "" } });
+            }}
+            onBlur={cityInputBlurHandler}
+            helperText={
+              provinceInputValue.length < 1
+                ? "Select province first"
+                : 'e.g: "Select your city"'
+            }
+            select
+            disabled={provinceInputValue.length < 1 ? true : false}
+          >
+            {cityOptions
+              .filter((city) => city.province === provinceInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
+          <TextField
             id="outlined-multiline-flexible-district"
             label="District*"
             error={districtIsError && true}
@@ -547,30 +603,22 @@ const EditFamilyDetails = (props) => {
             value={districtInputValue}
             onChange={districtKeyStrockHandler}
             onBlur={districtInputBlurHandler}
-            helperText={'e.g: "Karachi-South"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-city"
-            label="City*"
-            error={cityIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={cityInputValue}
-            onChange={cityKeyStrockHandler}
-            onBlur={cityInputBlurHandler}
-            helperText={'e.g: "Karachi"'}
-          />
-          <TextField
-            id="outlined-multiline-flexible-province"
-            label="Province*"
-            error={provinceIsError && true}
-            size="small"
-            className={classes.formInput}
-            value={provinceInputValue}
-            onChange={provinceKeyStrockHandler}
-            onBlur={provinceInputBlurHandler}
-            helperText={'e.g: "Sindh"'}
-          />
+            helperText={
+              cityInputValue.length < 1
+                ? "Select city first"
+                : 'e.g: "Select your district"'
+            }
+            select
+            disabled={cityInputValue.length < 1 ? true : false}
+          >
+            {districtOptions
+              .filter((district) => district.city === cityInputValue)
+              .map((option) => (
+                <MenuItem key={option.name} value={option.name}>
+                  {option.name}
+                </MenuItem>
+              ))}
+          </TextField>
         </div>
         <div className={classes.headingDiv}>
           <h2>Father/Guardian Details</h2>

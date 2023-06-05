@@ -1,86 +1,60 @@
 import classes from "./Education.module.css";
-import { Fragment, useState } from "react";
-import EditEducation from "./EditEducation";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../../../store/userSlice";
-import { BACKEND_DOMAIN } from "../../../../config";
 import useLoader from "../../../../Hooks/UseLoader";
-import { toast } from "react-toastify";
+import { BACKEND_DOMAIN } from "../../../../config";
+import { useSelector } from "react-redux";
 
 const Education = (props) => {
+  const { detailArr, educationName } = props;
   const { LoadingComponent, loader, handleLoader } = useLoader();
-
   const token = useSelector((state) => state.user.user.token);
-  const dispatch = useDispatch();
-  const { detailArr, index } = props;
-  const [editEducation, setEditEducation] = useState(false);
-  const setEditEducationHandler = (value) => {
-    setEditEducation(value);
-  };
-  const deleteEducationHandler = async () => {
-    try {
-      handleLoader(true);
-      const res = await fetch(`${BACKEND_DOMAIN}/delete-education`, {
-        method: "POST",
+
+  const handleOpenMarksheet = (marksheetName) => {
+    handleLoader(true);
+    fetch(
+      `${BACKEND_DOMAIN}/marksheet?marksheetName=${marksheetName}&educationName=${educationName}`,
+      {
         headers: {
           Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ index: index }),
-      });
-      if (res.status !== 201) {
-        //here show an error through notification
-        const resData = await res.json();
-        toast.error(resData.message);
-        return;
       }
-      const resData = await res.json();
-      //here show success msg through notification
-      dispatch(
-        userActions.updateUserData({
-          ...resData.updatedUserData,
-        })
-      );
-      toast.success(resData.message);
-
-      handleLoader(false);
-    } catch (error) {
-      console.log(error);
-      handleLoader(false);
-      toast.error("education deletion failed!");
-      throw new Error("education deletion failed!");
-    }
+    )
+      .then((res) => res.blob())
+      .then((blobData) => URL.createObjectURL(blobData))
+      .then((fileUrl) => {
+        handleLoader(false);
+        window.open(fileUrl);
+      })
+      .catch((error) => {
+        handleLoader(false);
+        console.log(error);
+      });
   };
+
   return (
-    <Fragment>
+    <div className={classes.container}>
       {loader && LoadingComponent}
-      {editEducation ? (
-        <EditEducation index={index} setIsEdit={setEditEducationHandler} />
-      ) : (
-        <div className={classes.container}>
-          <div className={classes.listDiv}>
-            {detailArr.map((item, index) => {
-              return (
-                <div key={index} className={classes.itemDiv}>
-                  <h5>{item.heading}: </h5>
-                  <p>{item.value}</p>
-                </div>
-              );
-            })}
+      {detailArr.map((item, index) => {
+        return (
+          <div key={index} className={`${classes.infoDiv}`}>
+            <h5>{item.heading} </h5>
+            <p
+              className={
+                item.heading === "Marksheet" ? classes.marksheetLink : null
+              }
+              onClick={
+                item.heading === "Marksheet"
+                  ? () => handleOpenMarksheet(item.value)
+                  : null
+              }
+            >
+              {item.heading === "Marksheet" && item.value
+                ? item.value.split("-")[1]
+                : item.value}
+            </p>
           </div>
-          <div className={classes.iconDiv}>
-            <button type="button" onClick={() => setEditEducationHandler(true)}>
-              <EditOutlinedIcon />
-            </button>
-            <button type="button" onClick={deleteEducationHandler}>
-              <DeleteForeverOutlinedIcon />
-            </button>
-          </div>
-        </div>
-      )}
-    </Fragment>
+        );
+      })}
+    </div>
   );
 };
 export default Education;

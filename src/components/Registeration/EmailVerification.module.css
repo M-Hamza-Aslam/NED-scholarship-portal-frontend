@@ -1,0 +1,62 @@
+.innerDiv {
+  margin-top: 5.7rem;
+  width: 75%;
+  margin-bottom: 5rem;
+}
+.innerDiv > h2 {
+  font-weight: 600;
+  font-size: 22px;
+}
+.innerDiv > p {
+  margin-top: 0px;
+  font-size: 13px;
+}
+.formInput {
+  margin: 2rem 0 4rem !important;
+}
+.submitDiv {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.resendBtn {
+  color: #1565c0;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline;
+}
+.resendBtn:hover {
+  color: #1b7dee;
+}
+.submitBtn {
+  width: 50%;
+  margin: 2rem 0 !important;
+  height: 50px;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  background-image: var(--primaryGradientColor) !important;
+}
+@media screen and (max-width: 712px) {
+  .innerDiv {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .submitDiv {
+    align-items: center;
+  }
+  .submitBtn {
+    width: 100%;
+    font-size: 14px !important;
+  }
+  .submitDiv > p {
+    font-size: 12px;
+  }
+  .resendBtn {
+    font-size: 12px;
+  }
+}

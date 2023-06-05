@@ -16,6 +16,9 @@ const userInitialState = {
     education: {
       hasFetched: false,
       educationalDetails: [],
+      matric: {},
+      intermediate: {},
+      bachelor: {},
       documents: [],
     },
     dependantDetails: {
@@ -27,6 +30,7 @@ const userInitialState = {
       scholarshipList: [],
     },
   },
+  isVerified: false,
 };
 
 const userSlice = createSlice({

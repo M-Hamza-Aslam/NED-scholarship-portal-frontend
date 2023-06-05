@@ -21,6 +21,7 @@ import UserDetails from "./components/Admin/Users/UserDetails";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
 import { adminActions } from "./store/adminSlice";
 import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
+import EmailVerification from "./components/Registeration/EmailVerification";
 // import UserProfile from "./components/Admin/Users/Profile/UserProfile";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
@@ -49,6 +50,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isVerified = useSelector((state) => state.user.user.isVerified);
   let status = useSelector((state) => state.user.user.userRole);
   const [loading, setLoading] = useState(false);
 
@@ -78,11 +80,14 @@ function App() {
           navigate("/auth/login");
         }
         const resData = await res.json();
+
+        localStorage.setItem("token", resData.token);
+
         // add data in redux store.
 
         const userData = {
           _id: resData.userId,
-          token: token,
+          token: resData.token,
           ...resData.userDetails,
         };
 
@@ -93,7 +98,6 @@ function App() {
           dispatch(userActions.updateUserData(userData));
         }
         // setting time to delete token from localstorage
-        const timeout = expirationTime - Date.now();
         setTimeout(() => {
           localStorage.removeItem("token");
           if (userData.userRole === "admin") {
@@ -102,8 +106,12 @@ function App() {
             dispatch(userActions.clearUserData());
           }
           navigate("/auth/login");
-        }, timeout);
+        }, 3600000);
         setLoading(false);
+
+        if (userData.userRole === "student" && userData.isVerified === false) {
+          navigate("/auth/verify-email");
+        }
       } else {
         localStorage.removeItem("token");
         if (userRole === "admin") {
@@ -177,6 +185,10 @@ function App() {
           ) : status === "student" ? (
             <Routes>
               <Route path="/" element={<Landing />} />
+              <Route path="/auth/*" element={<Registeration />}>
+                <Route path="verify-email" element={<EmailVerification />} />
+              </Route>
+
               <Route path="/scholarship-list" element={<ScholarshipList />} />
               <Route
                 path="/applied-scholarship-list"

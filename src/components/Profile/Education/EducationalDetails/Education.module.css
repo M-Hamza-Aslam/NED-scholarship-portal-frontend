@@ -1,35 +1,35 @@
 .container {
-  padding: 1rem 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
-.itemDiv {
-  display: flex;
-  align-items: center;
+.infoDiv {
+  flex: 0 0 33.33%;
+  margin-bottom: 2rem;
 }
-.itemDiv > h5 {
-  margin: 0 5px 0 0;
-}
-.itemDiv > p {
-  font-size: 14px;
+.infoDiv > h5 {
   margin: 0;
 }
-.iconDiv > button {
-  background: none;
-  border: none;
+.infoDiv > p {
+  margin: 0;
+  font-size: 14px;
+}
+.marksheetLink {
+  text-decoration: underline;
+  color: blue;
   cursor: pointer;
 }
-.iconDiv svg {
-  font-size: 25px;
-  margin-right: 1rem;
+@media screen and (max-width: 900px) {
+  .infoDiv {
+    flex: 0 0 50%;
+  }
+}
+@media screen and (max-width: 650px) {
+  .infoDiv {
+    flex: 0 0 100%;
+  }
 }
 @media screen and (max-width: 500px) {
-  .iconDiv {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1.5rem;
-  }
   .container {
     display: block;
   }

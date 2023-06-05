@@ -13,9 +13,11 @@ import { Link } from "react-router-dom";
 import { postApplyScholarship } from "../../../api";
 import { toast } from "react-toastify";
 import { userActions } from "../../../store/userSlice";
+import { TextField } from "@mui/material";
 
 const ApplyForm = ({ message, data, canApply }) => {
   const [open, setOpen] = useState(false);
+  const [additionalReqs, setAdditionalReqs] = useState({});
   const auth = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
@@ -31,8 +33,23 @@ const ApplyForm = ({ message, data, canApply }) => {
     toast.error(message);
   };
 
-  const applyScholarshipHandler = async () => {
-    const success = await postApplyScholarship(data._id, auth.token);
+  const setAdditionalReqsHandler = (event) => {
+    setAdditionalReqs((prevState) => ({
+      ...prevState,
+      [event.target.name.replaceAll(" ", "")]:
+        event.target.files || event.target.value,
+    }));
+  };
+
+  const applyScholarshipHandler = async (event) => {
+    event.preventDefault();
+    console.log(additionalReqs);
+    return;
+    const success = await postApplyScholarship(
+      data._id,
+      auth.token,
+      additionalReqs
+    );
     if (success) {
       dispatch(
         userActions.updateUserData({
@@ -65,8 +82,9 @@ const ApplyForm = ({ message, data, canApply }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
+        className={classes["apply-form"]}
       >
-        <div className={classes.dialog}>
+        <form onSubmit={applyScholarshipHandler} className={classes.dialog}>
           <DialogTitle className={classes.title} id="responsive-dialog-title">
             <h1>Apply for {data.title}?</h1>
             <hr />
@@ -83,7 +101,42 @@ const ApplyForm = ({ message, data, canApply }) => {
                 the scholarship.
               </p>
             </DialogContentText>
+
+            <div className={classes["other-fields"]}>
+              <h1>Other Requirements</h1>
+              {data.otherRequirements.map((req) =>
+                req.type === "file" ? (
+                  <TextField
+                    type={req.type}
+                    id={req.label}
+                    label={req.label}
+                    variant="outlined"
+                    InputLabelProps={{ shrink: true }}
+                    required={req.required}
+                    inputProps={{
+                      accept:
+                        req.validation === "pdf" ? "application/pdf" : "all",
+                    }}
+                    name={req.label}
+                    onChange={setAdditionalReqsHandler}
+                  />
+                ) : (
+                  <TextField
+                    type={req.type}
+                    id={req.label}
+                    label={req.label}
+                    variant="outlined"
+                    required={req.required}
+                    multiline={req.validation === "multiline"}
+                    rows="3"
+                    name={req.label}
+                    onChange={setAdditionalReqsHandler}
+                  />
+                )
+              )}
+            </div>
           </DialogContent>
+
           <DialogActions>
             <Button sx={{ color: "#0f2d25" }} autoFocus onClick={handleClose}>
               Disagree
@@ -99,13 +152,14 @@ const ApplyForm = ({ message, data, canApply }) => {
                   borderColor: "#0f2d25",
                 },
               }}
-              onClick={applyScholarshipHandler}
+              // onClick={applyScholarshipHandler}
+              type="submit"
               autoFocus
             >
               Agree
             </Button>
           </DialogActions>
-        </div>
+        </form>
       </Dialog>
     </Fragment>
   );

@@ -1,0 +1,49 @@
+.formInput {
+  width: 50%;
+}
+.fullWidth {
+  width: 100%;
+}
+.imageInput {
+  border: 1px solid rgb(192, 192, 192);
+  border-radius: 5px;
+  /* flex: 0 0 60%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  /* padding: 2rem 0; */
+  cursor: pointer;
+}
+.imageInput > img {
+  object-fit: contain;
+}
+.imageInput > p {
+  margin: 0;
+  color: blue;
+}
+.imageInput > svg {
+  font-size: 3rem;
+}
+.error {
+  color: #db2f2f !important;
+}
+.addBtn {
+  margin-bottom: 1rem !important;
+  background-image: var(--primaryGradientColor) !important;
+}
+.btnDiv > button {
+  margin: 0 1rem 1rem 0;
+}
+.submitDiv {
+  background-image: var(--primaryGradientColor) !important;
+}
+.cencelDiv {
+  color: #0f2d25 !important;
+  border-color: #0f2d25 !important;
+}
+.cencelDiv:hover {
+  border-color: #0f2d25 !important;
+}
