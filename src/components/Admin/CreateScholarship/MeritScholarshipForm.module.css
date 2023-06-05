@@ -30,6 +30,10 @@
 .error {
   color: #db2f2f !important;
 }
+.addBtn {
+  margin-bottom: 1rem !important;
+  background-image: var(--primaryGradientColor) !important;
+}
 .btnDiv > button {
   margin: 0 1rem 1rem 0;
 }
