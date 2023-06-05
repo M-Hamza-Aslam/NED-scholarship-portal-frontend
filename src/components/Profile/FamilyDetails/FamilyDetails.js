@@ -69,9 +69,9 @@ const FamilyDetails = () => {
       heading: "Residential Address",
       value: userData.familyDetails.address,
     },
-    { heading: "District", value: userData.familyDetails.district },
-    { heading: "City", value: userData.familyDetails.city },
     { heading: "Province", value: userData.familyDetails.province },
+    { heading: "City", value: userData.familyDetails.city },
+    { heading: "District", value: userData.familyDetails.district },
   ];
   const familyDetailArr = [
     { heading: "No. of Earners", value: userData.familyDetails.noOfEarners },

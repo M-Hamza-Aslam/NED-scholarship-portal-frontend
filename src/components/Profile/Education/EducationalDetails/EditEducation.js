@@ -1,6 +1,6 @@
 import classes from "./EditEducation.module.css";
 import useInput from "../../../../Hooks/UseInput.js";
-import { Button, TextField } from "@mui/material";
+import { Button, MenuItem, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../../config";
@@ -8,6 +8,10 @@ import useLoader from "../../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { MuiFileInput } from "mui-file-input";
+import {
+  classOptions,
+  meritPositionOptions,
+} from "../../util/SelectInputOptions";
 
 const EditEducation = (props) => {
   const { setIsEdit, educationName } = props;
@@ -113,8 +117,9 @@ const EditEducation = (props) => {
     inputBlurHandler: totalMarksCGPAInputBlurHandler,
     reset: resetTotalMarksCGPAInput,
   } = useInput(educationalDetailsObj.totalMarksCGPA || "", (value) => {
-    const Regex = /^[0-9]+$/;
-    return Regex.test(value.trim());
+    const RegexMarks = /^[0-9]+$/;
+    const RegexCGPA = /^\d\.\d{1}$/;
+    return RegexMarks.test(value.trim()) || RegexCGPA.test(value.trim());
   });
   const {
     value: obtainedMarksCGPAInputValue,
@@ -124,8 +129,13 @@ const EditEducation = (props) => {
     inputBlurHandler: obtainedMarksCGPAInputBlurHandler,
     reset: resetObtainedMarksCGPAInput,
   } = useInput(educationalDetailsObj.obtainedMarksCGPA || "", (value) => {
-    const Regex = /^[0-9]+$/;
-    return Regex.test(value.trim());
+    const RegexMarks = /^[0-9]+$/;
+    const RegexCGPA = /^\d\.\d{1}$/;
+    const isLessThanTotal = +value.trim() <= +totalMarksCGPAInputValue;
+    return (
+      isLessThanTotal &&
+      (RegexMarks.test(value.trim()) || RegexCGPA.test(value.trim()))
+    );
   });
   const {
     value: percentageInputValue,
@@ -136,7 +146,7 @@ const EditEducation = (props) => {
     reset: resetPercentageInput,
   } = useInput(educationalDetailsObj.percentage || "", (value) => {
     const Regex = /^[0-9]+$/;
-    return Regex.test(value.trim()) && value.trim() <= 100;
+    return Regex.test(value) && value <= 100;
   });
   const {
     value: meritPositionInputValue,
@@ -256,6 +266,16 @@ const EditEducation = (props) => {
   return (
     <form onSubmit={formSubmitHandler}>
       {loader && LoadingComponent}
+      <MuiFileInput
+        className={classes.fileInput}
+        size="small"
+        value={file.value}
+        onChange={handleFileChange}
+        placeholder="Upload Marksheet"
+        helperText={`File Types: .pdf,.docx "`}
+        inputProps={{ accept: ".pdf , .docx" }}
+        error={file.error}
+      />
       <div className={classes.inputContainer}>
         <TextField
           id="outlined-adornment-class"
@@ -302,7 +322,20 @@ const EditEducation = (props) => {
           className={classes.formInput}
           value={obtainedMarksCGPAInputValue}
           onChange={obtainedMarksCGPAKeyStrockHandler}
-          onBlur={obtainedMarksCGPAInputBlurHandler}
+          onBlur={(event) => {
+            obtainedMarksCGPAInputBlurHandler(event);
+            if (!obtainedMarksCGPAIsError || !totalMarksCGPAIsError) {
+              percentageKeyStrockHandler({
+                target: {
+                  value: Math.round(
+                    (+obtainedMarksCGPAInputValue * 100) /
+                      +totalMarksCGPAInputValue
+                  ),
+                },
+              });
+              percentageInputBlurHandler();
+            }
+          }}
           helperText={`e.g.:"665"`}
         />
         <TextField
@@ -316,6 +349,7 @@ const EditEducation = (props) => {
           onChange={percentageKeyStrockHandler}
           onBlur={percentageInputBlurHandler}
           helperText={`e.g.:"85"`}
+          disabled
         />
         <TextField
           id="outlined-adornment-meritPosition"
@@ -327,17 +361,14 @@ const EditEducation = (props) => {
           onChange={meritPositionKeyStrockHandler}
           onBlur={meritPositionInputBlurHandler}
           helperText={`e.g.:"First"`}
-        />
-        <MuiFileInput
-          className={classes.formInput}
-          size="small"
-          value={file.value}
-          onChange={handleFileChange}
-          placeholder="Upload Marksheet"
-          helperText={`File Types: .pdf,.docx "`}
-          inputProps={{ accept: ".pdf , .docx" }}
-          error={file.error}
-        />
+          select
+        >
+          {meritPositionOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
       </div>
       <div className={classes.btnDiv}>
         <Button type="submit" variant="contained" className={classes.submitDiv}>

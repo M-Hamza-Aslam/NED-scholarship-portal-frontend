@@ -1,6 +1,6 @@
 import classes from "./EditBachelor.module.css";
 import useInput from "../../../../../Hooks/UseInput.js";
-import { Button, TextField } from "@mui/material";
+import { Button, MenuItem, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../../../config";
@@ -8,6 +8,11 @@ import useLoader from "../../../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { MuiFileInput } from "mui-file-input";
+import {
+  classOptions,
+  meritPositionOptions,
+  semesterOptions,
+} from "../../../util/SelectInputOptions";
 
 const EditBachelor = (props) => {
   const { setIsEdit } = props;
@@ -123,7 +128,7 @@ const EditBachelor = (props) => {
     inputKeyStrockHandler: totalCGPAKeyStrockHandler,
     inputBlurHandler: totalCGPAInputBlurHandler,
     reset: resetTotalCGPAInput,
-  } = useInput(educationalDetailsObj.totalCGPA || "", (value) => {
+  } = useInput(educationalDetailsObj.totalCGPA || "4.0", (value) => {
     const Regex = /^\d\.\d{1}$/;
     return Regex.test(value.trim());
   });
@@ -136,7 +141,8 @@ const EditBachelor = (props) => {
     reset: resetObtainedCGPAInput,
   } = useInput(educationalDetailsObj.obtainedCGPA || "", (value) => {
     const Regex = /^\d\.\d{1}$/;
-    return Regex.test(value.trim());
+    const isLessThanTotal = value.trim() <= 4.0;
+    return isLessThanTotal && Regex.test(value.trim());
   });
   const {
     value: meritPositionInputValue,
@@ -256,6 +262,16 @@ const EditBachelor = (props) => {
   return (
     <form onSubmit={formSubmitHandler}>
       {loader && LoadingComponent}
+      <MuiFileInput
+        className={classes.fileInput}
+        size="small"
+        value={file.value}
+        onChange={handleFileChange}
+        placeholder="Upload Marksheet"
+        helperText={`File Types: .pdf,.docx "`}
+        inputProps={{ accept: ".pdf , .docx" }}
+        error={file.error}
+      />
       <div className={classes.inputContainer}>
         <TextField
           id="outlined-adornment-class"
@@ -268,7 +284,14 @@ const EditBachelor = (props) => {
           onChange={classKeyStrockHandler}
           onBlur={classInputBlurHandler}
           helperText={`e.g.:"2020"`}
-        />
+          select
+        >
+          {classOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           id="outlined-adornment-seatNo"
           label="Seat No.*"
@@ -292,6 +315,7 @@ const EditBachelor = (props) => {
           onChange={totalCGPAKeyStrockHandler}
           onBlur={totalCGPAInputBlurHandler}
           helperText={`e.g.:"4.0"`}
+          disabled
         />
         <TextField
           id="outlined-adornment-obtainedCGPA"
@@ -316,7 +340,14 @@ const EditBachelor = (props) => {
           onChange={semesterKeyStrockHandler}
           onBlur={semesterInputBlurHandler}
           helperText={`e.g.:"First"`}
-        />
+          select
+        >
+          {semesterOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           id="outlined-adornment-meritPosition"
           label="Merit Position(if any)*"
@@ -327,17 +358,14 @@ const EditBachelor = (props) => {
           onChange={meritPositionKeyStrockHandler}
           onBlur={meritPositionInputBlurHandler}
           helperText={`e.g.:"First"`}
-        />
-        <MuiFileInput
-          className={classes.formInput}
-          size="small"
-          value={file.value}
-          onChange={handleFileChange}
-          placeholder="Upload Marksheet"
-          helperText={`File Types: .pdf,.docx "`}
-          inputProps={{ accept: ".pdf , .docx" }}
-          error={file.error}
-        />
+          select
+        >
+          {meritPositionOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
       </div>
       <div className={classes.btnDiv}>
         <Button type="submit" variant="contained" className={classes.submitDiv}>

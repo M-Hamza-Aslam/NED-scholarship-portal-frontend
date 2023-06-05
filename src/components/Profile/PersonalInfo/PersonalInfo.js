@@ -54,18 +54,18 @@ const PersonalInfo = () => {
       heading: "Address",
       value: userData.personalInfo.residentialAddress,
     },
-    { heading: "District", value: userData.personalInfo.residentialDistrict },
-    { heading: "City", value: userData.personalInfo.residentialCity },
     { heading: "Province", value: userData.personalInfo.residentialProvince },
+    { heading: "City", value: userData.personalInfo.residentialCity },
+    { heading: "District", value: userData.personalInfo.residentialDistrict },
   ];
   const permanentAddressInfoArr = [
     {
       heading: "Address",
       value: userData.personalInfo.permanentAddress,
     },
-    { heading: "District", value: userData.personalInfo.permanentDistrict },
-    { heading: "City", value: userData.personalInfo.permanentCity },
     { heading: "Province", value: userData.personalInfo.permanentProvince },
+    { heading: "City", value: userData.personalInfo.permanentCity },
+    { heading: "District", value: userData.personalInfo.permanentDistrict },
   ];
 
   return (

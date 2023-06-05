@@ -13,13 +13,13 @@ const Intermediate = () => {
   });
 
   const intermediateDetails = [
+    { heading: "Marksheet", value: intermediate.marksheet },
     { heading: "Class/Year", value: intermediate.class },
     { heading: "Seat No.", value: intermediate.seatNo },
     { heading: "Total Max Marks/CGPA", value: intermediate.totalMarksCGPA },
     { heading: "Marks Obtained/CGPA", value: intermediate.obtainedMarksCGPA },
     { heading: "Percentage", value: intermediate.percentage },
     { heading: "Merit Position (if any)", value: intermediate.meritPosition },
-    { heading: "Marksheet", value: intermediate.marksheet },
   ];
 
   return (

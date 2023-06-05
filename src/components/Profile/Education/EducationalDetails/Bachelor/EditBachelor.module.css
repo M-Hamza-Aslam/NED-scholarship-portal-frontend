@@ -1,5 +1,5 @@
 .inputContainer {
-  margin: 2rem 0;
+  margin: 25px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 2.5%;
@@ -7,6 +7,9 @@
 }
 .formInput {
   flex: 0 0 31.5%;
+}
+.fileInput {
+  margin-top: 25px;
 }
 .btnDiv > button {
   margin: 0 1rem 1rem 0;

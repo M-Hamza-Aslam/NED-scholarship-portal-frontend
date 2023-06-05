@@ -13,13 +13,13 @@ const Matric = () => {
   });
 
   const matricDetails = [
+    { heading: "Marksheet", value: matric.marksheet },
     { heading: "Class/Year", value: matric.class },
     { heading: "Seat No.", value: matric.seatNo },
     { heading: "Total Max Marks/CGPA", value: matric.totalMarksCGPA },
     { heading: "Marks Obtained/CGPA", value: matric.obtainedMarksCGPA },
     { heading: "Percentage", value: matric.percentage },
     { heading: "Merit Position (if any)", value: matric.meritPosition },
-    { heading: "Marksheet", value: matric.marksheet },
   ];
 
   return (

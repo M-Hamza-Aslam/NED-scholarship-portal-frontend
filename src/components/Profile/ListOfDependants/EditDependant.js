@@ -1,11 +1,12 @@
 import classes from "./EditDependant.module.css";
 import useInput from "../../../Hooks/UseInput.js";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, MenuItem } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../../store/userSlice";
 import { BACKEND_DOMAIN } from "../../../config";
 import useLoader from "../../../Hooks/UseLoader";
 import { toast } from "react-toastify";
+import { occupationOptions, relationOptions } from "../util/SelectInputOptions";
 
 const EditDependant = (props) => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
@@ -35,7 +36,7 @@ const EditDependant = (props) => {
     inputBlurHandler: nameInputBlurHandler,
     reset: resetNameInput,
   } = useInput(dependantDetails.name || "", (value) => {
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[a-zA-Z]+( [a-zA-Z]+)*$/;
     return nameRegex.test(value.trim());
   });
   const {
@@ -161,7 +162,14 @@ const EditDependant = (props) => {
           onChange={relationKeyStrockHandler}
           onBlur={relationInputBlurHandler}
           helperText={'e.g.:"Son" '}
-        />
+          select
+        >
+          {relationOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           id="outlined-adornment-age"
           label="Age*"
@@ -184,7 +192,14 @@ const EditDependant = (props) => {
           onChange={occupationKeyStrockHandler}
           onBlur={occupationInputBlurHandler}
           helperText={'e.g.:"Student" '}
-        />
+          select
+        >
+          {occupationOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
       </div>
       <div className={classes.btnDiv}>
         <Button type="submit" variant="contained" className={classes.submitDiv}>

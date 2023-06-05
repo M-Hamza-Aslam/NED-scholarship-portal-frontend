@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import useInput from "../../../Hooks/UseInput";
 import { TextField, Button } from "@mui/material";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const MeritScholarshipForm = (props) => {
   const scholarshipDetails = props.scholarshipData || {};
@@ -194,7 +195,7 @@ const MeritScholarshipForm = (props) => {
       const scholarshipData = {
         type: "merit",
         title: titleInputValue,
-        closeDate: Date.parse(closeDate.$d),
+        closeDate: dayjs(closeDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
         matricPercentage: matricPercentageInputValue,
         intermediatePercentage: intermediatePercentageInputValue,
         bachelorCGPA: bachelorCGPAInputValue,

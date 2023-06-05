@@ -13,13 +13,13 @@ const Bachelor = () => {
   });
 
   const bachelorDetails = [
+    { heading: "Marksheet", value: bachelor.marksheet },
     { heading: "Class/Year", value: bachelor.class },
     { heading: "Seat No.", value: bachelor.seatNo },
     { heading: "Semester", value: bachelor.semester },
     { heading: "Total CGPA", value: bachelor.totalCGPA },
     { heading: "Obtained CGPA", value: bachelor.obtainedCGPA },
     { heading: "Merit Position (if any)", value: bachelor.meritPosition },
-    { heading: "Marksheet", value: bachelor.marksheet },
   ];
 
   return (
