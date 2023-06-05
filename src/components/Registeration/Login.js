@@ -97,6 +97,9 @@ const Login = () => {
       if (userRole === "admin") {
         apiEndPoint = `${BACKEND_DOMAIN}/admin/login`;
       }
+      if (userRole === "alumni") {
+        apiEndPoint = `${BACKEND_DOMAIN}/alumni/login`;
+      }
       const res = await fetch(apiEndPoint, {
         method: "POST",
         headers: {
@@ -175,6 +178,11 @@ const Login = () => {
                 value="admin"
                 control={<Radio />}
                 label="Admin"
+              />
+              <FormControlLabel
+                value="alumni"
+                control={<Radio />}
+                label="Alumni"
               />
             </RadioGroup>
           </FormControl>

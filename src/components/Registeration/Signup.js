@@ -7,6 +7,10 @@ import {
   FormControl,
   FormHelperText,
   Button,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useState } from "react";
@@ -21,6 +25,8 @@ const Signup = (props) => {
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const [userRole, setUserRole] = useState("student");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -105,6 +111,11 @@ const Signup = (props) => {
   ) {
     formIsValid = true;
   }
+
+  const handleUserRole = (event) => {
+    setUserRole(event.target.value);
+  };
+
   const formSubmitHandler = async (event) => {
     try {
       event.preventDefault();
@@ -119,15 +130,26 @@ const Signup = (props) => {
         phoneNumber: phoneNumberInputValue,
         email: emailInputValue,
         password: passwordInputValue,
+        userRole,
       };
       handleLoader(true);
-      const res = await fetch(`${BACKEND_DOMAIN}/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAuthData),
-      });
+      if (userRole === "student") {
+        var res = await fetch(`${BACKEND_DOMAIN}/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        });
+      } else {
+        var res = await fetch(`${BACKEND_DOMAIN}/alumni/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userAuthData),
+        });
+      }
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -166,6 +188,25 @@ const Signup = (props) => {
           6 or more.
         </p>
       </div>
+      <FormControl className={classes.formInput}>
+        <FormLabel id="demo-row-radio-buttons-group-label">
+          Select Role
+        </FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+          value={userRole}
+          onChange={handleUserRole}
+        >
+          <FormControlLabel
+            value="student"
+            control={<Radio />}
+            label="Student"
+          />
+          <FormControlLabel value="alumni" control={<Radio />} label="Alumni" />
+        </RadioGroup>
+      </FormControl>
       <form onSubmit={formSubmitHandler}>
         <div className={classes.signupForm}>
           <FormControl

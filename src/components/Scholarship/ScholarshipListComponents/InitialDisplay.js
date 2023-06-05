@@ -17,7 +17,7 @@ const InitialDisplay = ({ title, setFilters }) => {
         {/* <div className={classes["masked-logo"]}>
           <img src={logoMask} alt="Masked Logo" />
         </div> */}
-        <h1>{title}</h1>
+        <h1>{title} </h1>
         <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -73,18 +73,15 @@ const InitialDisplay = ({ title, setFilters }) => {
             <FormControl sx={{ height: "50px !important", maxWidth: "90%" }}>
               <InputLabel
                 sx={{ color: "#7AA09D !important", top: "-3px" }}
-                id="demo-simple-select-label"
+                id="status-select-label"
               >
-                Filter By
+                Filter By Status
               </InputLabel>
               <Select
-                labelId="demo-simple-select-label"
+                labelId="status-select-label"
                 id="demo-simple-select"
-                label="Filter By"
+                label="Filter By Status"
                 className={classes.filter}
-                // value={status}
-                // inputRef={statusRef}
-                // onChange={filterByStatus}
                 onChange={(event) =>
                   setFilters(
                     (prevMap) =>
@@ -95,6 +92,30 @@ const InitialDisplay = ({ title, setFilters }) => {
               >
                 <MenuItem value="active">Active</MenuItem>
                 <MenuItem value="closed">Closed</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ height: "50px !important", maxWidth: "90%" }}>
+              <InputLabel
+                sx={{ color: "#7AA09D !important", top: "-3px" }}
+                id="type-select-label"
+              >
+                Filter By Type
+              </InputLabel>
+              <Select
+                labelId="type-select-label"
+                id="demo-simple-select"
+                label="Filter By Type"
+                className={classes.filter}
+                onChange={(event) =>
+                  setFilters(
+                    (prevMap) =>
+                      new Map(prevMap.set("type", event.target.value))
+                  )
+                }
+                sx={{ maxWidth: "100%" }}
+              >
+                <MenuItem value="merit">Merit</MenuItem>
+                <MenuItem value="need">Need</MenuItem>
               </Select>
             </FormControl>
             {/* <button>SEARCH</button> */}

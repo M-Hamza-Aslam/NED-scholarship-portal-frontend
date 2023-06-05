@@ -5,7 +5,9 @@ import classes from "./Details.module.css";
 const Details = ({ data, image }) => {
   return (
     <div className={classes.details}>
-      <h1>{data.title}</h1>
+      <h1>
+        {data.title} ({data.type})
+      </h1>
 
       <div className={classes.images}>
         <img
@@ -23,22 +25,29 @@ const Details = ({ data, image }) => {
           <div>
             <h3>Eligibility Criteria:</h3>
             <pre className={classes.preText}>{data.eligibilityCriteria}</pre>
-            {/* <ol>
-              <li> Only duly filled Application forms will be entertained.</li>
-              <li>
-                Applicants having a monthly family income equals to or less than
-                Rs. 60,000/- will be eligible to apply.
-              </li>
-              <li>
-                Failure students or who are already availing any other
-                scholarship are not eligible to apply.
-              </li>
-              <li> Incomplete online form will not be entertained.</li>
-              <li>
-                Requests for amendment will not be entertained after submission
-                of online application.
-              </li>
-            </ol> */}
+            <div className={classes["minimum-reqs"]}>
+              <h4>Other Requirements: </h4>
+              {data.type === "merit" ? (
+                <ul>
+                  <li>Minimum CGPA Required: {data?.bachelorCGPA || "-"}</li>
+                  <li>
+                    Minimum Intermediate Percentage Required:{" "}
+                    {data?.intermediatePercentage || "-"}
+                  </li>
+                  <li>
+                    Minimum Matric Percentage Required:{" "}
+                    {data?.matricPercentage || "-"}
+                  </li>
+                </ul>
+              ) : (
+                <ul>
+                  <li>
+                    Maximum Family Income (per person) Allowed:{" "}
+                    {data?.familyIncome || "-"}
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
 
           <div>
