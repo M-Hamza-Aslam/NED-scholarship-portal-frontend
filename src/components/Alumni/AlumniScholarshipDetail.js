@@ -72,7 +72,7 @@ const AlumniScholarshipDetail = () => {
     toast.success(resData.message);
     navigate("/admin/scholarship-list");
   };
-  console.log(data.status);
+
   return (
     <Fragment>
       {editScholarship ? (
