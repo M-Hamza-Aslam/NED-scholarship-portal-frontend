@@ -132,28 +132,23 @@ const Login = () => {
         dispatch(userActions.updateUserData({ userRole: "admin" }));
       } else if (userData.userRole === "student") {
         dispatch(userActions.updateUserData(userData));
-      }else{
+      } else {
         dispatch(userActions.updateUserData(userData));
         dispatch(userActions.updateUserData({ userRole: "alumni" }));
-
       }
       //making loading false
-
-      console.log(resData)
       handleLoader(false);
 
       resetEmailInput();
       resetPasswordInput();
+      console.log(userData);
       if (userData.userRole === "admin") {
         navigate("admin/scholarship-list");
       } else {
-        if (userData.isVerified) 
-          navigate("/profile");
-         else 
-          navigate("/auth/verify-email");
-        
+        if (userData.isVerified) navigate("/profile");
+        else navigate("/auth/verify-email");
+        console.log("Not verify");
       }
-  
     } catch (err) {
       console.log(err);
       toast.error("User login Failed!");

@@ -164,7 +164,6 @@ const Signup = (props) => {
 
       //store token in local storage
       localStorage.setItem("token", resData.token);
-
       // update in redux store.
       const userData = {
         _id: resData.userId,

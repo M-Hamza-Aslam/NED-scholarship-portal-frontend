@@ -11,6 +11,7 @@ import classes from "./UserList.module.css";
 const UserList = () => {
   const scholarshipId = useParams().scholarshipId;
   const token = useSelector((state) => state.admin.admin.token);
+  const role = useSelector((state) => state.user.user.userRole);
   const { data, error, isLoading } = useSWR(
     [
       token ? `/admin/appliedUsersList?scholarshipId=${scholarshipId}` : null,

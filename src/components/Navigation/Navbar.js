@@ -191,7 +191,7 @@ const Navbar = () => {
             <List>
               <ListItem
                 className={
-                  location.pathname !== "/admin/create-scholarship"
+                  location.pathname === "/admin/scholarship-list"
                     ? classes.active
                     : classes.deactive
                 }
@@ -217,6 +217,43 @@ const Navbar = () => {
                       }}
                     >
                       <HomeIcon color="inherit" />
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary="Home"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/admin/alumni-scholarship-list"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <Tooltip title="Alumni Scholarship List">
+                  <ListItemButton
+                    id="admin/alumni-scholarship-list"
+                    onClick={navbarNavigationHandler}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <SchoolIcon color="inherit" />
                     </ListItemIcon>
 
                     <ListItemText
@@ -263,7 +300,7 @@ const Navbar = () => {
                 </Tooltip>
               </ListItem>
             </List>
-          ) : (
+          ) : status === "student" ? (
             <List>
               <ListItem
                 className={
@@ -399,6 +436,117 @@ const Navbar = () => {
                       }}
                     >
                       <TopicIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="My Scholarships"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+            </List>
+          ) : (
+            <List>
+              <ListItem
+                className={
+                  location.pathname === "/profile"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <Tooltip title="Profile">
+                  <ListItemButton
+                    id="profile"
+                    onClick={navbarNavigationHandler}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <ProfileIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Profile"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/alumni/create-scholarship"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <Tooltip title="Request Scholarship">
+                  <ListItemButton
+                    id="alumni/request-scholarship"
+                    onClick={navbarNavigationHandler}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <CreateIcon color="inherit" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Request Scholarship"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <ListItem
+                className={
+                  location.pathname === "/my-scholarship-list"
+                    ? classes.active
+                    : classes.deactive
+                }
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <Tooltip title="My Scholarships">
+                  <ListItemButton
+                    id="my-scholarship-list"
+                    onClick={navbarNavigationHandler}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "inherit",
+                      }}
+                    >
+                      <SchoolIcon color="inherit" />
                     </ListItemIcon>
                     <ListItemText
                       primary="My Scholarships"
