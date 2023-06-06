@@ -245,6 +245,7 @@ const Login = () => {
         </div>
         <div className={classes.submitDiv}>
           <button
+            type="button"
             onClick={ForgotPasswordHandler}
             className={classes.forgotPassBtn}
           >

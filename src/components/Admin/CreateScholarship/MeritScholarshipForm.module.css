@@ -30,9 +30,18 @@
 .error {
   color: #db2f2f !important;
 }
+.requirements {
+  border: 1px solid #b8b4b4;
+  border-radius: 5px;
+  padding: 1rem;
+}
+.requirements > button {
+  margin-top: 1rem;
+}
 .addBtn {
   margin-bottom: 1rem !important;
   background-image: var(--primaryGradientColor) !important;
+  width: fit-content;
 }
 .btnDiv > button {
   margin: 0 1rem 1rem 0;

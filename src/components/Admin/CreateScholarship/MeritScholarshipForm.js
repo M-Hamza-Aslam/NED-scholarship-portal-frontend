@@ -14,10 +14,23 @@ import useInput from "../../../Hooks/UseInput";
 import { TextField, Button } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
+import EditRequirement from "./Requirement/EditRequirement";
+import Requirement from "./Requirement/Requirement";
+
 const MeritScholarshipForm = (props) => {
   const scholarshipDetails = props.scholarshipData || {};
   const isCreating = scholarshipDetails.title ? false : true;
   //hooks and variables
+
+  //more Requirement
+  const [isShowNewReqForm, setIsShowNewReqForm] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(true);
+  const [requirements, setRequirements] = useState(
+    scholarshipDetails.otherRequirements || []
+  );
+
+  //more Requirement
+
   const [closeDate, setCloseDate] = useState(
     scholarshipDetails.closeDate
       ? dayjs(scholarshipDetails.closeDate.slice(0, -1))
@@ -202,6 +215,7 @@ const MeritScholarshipForm = (props) => {
         description: descriptionInputValue,
         eligibilityCriteria: eligibilityInputValue,
         instructions: instructionsInputValue,
+        otherRequirements: requirements,
       };
       handleLoader(true);
       //send json data to to server
@@ -276,6 +290,7 @@ const MeritScholarshipForm = (props) => {
         };
       });
       setCloseDate(null);
+      setRequirements([]);
       if (!isCreating) {
         navigate("/admin/scholarship-list");
       }
@@ -429,8 +444,53 @@ const MeritScholarshipForm = (props) => {
         onBlur={instructionsInputBlurHandler}
         helperText={"Enter Instructions"}
       />
+      {/* More Requirements */}
+      <div className={classes.requirements}>
+        <h3>Requirements</h3>
+        <hr></hr>
+        {requirements.map((req, index) => {
+          return (
+            <Requirement
+              key={index}
+              index={index}
+              reqDetail={req}
+              updateRequirements={setRequirements}
+              setIsSubmit={setIsSubmit}
+            />
+          );
+        })}
+        {isShowNewReqForm ? (
+          <EditRequirement
+            index={-1}
+            setIsEdit={() => {
+              setIsShowNewReqForm(false);
+              setIsSubmit(true);
+            }}
+            reqDetail={{ label: "", type: "", validation: "", required: true }}
+            updateRequirements={setRequirements}
+          />
+        ) : (
+          <Button
+            variant="contained"
+            startIcon={<AddCircleOutlineOutlinedIcon />}
+            onClick={() => {
+              setIsShowNewReqForm(true);
+              setIsSubmit(false);
+            }}
+            className={classes.addBtn}
+          >
+            New Requirement
+          </Button>
+        )}
+      </div>
+      {/* More Requirements */}
       <div className={classes.btnDiv}>
-        <Button type="submit" variant="contained" className={classes.submitDiv}>
+        <Button
+          type="submit"
+          variant="contained"
+          className={classes.submitDiv}
+          disabled={!isSubmit}
+        >
           {isCreating ? "Create Scholarship" : "Update Scholarship"}
         </Button>
         <Button
