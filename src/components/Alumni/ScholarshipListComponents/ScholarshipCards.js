@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-
-import classes from "./ScholarshipCards.module.css";
 import { postScholarshipReport } from "../../../api";
 import { useSelector } from "react-redux";
 
+import classes from "./ScholarshipCards.module.css";
+
 const ScholarshipCards = ({ currentItems }) => {
-  const location = useLocation();
-  const userRole = location.pathname === "/scholarship-list" ? "user" : "admin";
-  const token = useSelector((state) => state[userRole][userRole].token);
+  const userRole = useSelector((state) => state.user.user.userRole);
+  const token = useSelector((state) =>
+    userRole === "admin" ? state.admin.admin.token : state.user.user.token
+  );
 
   const viewReportHandler = async (id) => {
     const report = await postScholarshipReport(id, token);
@@ -60,12 +61,21 @@ const ScholarshipCards = ({ currentItems }) => {
             </Link>
 
             {userRole === "admin" && (
-              <a
-                target="_blank"
-                onClick={() => viewReportHandler(scholarship._id)}
-              >
-                <span>View Report</span>
-              </a>
+              <Fragment>
+                <a
+                  target="_blank"
+                  onClick={() => viewReportHandler(scholarship._id)}
+                >
+                  <span>View Report</span>
+                </a>
+                <Link
+                  id={classes.author}
+                  target="_blank"
+                  to={`/alumni-profile/usman`}
+                >
+                  Created By: <span>Muhammad Usman</span>
+                </Link>
+              </Fragment>
             )}
           </div>
         </div>

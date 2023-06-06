@@ -15,7 +15,7 @@ const ScholarshipList = () => {
   const token = useSelector((state) => state.user.user.token);
 
   const { data, error, isLoading } = useSWR(
-    [token ? `/featured-scholarship-list?qty=6` : null, token],
+    [`/featured-scholarship-list?qty=9`, token],
     ([url, token]) => globalFetcher(url, token)
   );
 

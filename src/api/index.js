@@ -18,8 +18,12 @@ export const imgFetcher = (relativeURL, token) =>
     .then((res) => res.blob())
     .then((blobData) => URL.createObjectURL(blobData));
 
-export const postApplyScholarship = async (scholarshipId, token) => {
-  const body = JSON.stringify({ scholarshipId });
+export const postApplyScholarship = async (
+  scholarshipId,
+  token,
+  additionalReqs
+) => {
+  const body = JSON.stringify({ scholarshipId, additionalReqs });
   const response = await fetch(`${baseURL}/apply-scholarship`, {
     method: "POST",
     headers: getHeaders(token),
@@ -50,6 +54,18 @@ export const postChangeUserStatus = async (
     headers: getHeaders(token),
     body,
   });
-  // const responseData = await response.json();
-  if (response.ok) return true;
+
+  return response;
+};
+
+export const postScholarshipReport = async (id, token) => {
+  const body = JSON.stringify({ id });
+  const response = await fetch(`${baseURL}/scholarship-report`, {
+    method: "POST",
+    headers: getHeaders(token),
+    body,
+  });
+
+  const responseData = await response.json();
+  if (response.ok) return responseData;
 };

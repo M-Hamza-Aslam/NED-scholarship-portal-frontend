@@ -1,35 +1,32 @@
 import React, { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getScholarshipList, globalFetcher, imgFetcher } from "../../api";
 import { userActions } from "../../store/userSlice";
 import InitialDisplay from "./ScholarshipDetailComponents/InitialDisplay";
 import Details from "./ScholarshipDetailComponents/Details";
-import ApplyForm from "./ScholarshipDetailComponents/ApplyForm";
 import { CircularProgress } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
+import { Button } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import classes from "./ScholarshipDetail.module.css";
 import buttonClasses from "./ScholarshipDetailComponents/ApplyForm.module.css";
 import CreateScholarship from "../Admin/CreateScholarship/CreateScholarship";
 import { BACKEND_DOMAIN } from "../../config";
 import { toast } from "react-toastify";
-import { Button } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-const ScholarshipDetail = () => {
-  const location = useLocation();
-  const dispatch = useDispatch();
+const AlumniScholarshipDetail = () => {
   const navigate = useNavigate();
   const { scholarshipId } = useParams();
-  const auth = useSelector((state) => state.user.user);
-  const userRole =
-    location.pathname.split("/")[1] === "scholarship-list" ? "user" : "admin";
-  const token = useSelector((state) => state[userRole][userRole].token);
-  const [canApply, setCanApply] = useState(false);
-  const [message, setMessage] = useState("");
+  const userRole = useSelector((state) => state.user.user.userRole);
+  const token = useSelector((state) =>
+    userRole === "admin" ? state.admin.admin.token : state.user.user.token
+  );
   const [editScholarship, setEditScholarshiop] = useState(false);
 
   const { data, error, isLoading } = useSWR(
@@ -46,49 +43,6 @@ const ScholarshipDetail = () => {
     ([url, token]) => imgFetcher(url, token)
   );
 
-  useEffect(() => {
-    if (!auth?.scholarship?.hasFetched) {
-      getScholarshipList(token).then(({ appliedScholarships }) => {
-        appliedScholarships &&
-          dispatch(
-            userActions.updateUserData({
-              scholarship: {
-                hasFetched: true,
-                scholarshipList: appliedScholarships,
-              },
-            })
-          );
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!auth?.scholarship?.hasFetched) {
-      return;
-    }
-
-    if (auth.profileStatus !== 100) {
-      setMessage("Please make sure your profile is 100% completed.");
-      return;
-    }
-
-    const hasApplied = auth?.scholarship?.scholarshipList.findIndex(
-      (scholarship) => scholarship.scholarshipId === scholarshipId
-    );
-
-    const hasBeenApproved = auth?.scholarship?.scholarshipList.findIndex(
-      (scholarship) => scholarship.status === "approved"
-    );
-
-    if (hasApplied !== -1) {
-      setCanApply(false);
-      setMessage("You've already applied on this scholarship!");
-    } else if (hasBeenApproved !== -1) {
-      setCanApply(false);
-      setMessage("You've already been approved on a scholarship!");
-    } else setCanApply(true);
-  }, [auth?.scholarship]);
-
   if (!data) {
     return (
       <div className="loading">
@@ -96,6 +50,8 @@ const ScholarshipDetail = () => {
       </div>
     );
   }
+
+  const scholarshipStatusChangeHandler = () => {};
 
   const deleteScholarshipHandler = async () => {
     const res = await fetch(
@@ -130,27 +86,40 @@ const ScholarshipDetail = () => {
         <div className={classes["scholarship-detail"]}>
           <InitialDisplay title="Scholarship Details" />
           <Details data={data} image={imgData} />
-          {userRole === "user" ? (
-            data.status.toLowerCase() === "active" && (
-              <ApplyForm message={message} data={data} canApply={canApply} />
-            )
-          ) : (
-            <div className={buttonClasses["apply-button"]}>
-              <button
-                onClick={() => navigate(`/admin/user-list/${data._id}`)}
-                className={buttonClasses.btn}
-              >
-                <span className={buttonClasses["btn-text"]}>
-                  See User List <EastIcon sx={{ marginLeft: "5px" }} />
-                </span>
-              </button>
-              {/* <button onClick={() => setEditScholarshiop(true)}>
-                Edit scholarship
-              </button>
-              <button onClick={deleteScholarshipHandler}>
-                Delete scholarship
-              </button> */}
+
+          <div className={buttonClasses["apply-button"]}>
+            <button
+              onClick={() => navigate(`/${userRole}/user-list/${data._id}`)}
+              className={buttonClasses.btn}
+            >
+              <span className={buttonClasses["btn-text"]}>
+                See User List <EastIcon sx={{ marginLeft: "5px" }} />
+              </span>
+            </button>
+            {userRole === "admin" && (
               <div className={classes.btnDiv}>
+                {data.status === "awaiting" && (
+                  <Fragment>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      startIcon={<DoneOutlineIcon />}
+                      className={classes.submitDiv}
+                      onClick={() => scholarshipStatusChangeHandler(true)}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outlined"
+                      startIcon={<CloseOutlinedIcon />}
+                      onClick={() => scholarshipStatusChangeHandler(false)}
+                      className={classes.cencelDiv}
+                    >
+                      Reject
+                    </Button>
+                  </Fragment>
+                )}
                 <Button
                   type="button"
                   variant="contained"
@@ -170,8 +139,8 @@ const ScholarshipDetail = () => {
                   Delete
                 </Button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
           {/* <ApplyForm data={data} canApply={canApply} /> */}
         </div>
       )}
@@ -179,4 +148,4 @@ const ScholarshipDetail = () => {
   );
 };
 
-export default ScholarshipDetail;
+export default AlumniScholarshipDetail;

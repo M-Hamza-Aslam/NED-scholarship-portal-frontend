@@ -22,6 +22,8 @@ import CreateScholarship from "./components/Admin/CreateScholarship/CreateSchola
 import { adminActions } from "./store/adminSlice";
 import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
 import EmailVerification from "./components/Registeration/EmailVerification";
+import AlumniScholarshipList from "./components/Alumni/AlumniScholarshipList";
+import AlumniScholarshipDetail from "./components/Alumni/AlumniScholarshipDetail";
 // import UserProfile from "./components/Admin/Users/Profile/UserProfile";
 
 const Login = React.lazy(() => import("./components/Registeration/Login"));
@@ -43,6 +45,7 @@ const openURL = [
   "/auth/signup",
   "/auth/forget-password",
   "/auth/reset-password/:token",
+  "/",
 ];
 
 function App() {
@@ -64,6 +67,9 @@ function App() {
         let apiEndPoint = `${BACKEND_DOMAIN}/getLoginData`;
         if (userRole === "admin") {
           apiEndPoint = `${BACKEND_DOMAIN}/admin/getLoginData`;
+        }
+        if (userRole === "alumni") {
+          apiEndPoint = `${BACKEND_DOMAIN}/alumni/getLoginData`;
         }
         const res = await fetch(apiEndPoint, {
           headers: {
@@ -165,12 +171,20 @@ function App() {
                 element={<ScholarshipList />}
               />
               <Route
+                path="admin/alumni-scholarship-list"
+                element={<AlumniScholarshipList />}
+              />
+              <Route
                 path="admin/scholarship-list/:scholarshipId"
                 element={<ScholarshipDetail />}
               />
               <Route
                 path="admin/user-list/:scholarshipId"
                 element={<UserList />}
+              />
+              <Route
+                path="admin/alumni-scholarship-list/:scholarshipId"
+                element={<AlumniScholarshipDetail />}
               />
               <Route
                 path="admin/user-details/:userId/:scholarshipId"
@@ -197,10 +211,35 @@ function App() {
                 path="/scholarship-list/:scholarshipId"
                 element={<ScholarshipDetail />}
               />
-              <Route path="/" element={<h1>Home Page</h1>} />
               <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" />} />
               {/* <Route path="/*" element={<Landing />} /> */}
+            </Routes>
+          ) : status === "alumni" ? (
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/auth/*" element={<Registeration />}>
+                <Route path="verify-email" element={<EmailVerification />} />
+              </Route>
+
+              <Route
+                path="/my-scholarship-list"
+                element={<AlumniScholarshipList />}
+              />
+              <Route
+                path="/my-scholarship-list/:scholarshipId"
+                element={<AlumniScholarshipDetail />}
+              />
+              <Route
+                path="alumni/user-list/:scholarshipId"
+                element={<UserList />}
+              />
+              <Route
+                path="alumni/user-details/:userId/:scholarshipId"
+                element={<UserProfile />}
+              />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<Navigate to="/profile" />} />
             </Routes>
           ) : (
             <Routes>
@@ -212,9 +251,9 @@ function App() {
                   path="reset-password/:token"
                   element={<ResetPassword />}
                 />
-                <Route path="verify-email" element={<EmailVerification />} />
-                <Route path="*" element={<Navigate to="/auth/login" />} />
               </Route>
+              <Route path="/" element={<Landing />} />
+              <Route path="*" element={<Navigate to="/auth/login" />} />
             </Routes>
           )}
 

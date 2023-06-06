@@ -1,8 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import classes from "./Details.module.css";
+import { Link } from "react-router-dom";
 
 const Details = ({ data, image }) => {
+  const userRole = useSelector((state) => state.user.user.userRole);
+
   return (
     <div className={classes.details}>
       <h1>
@@ -20,6 +24,13 @@ const Details = ({ data, image }) => {
           <div>
             <h3>Description:</h3>
             <pre className={classes.preText}>{data.description}</pre>
+
+            {userRole === "admin" && (
+              <div className={classes["minimum-reqs"]}>
+                <h4>Created By: </h4>
+                <Link to={`/alumni-details/usman`}>Muhammad Usman</Link>
+              </div>
+            )}
           </div>
 
           <div>

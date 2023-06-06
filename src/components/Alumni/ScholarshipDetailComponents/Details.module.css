@@ -39,6 +39,16 @@
   margin-left: 2rem;
 }
 
+.minimum-reqs > a {
+  margin-left: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: #5f5f5f;
+  font-family: "Nunito";
+  border-bottom: 1px solid transparent;
+  color: #c0a147;
+}
+
 /* .minimum-reqs ul {
   list-style-type: "\1F44D";
 } */

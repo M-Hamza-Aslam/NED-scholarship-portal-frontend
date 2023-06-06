@@ -1,0 +1,31 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Crimson+Text&family=Nunito&display=swap"); */
+
+.scholarship-list {
+  margin-left: 65px;
+}
+
+.scholarship-list ul {
+  display: flex;
+  justify-content: center;
+  column-gap: 1rem;
+  list-style-type: none;
+  margin: 2rem 0;
+}
+
+.scholarship-list ul li {
+  cursor: pointer;
+  color: #0f2d25;
+  font-size: 18px;
+}
+
+.emptyMsg {
+  text-align: center;
+  margin: 10rem 7rem;
+  font-size: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+  .scholarship-list {
+    margin-left: 0px;
+  }
+}

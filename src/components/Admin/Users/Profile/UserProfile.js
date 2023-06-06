@@ -24,16 +24,20 @@ const UserProfile = (props) => {
 
   const changeUserStatusHandler = async (event) => {
     toast.info("Changing... Please wait.");
-    const success = await postChangeUserStatus(
+    const response = await postChangeUserStatus(
       userId,
       scholarshipId,
       event.target.value,
       token
     );
-    if (success) {
+
+    if (response.ok) {
       toast.success("User Status Changed Successfully!");
     } else {
-      toast.error("Status Change Unsucessful.");
+      const { message } = await response.json();
+      toast.error(
+        message || "Some unexpected error has occurred, please try again."
+      );
     }
   };
 

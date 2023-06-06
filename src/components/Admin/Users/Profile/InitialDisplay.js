@@ -42,7 +42,6 @@ const InitialDisplay = ({ onChange, title }) => {
                 id="demo-simple-select"
                 label="Change Status"
                 className={classes.filter}
-                // defaultValue={}
                 sx={{ maxWidth: "100%" }}
                 onChange={onChange}
               >

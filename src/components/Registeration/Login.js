@@ -97,6 +97,9 @@ const Login = () => {
       if (userRole === "admin") {
         apiEndPoint = `${BACKEND_DOMAIN}/admin/login`;
       }
+      if (userRole === "alumni") {
+        apiEndPoint = `${BACKEND_DOMAIN}/alumni/login`;
+      }
       const res = await fetch(apiEndPoint, {
         method: "POST",
         headers: {
@@ -129,20 +132,22 @@ const Login = () => {
         dispatch(userActions.updateUserData({ userRole: "admin" }));
       } else if (userData.userRole === "student") {
         dispatch(userActions.updateUserData(userData));
+      } else {
+        dispatch(userActions.updateUserData(userData));
+        dispatch(userActions.updateUserData({ userRole: "alumni" }));
       }
       //making loading false
       handleLoader(false);
 
       resetEmailInput();
       resetPasswordInput();
+      console.log(userData);
       if (userData.userRole === "admin") {
         navigate("admin/scholarship-list");
-      } else if (userData.userRole === "student") {
-        if (userData.isVerified === true) {
-          navigate("/profile");
-        } else {
-          navigate("/auth/verify-email");
-        }
+      } else {
+        if (userData.isVerified) navigate("/profile");
+        else navigate("/auth/verify-email");
+        console.log("Not verify");
       }
     } catch (err) {
       console.log(err);
@@ -179,6 +184,11 @@ const Login = () => {
                 value="admin"
                 control={<Radio />}
                 label="Admin"
+              />
+              <FormControlLabel
+                value="alumni"
+                control={<Radio />}
+                label="Alumni"
               />
             </RadioGroup>
           </FormControl>
