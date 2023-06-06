@@ -66,6 +66,9 @@ function App() {
         if (userRole === "admin") {
           apiEndPoint = `${BACKEND_DOMAIN}/admin/getLoginData`;
         }
+        if (userRole === "alumni") {
+          apiEndPoint = `${BACKEND_DOMAIN}/alumni/getLoginData`;
+        }
         const res = await fetch(apiEndPoint, {
           headers: {
             Authorization: "Bearer " + token,
@@ -208,6 +211,7 @@ function App() {
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="verify-email" element={<EmailVerification />} />
                 <Route
                   path="reset-password/:token"
                   element={<ResetPassword />}

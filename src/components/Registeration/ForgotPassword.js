@@ -47,6 +47,7 @@ const ForgotPassword = (props) => {
       //add your logic
       const email = emailInputValue;
       handleLoader(true);
+      
       const res = await fetch(`${BACKEND_DOMAIN}/forgot-password`, {
         method: "POST",
         headers: {
@@ -54,6 +55,7 @@ const ForgotPassword = (props) => {
         },
         body: JSON.stringify({ email }),
       });
+      
       if (res.status !== 200) {
         //here show an error through notification
         const resData = await res.json();
