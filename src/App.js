@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { BACKEND_DOMAIN } from "./config";
 import UserDetails from "./components/Admin/Users/UserDetails";
 import CreateScholarship from "./components/Admin/CreateScholarship/CreateScholarship";
+
 import { adminActions } from "./store/adminSlice";
 import AppliedScholarshipList from "./components/User/AppliedScholarships/AppliedScholarshipList";
 import EmailVerification from "./components/Registeration/EmailVerification";
@@ -42,6 +43,9 @@ const AlumniProfile = React.lazy(() =>
 
 const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
+);
+const AlumniCreateScholarship = React.lazy(() =>
+  import("./components/Alumni/CreateScholarship/CreateScholarship")
 );
 
 const openURL = [
@@ -243,6 +247,11 @@ function App() {
                 element={<UserProfile />}
               />
               <Route path="/profile" element={<AlumniProfile />} />
+              <Route
+                path="alumni/request-scholarship"
+                element={<AlumniCreateScholarship />}
+              />
+
               <Route path="*" element={<Navigate to="/profile" />} />
             </Routes>
           ) : (
