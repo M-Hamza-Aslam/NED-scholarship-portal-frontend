@@ -1,0 +1,107 @@
+.mainDiv {
+  margin-bottom: 1.7rem;
+  padding: 1.7rem;
+}
+.mainDiv > h2 {
+  font-size: 1rem;
+}
+.infoBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 2rem;
+}
+.imgDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 0 33.33%;
+}
+.imgDiv > img {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #0f2d25;
+}
+.nameDiv {
+  display: flex;
+  gap: 5px;
+}
+.nameDiv > h3 {
+  font-size: 16px;
+}
+.infoDiv {
+  flex: 0 0 33.33%;
+}
+.infoDiv > p {
+  margin: 0;
+  font-size: 14px;
+}
+.sectionsDiv {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 20px;
+}
+.sectionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eaedf0;
+  background-color: white;
+  cursor: pointer;
+  margin: 1rem 0;
+  border-radius: 5px;
+}
+.sectionName {
+  display: flex;
+  align-items: center;
+}
+.sectionName > h5 {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.sectionName > svg {
+  font-size: 30px;
+}
+.active {
+  background-color: #74a99b3b;
+}
+@media screen and (max-width: 1000px) {
+  .sectionName > h5 {
+    margin: 0 0 0 5px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .sectionName > svg {
+    display: none;
+  }
+  .sectionsDiv {
+    gap: 5px;
+    overflow-x: scroll;
+  }
+  .imgDiv {
+    flex: 0 0 100%;
+  }
+  .infoDiv {
+    flex: 0 0 100%;
+    margin-top: 1.5rem;
+  }
+}
+@media screen and (max-width: 500px) {
+  .imgDiv > img {
+    width: 45px;
+    height: 45px;
+    margin-right: 1rem;
+  }
+  .nameDiv {
+    display: block;
+  }
+  .infoDiv > p {
+    font-size: 12px;
+  }
+}

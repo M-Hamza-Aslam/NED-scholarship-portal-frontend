@@ -36,6 +36,10 @@ const ResetPassword = React.lazy(() =>
 );
 const Profile = React.lazy(() => import("./components/Profile/Profile"));
 
+const AlumniProfile = React.lazy(() =>
+  import("./components/Alumni/Profile/Profile")
+);
+
 const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
 );
@@ -238,7 +242,7 @@ function App() {
                 path="alumni/user-details/:userId/:scholarshipId"
                 element={<UserProfile />}
               />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<AlumniProfile />} />
               <Route path="*" element={<Navigate to="/profile" />} />
             </Routes>
           ) : (
