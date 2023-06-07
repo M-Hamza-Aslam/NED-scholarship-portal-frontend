@@ -66,14 +66,14 @@ const ScholarshipList = () => {
                   <div>
                     <p className={classes.date}>
                       {/* {new Date(sc.date).getDate()}th */}
-                      {sc.issueDate.day}th
+                      {sc.closeDate.day}th
                     </p>
                     <p className={classes.month}>
                       {/* {new Date(sc.date).toLocaleString("default", {
                         month: "long",
                       })}{" "}
                       {new Date(sc.date).getFullYear()} */}
-                      {sc.issueDate.month} {sc.issueDate.year}
+                      {sc.closeDate.month} {sc.closeDate.year}
                     </p>
                   </div>
                   <span className={classes.vl}></span>

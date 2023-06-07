@@ -23,7 +23,7 @@ export const postApplyScholarship = async (
   token,
   additionalReqs
 ) => {
-  const body = JSON.stringify({ scholarshipId, additionalReqs });
+  const body = JSON.stringify({ scholarshipId, ...additionalReqs });
   const response = await fetch(`${baseURL}/apply-scholarship`, {
     method: "POST",
     headers: getHeaders(token),
@@ -68,4 +68,25 @@ export const postScholarshipReport = async (id, token) => {
 
   const responseData = await response.json();
   if (response.ok) return responseData;
+};
+
+export const postChangeAlumniStatus = async (
+  alumniId,
+  scholarshipId,
+  updatedStatus,
+  token
+) => {
+  const body = JSON.stringify({ alumniId, scholarshipId, updatedStatus });
+  const response = await fetch(`${baseURL}/admin/update-scholarship-status`, {
+    method: "PATCH",
+    headers: getHeaders(token),
+    body,
+  });
+
+  if (!response.ok) {
+    const responseData = await response.json();
+    throw new Error(responseData.message);
+  }
+
+  return response.ok;
 };

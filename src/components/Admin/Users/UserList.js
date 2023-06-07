@@ -10,11 +10,15 @@ import classes from "./UserList.module.css";
 
 const UserList = () => {
   const scholarshipId = useParams().scholarshipId;
-  const token = useSelector((state) => state.admin.admin.token);
-  const role = useSelector((state) => state.user.user.userRole);
+  const userRole = useSelector((state) => state.user.user.userRole);
+  const token = useSelector((state) =>
+    userRole === "admin" ? state.admin.admin.token : state.user.user.token
+  );
   const { data, error, isLoading } = useSWR(
     [
-      token ? `/admin/appliedUsersList?scholarshipId=${scholarshipId}` : null,
+      token
+        ? `/${userRole}/appliedUsersList?scholarshipId=${scholarshipId}`
+        : null,
       token,
     ],
     ([url, token]) => globalFetcher(url, token)

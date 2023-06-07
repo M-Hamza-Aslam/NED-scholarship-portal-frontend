@@ -43,8 +43,6 @@ const ApplyForm = ({ message, data, canApply }) => {
 
   const applyScholarshipHandler = async (event) => {
     event.preventDefault();
-    console.log(additionalReqs);
-    return;
     const success = await postApplyScholarship(
       data._id,
       auth.token,

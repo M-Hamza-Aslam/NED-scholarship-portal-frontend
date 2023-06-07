@@ -19,7 +19,10 @@ const PersonalInfo = React.lazy(() => import("./PersonalInfo/PersonalInfo"));
 const UserProfile = (props) => {
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({});
-  const token = useSelector((state) => state.admin.admin.token);
+  const userRole = useSelector((state) => state.user.user.userRole);
+  const token = useSelector((state) =>
+    userRole === "admin" ? state.admin.admin.token : state.user.user.token
+  );
   const { userId, scholarshipId } = useParams();
 
   const changeUserStatusHandler = async (event) => {
@@ -43,7 +46,7 @@ const UserProfile = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${BACKEND_DOMAIN}/admin/user-data?userId=${userId}`, {
+    fetch(`${BACKEND_DOMAIN}/${userRole}/user-data?userId=${userId}`, {
       headers: {
         Authorization: "Bearer " + token,
       },

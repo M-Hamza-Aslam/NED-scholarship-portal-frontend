@@ -2,7 +2,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getScholarshipList, globalFetcher, imgFetcher } from "../../api";
+import {
+  getScholarshipList,
+  globalFetcher,
+  imgFetcher,
+  postChangeAlumniStatus,
+} from "../../api";
 import { userActions } from "../../store/userSlice";
 import InitialDisplay from "./ScholarshipDetailComponents/InitialDisplay";
 import Details from "./ScholarshipDetailComponents/Details";
@@ -51,7 +56,14 @@ const AlumniScholarshipDetail = () => {
     );
   }
 
-  const scholarshipStatusChangeHandler = () => {};
+  const scholarshipStatusChangeHandler = async (status) => {
+    try {
+      await postChangeAlumniStatus(data?.creator?.id, data._id, status, token);
+      toast.success("Status successfully updated!");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const deleteScholarshipHandler = async () => {
     const res = await fetch(
@@ -98,28 +110,28 @@ const AlumniScholarshipDetail = () => {
             </button>
             {userRole === "admin" && (
               <div className={classes.btnDiv}>
-                {data.status === "awaiting" && (
-                  <Fragment>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      startIcon={<DoneOutlineIcon />}
-                      className={classes.submitDiv}
-                      onClick={() => scholarshipStatusChangeHandler(true)}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outlined"
-                      startIcon={<CloseOutlinedIcon />}
-                      onClick={() => scholarshipStatusChangeHandler(false)}
-                      className={classes.cencelDiv}
-                    >
-                      Reject
-                    </Button>
-                  </Fragment>
-                )}
+                {/* {data.status === "awaiting" && ( */}
+                <Fragment>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    startIcon={<DoneOutlineIcon />}
+                    className={classes.submitDiv}
+                    onClick={() => scholarshipStatusChangeHandler("approved")}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    startIcon={<CloseOutlinedIcon />}
+                    onClick={() => scholarshipStatusChangeHandler("declined")}
+                    className={classes.cencelDiv}
+                  >
+                    Reject
+                  </Button>
+                </Fragment>
+                {/* )} */}
                 <Button
                   type="button"
                   variant="contained"

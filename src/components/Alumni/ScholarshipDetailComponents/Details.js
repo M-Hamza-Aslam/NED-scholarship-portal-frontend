@@ -28,7 +28,9 @@ const Details = ({ data, image }) => {
             {userRole === "admin" && (
               <div className={classes["minimum-reqs"]}>
                 <h4>Created By: </h4>
-                <Link to={`/alumni-details/usman`}>Muhammad Usman</Link>
+                <Link to={`/admin/alumni-details/${data.creator.id}`}>
+                  {data.creator.name}
+                </Link>
               </div>
             )}
           </div>

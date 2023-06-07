@@ -108,8 +108,13 @@
   color: #00ffc8;
 }
 
-.closed {
+.closed,
+.declined {
   color: red;
+}
+
+.awaiting {
+  color: #c0a147;
 }
 
 .view {

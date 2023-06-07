@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const UserCards = ({ userList }) => {
   const token = useSelector((state) => state.admin.admin.token);
+  const userRole = useSelector((state) => state.user.user.userRole);
   const scholarshipId = useParams().scholarshipId;
   return (
     <main className={classes["user-list-main"]}>
@@ -19,7 +20,7 @@ const UserCards = ({ userList }) => {
                 <div className={classes["user-image"]}>
                   <UserImage userId={user._id} token={token} />
                 </div>
-                <Link to={`/admin/user-details/${user._id}`}>
+                <Link to={`/${userRole}/user-details/${user._id}`}>
                   <Typography variant="h5" component="h2">
                     {user.firstName} {user.lastName}
                   </Typography>
@@ -29,7 +30,9 @@ const UserCards = ({ userList }) => {
                   <span className={classes[user.status]}>{user.status}</span>
                 </p>
                 {/* <Button variant="outlined">Read Details</Button> */}
-                <Link to={`/admin/user-details/${user._id}/${scholarshipId}`}>
+                <Link
+                  to={`/${userRole}/user-details/${user._id}/${scholarshipId}`}
+                >
                   <Button
                     variant="outlined"
                     className={classes.details}
