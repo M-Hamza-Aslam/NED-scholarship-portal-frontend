@@ -142,9 +142,9 @@ function App() {
           userData.isVerified === false
         ) {
           navigate("/auth/verify-email");
+        } else {
+          navigate("/profile");
         }
-        console.log(userData.userRole);
-        console.log(status);
       } else {
         //when token is avaliable but expired
         localStorage.removeItem("token");
