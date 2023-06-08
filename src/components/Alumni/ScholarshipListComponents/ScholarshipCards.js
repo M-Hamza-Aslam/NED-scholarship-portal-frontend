@@ -70,7 +70,6 @@ const ScholarshipCards = ({ currentItems }) => {
                 </a>
                 <Link
                   id={classes.author}
-                  target="_blank"
                   to={`/admin/alumni-details/${scholarship.creator.id}`}
                 >
                   Created By: <span>{scholarship.creator.name}</span>

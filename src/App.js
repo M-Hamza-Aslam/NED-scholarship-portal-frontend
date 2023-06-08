@@ -139,12 +139,17 @@ function App() {
 
         if (
           (userData.userRole === "student" || userData.userRole === "alumni") &&
-          userData.isVerified === false
+          !userData.isVerified
         ) {
           navigate("/auth/verify-email");
+        } else if (
+          (userData.userRole === "student" || userData.userRole === "alumni") &&
+          userData.isVerified
+        ) {
+          navigate("/profile");
+        } else {
+          navigate("/admin/scholarship-list");
         }
-        console.log(userData.userRole);
-        console.log(status);
       } else {
         //when token is avaliable but expired
         localStorage.removeItem("token");

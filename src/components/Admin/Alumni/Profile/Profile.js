@@ -15,7 +15,6 @@ const Profile = () => {
   const [alumniDetails, setAlumniDetails] = useState({});
   const token = useSelector((state) => state.admin.admin.token);
   const { alumniId, scholarshipId } = useParams();
-
   useEffect(() => {
     setLoading(true);
     fetch(`${BACKEND_DOMAIN}/admin/alumni-data?userId=${alumniId}`, {
