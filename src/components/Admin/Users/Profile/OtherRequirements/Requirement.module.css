@@ -1,0 +1,49 @@
+.container {
+  padding: 1rem 0;
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center; */
+}
+.itemDiv {
+  /* display: flex; */
+  align-items: center;
+}
+.itemDiv > h5 {
+  font-size: 1rem;
+  margin: 1rem 0;
+}
+.itemDiv > p {
+  font-size: 14px;
+  margin: 0;
+  word-wrap: break-word; /* Break long words to fit within the container */
+  overflow-wrap: break-word; /* Alternative property for word wrapping */
+  white-space: pre-line; /* Preserve line breaks and wrap text */
+}
+.iconDiv > button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.iconDiv svg {
+  font-size: 25px;
+  margin-right: 1rem;
+}
+.btn {
+  margin-top: 1rem;
+  background-image: var(--primaryGradientColor) !important;
+  color: white;
+  border-color: white;
+}
+.btn:hover {
+  border-color: white;
+}
+@media screen and (max-width: 500px) {
+  .iconDiv {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+  }
+  .container {
+    display: block;
+  }
+}

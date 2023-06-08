@@ -124,6 +124,21 @@ const SideBar = (props) => {
             <KeyboardArrowDownOutlinedIcon />
           )}
         </button>
+        {}
+        <button
+          className={`${classes.sectionBtn} ${
+            selectedSection === "OtherRequirements" && classes.active
+          }`}
+          onClick={() => sectionSelectionHandler("OtherRequirements")}
+        >
+          <div className={classes.sectionName}>
+            <SchoolOutlinedIcon />
+            <h5>Requirements</h5>
+          </div>
+          {selectedSection === "OtherRequirements" && (
+            <KeyboardArrowDownOutlinedIcon />
+          )}
+        </button>
       </div>
     </div>
   );

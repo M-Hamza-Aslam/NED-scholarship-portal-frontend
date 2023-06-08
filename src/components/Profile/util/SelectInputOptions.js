@@ -164,13 +164,13 @@ export const semesterOptions = [
 export const typeOptions = [
   { value: "text", label: "Text" },
   { value: "number", label: "Number" },
-  { value: "file", label: "File" },
+  // { value: "file", label: "File" },
 ];
 export const validationOptions = [
   { value: "notEmpty", label: "Not Empty", type: "text" },
   { value: "multiline", label: "Multiline", type: "text" },
   { value: "notEmpty", label: "Not Empty", type: "number" },
-  { value: "pdf", label: "PDF", type: "file" },
-  { value: "image", label: "Image", type: "file" },
-  { value: "allType", label: "All types", type: "file" },
+  // { value: "pdf", label: "PDF", type: "file" },
+  // { value: "image", label: "Image", type: "file" },
+  // { value: "allType", label: "All types", type: "file" },
 ];

@@ -44,6 +44,11 @@ const AlumniProfile = React.lazy(() =>
 const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
 );
+
+const AlumniProfileForAdmin = React.lazy(() =>
+  import("./components/Admin/Alumni/Profile/Profile")
+);
+
 const AlumniCreateScholarship = React.lazy(() =>
   import("./components/Alumni/CreateScholarship/CreateScholarship")
 );
@@ -68,10 +73,14 @@ function App() {
     setLoading(true);
     const token = localStorage.getItem("token");
     if (token) {
+      //when token is avaliable
+
       const decodedToken = jwtDecode(token);
       const userRole = decodedToken.userRole;
       const expirationTime = decodedToken.expiration;
       if (Date.now() < expirationTime) {
+        //when token is avaliable and not expired
+
         let apiEndPoint = `${BACKEND_DOMAIN}/getLoginData`;
         if (userRole === "admin") {
           apiEndPoint = `${BACKEND_DOMAIN}/admin/getLoginData`;
@@ -107,7 +116,10 @@ function App() {
         if (userData.userRole === "admin") {
           dispatch(adminActions.updateAdminData(userData));
           dispatch(userActions.updateUserData({ userRole: "admin" }));
-        } else if (userData.userRole === "student") {
+        } else if (
+          userData.userRole === "student" ||
+          userData.userRole === "alumni"
+        ) {
           dispatch(userActions.updateUserData(userData));
         }
         // setting time to delete token from localstorage
@@ -115,21 +127,30 @@ function App() {
           localStorage.removeItem("token");
           if (userData.userRole === "admin") {
             dispatch(adminActions.clearAdminData());
-          } else if (userData.userRole === "student") {
+          } else if (
+            userData.userRole === "student" ||
+            userData.userRole === "alumni"
+          ) {
             dispatch(userActions.clearUserData());
           }
           navigate("/auth/login");
         }, 3600000);
         setLoading(false);
 
-        if (userData.userRole === "student" && userData.isVerified === false) {
+        if (
+          (userData.userRole === "student" || userData.userRole === "alumni") &&
+          userData.isVerified === false
+        ) {
           navigate("/auth/verify-email");
         }
+        console.log(userData.userRole);
+        console.log(status);
       } else {
+        //when token is avaliable but expired
         localStorage.removeItem("token");
         if (userRole === "admin") {
           dispatch(adminActions.clearAdminData());
-        } else if (userRole === "student") {
+        } else if (userRole === "student" || userRole === "alumni") {
           dispatch(userActions.clearUserData());
         }
         if (openURL.includes(location.pathname)) {
@@ -141,6 +162,7 @@ function App() {
         navigate("/auth/login");
       }
     } else {
+      //when token is not avaliable
       if (openURL.includes(location.pathname)) {
         setLoading(false);
         return;
@@ -197,6 +219,10 @@ function App() {
               <Route
                 path="admin/user-details/:userId/:scholarshipId"
                 element={<UserProfile />}
+              />
+              <Route
+                path="admin/alumni-details/:alumniId"
+                element={<AlumniProfileForAdmin />}
               />
               <Route
                 path="*"

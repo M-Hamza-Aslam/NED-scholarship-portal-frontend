@@ -50,6 +50,34 @@ const EditBachelor = (props) => {
         error: false,
       };
     });
+    //sending request to OCR
+    if (newFile && BACKEND_DOMAIN === "http://localhost:8080") {
+      handleLoader(true);
+      const formData = new FormData();
+      formData.append("NED", newFile);
+      const URL = "http://localhost:5000/predict_NED";
+      fetch(URL, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          classKeyStrockHandler({ target: { value: data.class } });
+          seatNoKeyStrockHandler({ target: { value: data.seatNo } });
+          totalCGPAKeyStrockHandler({
+            target: { value: data.totalCGPA },
+          });
+          obtainedCGPAKeyStrockHandler({
+            target: { value: data.obtainedCGPA },
+          });
+          handleLoader(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          handleLoader(false);
+        });
+    }
   };
 
   useEffect(() => {

@@ -184,14 +184,17 @@ const Signup = (props) => {
       resetPhoneNumberInput();
 
       // redirect to verification page
-      const verifyResponse = await fetch(
-        `${BACKEND_DOMAIN}/emailVerification`,
-        {
-          headers: {
-            Authorization: "Bearer " + resData.token,
-          },
-        }
-      );
+      let emailVerificationUrl;
+      if (userRole === "student") {
+        emailVerificationUrl = `${BACKEND_DOMAIN}/emailVerification`;
+      } else if (userRole === "alumni") {
+        emailVerificationUrl = `${BACKEND_DOMAIN}/alumni/emailVerification`;
+      }
+      const verifyResponse = await fetch(emailVerificationUrl, {
+        headers: {
+          Authorization: "Bearer " + resData.token,
+        },
+      });
       if (verifyResponse.status !== 201) {
         //here show an error through notification
         const verifyResData = await verifyResponse.json();
@@ -313,6 +316,7 @@ const Signup = (props) => {
             error={phoneNumberIsError && true}
             variant="outlined"
             className={classes.formInput}
+            onWheel={(event) => event.preventDefault()}
           >
             <InputLabel htmlFor="outlined-adornment-number">
               Phone Number*
@@ -322,6 +326,7 @@ const Signup = (props) => {
               type="number"
               label="Phone Number"
               value={phoneNumberInputValue}
+              onWheel={(event) => event.preventDefault()}
               onChange={phoneNumberKeyStrockHandler}
               onBlur={phoneNumberInputBlurHandler}
             />
