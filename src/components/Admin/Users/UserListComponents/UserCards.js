@@ -7,8 +7,10 @@ import UserImage from "./UserImage";
 import { useSelector } from "react-redux";
 
 const UserCards = ({ userList }) => {
-  const token = useSelector((state) => state.admin.admin.token);
   const userRole = useSelector((state) => state.user.user.userRole);
+  const token = useSelector((state) =>
+    userRole === "admin" ? state.admin.admin.token : state.user.user.token
+  );
   const scholarshipId = useParams().scholarshipId;
 
   return (

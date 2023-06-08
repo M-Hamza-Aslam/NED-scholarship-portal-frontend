@@ -96,7 +96,7 @@ export const postChangeAlumniStatus = async (
   token
 ) => {
   const body = JSON.stringify({ alumniId, scholarshipId, updatedStatus });
-  const response = await fetch(`${baseURL}/admin/update-scholarship-status`, {
+  const response = await fetch(`${baseURL}/admin/created-scholarship-status`, {
     method: "PATCH",
     headers: getHeaders(token),
     body,

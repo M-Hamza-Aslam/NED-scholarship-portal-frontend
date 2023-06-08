@@ -29,8 +29,6 @@ const UserProfile = (props) => {
   const { userId, scholarshipId } = useParams();
 
   const changeUserStatusHandler = async (event) => {
-    toast.info("Changing... Please wait.");
-
     const response = await postChangeUserStatus(
       userId,
       scholarshipId,
