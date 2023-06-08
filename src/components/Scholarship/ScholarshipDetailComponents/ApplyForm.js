@@ -36,17 +36,24 @@ const ApplyForm = ({ message, data, canApply }) => {
   const setAdditionalReqsHandler = (event) => {
     setAdditionalReqs((prevState) => ({
       ...prevState,
-      [event.target.name.replaceAll(" ", "")]:
-        event.target.files || event.target.value,
+      [event.target.name]: event.target.files || event.target.value,
     }));
   };
 
   const applyScholarshipHandler = async (event) => {
     event.preventDefault();
+
+    const additionalKeys = Object.keys(additionalReqs);
+    const additionalValues = Object.values(additionalReqs);
+    const additionalArrayOfObjects = additionalKeys.map((key, index) => ({
+      title: additionalKeys[index],
+      value: additionalValues[index],
+    }));
+
     const success = await postApplyScholarship(
       data._id,
       auth.token,
-      additionalReqs
+      additionalArrayOfObjects
     );
     if (success) {
       dispatch(
@@ -59,6 +66,8 @@ const ApplyForm = ({ message, data, canApply }) => {
       );
       toast.success("You have successsfully applied to the scholarship!");
       handleClose();
+    } else {
+      toast.error("Some error has occurred, please try again.");
     }
   };
 
