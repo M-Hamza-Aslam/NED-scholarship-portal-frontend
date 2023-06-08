@@ -42,7 +42,7 @@ const NeedScholarshipForm = (props) => {
   });
   const navigate = useNavigate();
   const { handleLoader, LoadingComponent, loader } = useLoader();
-  const token = useSelector((state) => state.admin.admin.token);
+  const token = useSelector((state) => state.user.user.token);
   useEffect(() => {
     if (scholarshipDetails.image) {
       fetch(BACKEND_DOMAIN + `/scholarshipImg/${scholarshipDetails._id}`, {

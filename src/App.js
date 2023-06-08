@@ -44,6 +44,11 @@ const AlumniProfile = React.lazy(() =>
 const UserProfile = React.lazy(() =>
   import("./components/Admin/Users/Profile/UserProfile")
 );
+
+const AlumniProfileForAdmin = React.lazy(() =>
+  import("./components/Admin/Alumni/Profile/Profile")
+);
+
 const AlumniCreateScholarship = React.lazy(() =>
   import("./components/Alumni/CreateScholarship/CreateScholarship")
 );
@@ -197,6 +202,10 @@ function App() {
               <Route
                 path="admin/user-details/:userId/:scholarshipId"
                 element={<UserProfile />}
+              />
+              <Route
+                path="admin/alumni-details/:alumniId"
+                element={<AlumniProfileForAdmin />}
               />
               <Route
                 path="*"
