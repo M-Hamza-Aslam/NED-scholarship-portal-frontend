@@ -79,13 +79,23 @@ export const postChangeUserStatusAlumni = async (
 
 export const postScholarshipReport = async (id, token) => {
   const body = JSON.stringify({ id });
-  const response = await fetch(`${baseURL}/scholarship-report`, {
+  const response = await fetch(`${baseURL}/admin/scholarship-report`, {
     method: "POST",
     headers: getHeaders(token),
     body,
   });
 
-  const responseData = await response.json();
+  const responseData = await response.blob();
+  if (response.ok) return responseData;
+};
+
+export const postUserReport = async (id, token) => {
+  const response = await fetch(
+    `${baseURL}/admin/applied-scholarship-report/${id}`,
+    { method: "GET", headers: getHeaders(token) }
+  );
+
+  const responseData = await response.blob();
   if (response.ok) return responseData;
 };
 

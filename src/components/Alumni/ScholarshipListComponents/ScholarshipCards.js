@@ -14,7 +14,8 @@ const ScholarshipCards = ({ currentItems }) => {
 
   const viewReportHandler = async (id) => {
     const report = await postScholarshipReport(id, token);
-    console.log(report);
+    const fileUrl = await URL.createObjectURL(report);
+    window.open(fileUrl);
   };
 
   return (
