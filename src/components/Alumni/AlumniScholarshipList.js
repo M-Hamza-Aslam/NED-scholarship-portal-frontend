@@ -14,7 +14,14 @@ const AlumniScholarshipList = () => {
     userRole === "admin" ? state.admin.admin.token : state.user.user.token
   );
   const { data, error, isLoading } = useSWR(
-    [token ? "/scholarship-list" : null, token],
+    [
+      token && userRole === "alumni"
+        ? "/alumni/created-scholarships"
+        : token && userRole === "admin"
+        ? "/admin/created-scholarship-list"
+        : null,
+      token,
+    ],
     ([url, token]) => globalFetcher(url, token)
   );
   const [scholarshipData, setScholarshipData] = useState(data);

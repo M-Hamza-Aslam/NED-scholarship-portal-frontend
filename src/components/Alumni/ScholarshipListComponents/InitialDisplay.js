@@ -91,8 +91,8 @@ const InitialDisplay = ({ title, setFilters }) => {
                 sx={{ maxWidth: "100%" }}
               >
                 <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="closed">Closed</MenuItem>
                 <MenuItem value="awaiting">Awaiting</MenuItem>
+                <MenuItem value="declined">Declined</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={{ height: "50px !important", maxWidth: "90%" }}>

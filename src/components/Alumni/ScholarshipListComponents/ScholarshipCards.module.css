@@ -103,13 +103,19 @@
   text-transform: capitalize;
 }
 
-.active {
+.active,
+.approved {
   /* color: #1565c0; */
   color: #00ffc8;
 }
 
-.closed {
+.closed,
+.declined {
   color: red;
+}
+
+.awaiting {
+  color: #c0a147;
 }
 
 .view {
@@ -142,6 +148,17 @@
 #author {
   position: absolute;
   right: 0;
+}
+
+@media screen and (max-width: 1150px) {
+  .view {
+    flex-wrap: wrap;
+    row-gap: 1rem;
+  }
+
+  #author {
+    position: static;
+  }
 }
 
 @media screen and (max-width: 768px) {

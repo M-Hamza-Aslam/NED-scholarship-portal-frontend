@@ -20,7 +20,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "20px",
                   }}
                 >
-                  {scholarship.scholarshipDetails.issueDate.day}th
+                  {scholarship.scholarshipDetails.closeDate.day}th
                 </p>
                 <p
                   style={{
@@ -28,7 +28,7 @@ const ScholarshipCards = ({ currentItems }) => {
                     fontSize: "16px",
                   }}
                 >
-                  {scholarship.scholarshipDetails.issueDate.month}
+                  {scholarship.scholarshipDetails.closeDate.month}
                 </p>
               </div>
               <hr />
