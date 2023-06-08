@@ -38,13 +38,16 @@ const UserCards = ({ userList }) => {
                   Status:{" "}
                   <span className={classes[user.status]}>{user.status}</span>
                 </p>
-                <a
-                  className={classes.report}
-                  target="_blank"
-                  onClick={() => viewUserReportHandler(user._id)}
-                >
-                  <span>View Report</span>
-                </a>
+                {userRole === "admin" && (
+                  <a
+                    className={classes.report}
+                    target="_blank"
+                    onClick={() => viewUserReportHandler(user._id)}
+                  >
+                    <span>View Report</span>
+                  </a>
+                )}
+
                 {/* <Button variant="outlined">Read Details</Button> */}
                 <Link
                   to={`/${userRole}/user-details/${user._id}/${scholarshipId}`}
