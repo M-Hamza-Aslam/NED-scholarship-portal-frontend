@@ -26,29 +26,6 @@ const EditEducation = (props) => {
   const setIsEditHandler = (value) => {
     setIsEdit(value);
   };
-  const handleFileChange = (newFile) => {
-    // console.log(newFile);
-    if (
-      newFile &&
-      newFile.type !==
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
-      newFile.type !== "application/pdf"
-    ) {
-      setFile((prevState) => {
-        return {
-          value: null,
-          error: true,
-        };
-      });
-      return;
-    }
-    setFile((prevState) => {
-      return {
-        value: newFile,
-        error: false,
-      };
-    });
-  };
 
   useEffect(() => {
     if (educationalDetailsObj.marksheet) {
@@ -159,6 +136,69 @@ const EditEducation = (props) => {
     const Regex = /^[A-Za-z]+$/;
     return Regex.test(value.trim());
   });
+
+  const handleFileChange = (newFile) => {
+    // console.log(newFile);
+    if (
+      newFile &&
+      newFile.type !==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+      newFile.type !== "application/pdf"
+    ) {
+      setFile((prevState) => {
+        return {
+          value: null,
+          error: true,
+        };
+      });
+      return;
+    }
+    setFile((prevState) => {
+      return {
+        value: newFile,
+        error: false,
+      };
+    });
+    //sending request to OCR
+    if (newFile && BACKEND_DOMAIN === "http://localhost:8080") {
+      handleLoader(true);
+      const formData = new FormData();
+      let URL;
+      if (educationName === "matric") {
+        URL = "http://localhost:5000/predict_SSC";
+        formData.append("SSC", newFile);
+      }
+      if (educationName === "intermediate") {
+        URL = "http://localhost:5000/predict_HSC";
+        formData.append("HSC", newFile);
+      }
+      fetch(URL, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          classKeyStrockHandler({ target: { value: data.class } });
+          seatNoKeyStrockHandler({ target: { value: data.seatNo } });
+          totalMarksCGPAKeyStrockHandler({
+            target: { value: data.totalMarks },
+          });
+          obtainedMarksCGPAKeyStrockHandler({
+            target: { value: data.obtainedMarks },
+          });
+          percentageKeyStrockHandler({
+            target: { value: `${Math.round(data.percentage)}` },
+          });
+
+          handleLoader(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          handleLoader(false);
+        });
+    }
+  };
 
   let formIsValid = false;
   if (
