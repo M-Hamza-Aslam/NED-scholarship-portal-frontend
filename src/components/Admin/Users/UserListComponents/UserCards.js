@@ -5,6 +5,7 @@ import { Button, Typography } from "@mui/material";
 import classes from "./UserCards.module.css";
 import UserImage from "./UserImage";
 import { useSelector } from "react-redux";
+import { postUserReport } from "../../../../api";
 
 const UserCards = ({ userList }) => {
   const userRole = useSelector((state) => state.user.user.userRole);
@@ -13,6 +14,11 @@ const UserCards = ({ userList }) => {
   );
   const scholarshipId = useParams().scholarshipId;
 
+  const viewUserReportHandler = async (id) => {
+    const report = await postUserReport(id, token);
+    const fileUrl = await URL.createObjectURL(report);
+    window.open(fileUrl);
+  };
   return (
     <main className={classes["user-list-main"]}>
       <div className={classes["user-list-section"]}>
@@ -32,6 +38,13 @@ const UserCards = ({ userList }) => {
                   Status:{" "}
                   <span className={classes[user.status]}>{user.status}</span>
                 </p>
+                <a
+                  className={classes.report}
+                  target="_blank"
+                  onClick={() => viewUserReportHandler(user._id)}
+                >
+                  <span>View Report</span>
+                </a>
                 {/* <Button variant="outlined">Read Details</Button> */}
                 <Link
                   to={`/${userRole}/user-details/${user._id}/${scholarshipId}`}
