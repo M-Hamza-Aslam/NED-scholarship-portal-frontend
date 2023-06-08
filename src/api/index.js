@@ -21,14 +21,17 @@ export const imgFetcher = (relativeURL, token) =>
 export const postApplyScholarship = async (
   scholarshipId,
   token,
-  additionalReqs
+  otherRequirements
 ) => {
-  const body = JSON.stringify({ scholarshipId, ...additionalReqs });
-  const response = await fetch(`${baseURL}/apply-scholarship`, {
-    method: "POST",
-    headers: getHeaders(token),
-    body,
-  });
+  const body = JSON.stringify({ otherRequirements });
+  const response = await fetch(
+    `${baseURL}/apply-scholarship/${scholarshipId}`,
+    {
+      method: "POST",
+      headers: getHeaders(token),
+      body,
+    }
+  );
   const responseData = await response.json();
   if (response.ok) return responseData;
 };
@@ -51,6 +54,22 @@ export const postChangeUserStatus = async (
   const body = JSON.stringify({ userId, scholarshipId, updatedStatus });
   const response = await fetch(`${baseURL}/admin/update-scholarship-status`, {
     method: "POST",
+    headers: getHeaders(token),
+    body,
+  });
+
+  return response;
+};
+
+export const postChangeUserStatusAlumni = async (
+  userId,
+  scholarshipId,
+  updatedStatus,
+  token
+) => {
+  const body = JSON.stringify({ userId, scholarshipId, updatedStatus });
+  const response = await fetch(`${baseURL}/admin/created-scholarship-status`, {
+    method: "PATCH",
     headers: getHeaders(token),
     body,
   });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 
@@ -10,6 +10,7 @@ const UserCards = ({ userList }) => {
   const token = useSelector((state) => state.admin.admin.token);
   const userRole = useSelector((state) => state.user.user.userRole);
   const scholarshipId = useParams().scholarshipId;
+
   return (
     <main className={classes["user-list-main"]}>
       <div className={classes["user-list-section"]}>
