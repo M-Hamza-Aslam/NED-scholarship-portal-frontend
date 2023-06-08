@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react";
 import classes from "./EmailVerification.module.css";
 import { TextField, Button } from "@mui/material";
 import useInput from "../../Hooks/UseInput";
@@ -9,16 +9,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const EmailVerification = () => {
   const { LoadingComponent, loader, handleLoader } = useLoader();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {token, userRole} = useSelector((state) => state.user.user);
-
-
+  const { token, userRole } = useSelector((state) => state.user.user);
 
   const {
     value: codeInputValue,
@@ -32,25 +27,21 @@ const EmailVerification = () => {
     return regex.test(value.trim());
   });
 
-
-  
   const resendCodeHandler = async () => {
     handleLoader(true);
-    let res
-    if(userRole === "student")
+    let res;
+    if (userRole === "student")
       res = await fetch(`${BACKEND_DOMAIN}/emailVerification`, {
         headers: {
           Authorization: "Bearer " + token,
         },
-      })
-    else 
+      });
+    else
       res = await fetch(`${BACKEND_DOMAIN}/alumni/emailVerification`, {
         headers: {
           Authorization: "Bearer " + token,
         },
-      })
-
-    
+      });
 
     if (res.status !== 201) {
       const resData = await res.json();
@@ -80,27 +71,26 @@ const EmailVerification = () => {
       //   body: JSON.stringify({ code: codeInputValue }),
       // });
 
-      let res
-    if(userRole === "student")
-      res = await fetch(`${BACKEND_DOMAIN}/verifyCode`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({ code: codeInputValue }),
-      });
-    else 
-      res = await fetch(`${BACKEND_DOMAIN}/alumni/verifyCode`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({ code: codeInputValue }),
-      });
-      
-      
+      let res;
+      if (userRole === "student")
+        res = await fetch(`${BACKEND_DOMAIN}/verifyCode`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ code: codeInputValue }),
+        });
+      else
+        res = await fetch(`${BACKEND_DOMAIN}/alumni/verifyCode`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ code: codeInputValue }),
+        });
+
       if (res.status !== 201) {
         //here show an error through notification
         const resData = await res.json();
@@ -123,7 +113,6 @@ const EmailVerification = () => {
   };
   return (
     <div className={classes.innerDiv}>
-      
       {/* <FormControl className={classes.formInput}>
             <FormLabel id="demo-row-radio-buttons-group-label">
               Select Role
@@ -147,7 +136,7 @@ const EmailVerification = () => {
               />
             </RadioGroup>
           </FormControl> */}
-      
+
       {loader && LoadingComponent}
       <h2>Email Verification</h2>
       <p>Enter Verification Code sent to your Email address</p>
@@ -158,6 +147,7 @@ const EmailVerification = () => {
           variant="outlined"
           type="number"
           value={codeInputValue}
+          onScroll={(event) => event.preventDefault()}
           onChange={codeKeyStrockHandler}
           onBlur={codeInputBlurHandler}
           error={codeIsError && true}

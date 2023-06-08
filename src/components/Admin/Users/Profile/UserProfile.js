@@ -13,10 +13,13 @@ import { useParams } from "react-router-dom";
 import InitialDisplay from "./InitialDisplay";
 import { postChangeUserStatus } from "../../../../api";
 import { toast } from "react-toastify";
+import OtherRequirements from "./OtherRequirements/OtherRequirements";
 
 const PersonalInfo = React.lazy(() => import("./PersonalInfo/PersonalInfo"));
 
 const UserProfile = (props) => {
+  //scholarship ID
+
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState({});
   const userRole = useSelector((state) => state.user.user.userRole);
@@ -46,11 +49,14 @@ const UserProfile = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${BACKEND_DOMAIN}/${userRole}/user-data?userId=${userId}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
+    fetch(
+      `${BACKEND_DOMAIN}/${userRole}/user-data?userId=${userId}&scholarshipId=${scholarshipId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
       .then((response) => {
         if (response.status !== 200) {
           const error = new Error("Data fetching failed!");
@@ -62,6 +68,7 @@ const UserProfile = (props) => {
         return response.json();
       })
       .then((userData) => {
+        console.log(userData);
         setUserDetails(userData.userDetails);
         // handleLoader(false);
         setLoading(false);
@@ -107,6 +114,9 @@ const UserProfile = (props) => {
                 )}
                 {selectedSection === "listOfDependants" && (
                   <ListOfDependants data={userDetails.dependantDetails} />
+                )}
+                {selectedSection === "OtherRequirements" && (
+                  <OtherRequirements data={userDetails.otherRequirements} />
                 )}
               </Fragment>
             </div>
