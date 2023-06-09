@@ -51,7 +51,7 @@ const Requirement = (props) => {
                 className={classes.btn}
                 onClick={predict_Emotions}
               >
-                predict Emotions
+                Text Analysis
               </Button>
             )}
         </div>
