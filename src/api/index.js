@@ -34,6 +34,7 @@ export const postApplyScholarship = async (
   );
   const responseData = await response.json();
   if (response.ok) return responseData;
+  else throw new Error(responseData.error);
 };
 
 export const getScholarshipList = async (token) => {

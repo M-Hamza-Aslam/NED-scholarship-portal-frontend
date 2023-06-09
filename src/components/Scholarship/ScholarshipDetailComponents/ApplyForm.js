@@ -49,13 +49,12 @@ const ApplyForm = ({ message, data, canApply }) => {
       title: additionalKeys[index],
       value: additionalValues[index],
     }));
-
-    const success = await postApplyScholarship(
-      data._id,
-      auth.token,
-      additionalArrayOfObjects
-    );
-    if (success) {
+    try {
+      const success = await postApplyScholarship(
+        data._id,
+        auth.token,
+        additionalArrayOfObjects
+      );
       dispatch(
         userActions.updateUserData({
           scholarship: {
@@ -66,8 +65,8 @@ const ApplyForm = ({ message, data, canApply }) => {
       );
       toast.success("You have successsfully applied to the scholarship!");
       handleClose();
-    } else {
-      toast.error("Some error has occurred, please try again.");
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 

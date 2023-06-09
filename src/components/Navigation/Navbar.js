@@ -258,7 +258,7 @@ const Navbar = () => {
                     </ListItemIcon>
 
                     <ListItemText
-                      primary="Home"
+                      primary="Alumni Scholarships"
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
