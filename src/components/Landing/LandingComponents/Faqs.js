@@ -7,27 +7,44 @@ const data = {
   //   title: "FAQ (How it works)",
   rows: [
     {
-      title: "Lorem ipsum dolor sit amet?",
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed tempor sem. Aenean vel turpis feugiat,
-              ultricies metus at, consequat velit. Curabitur est nibh, varius in tellus nec, mattis pulvinar metus.
-              In maximus cursus lorem, nec laoreet velit eleifend vel. Ut aliquet mauris tortor, sed egestas libero interdum vitae.
-              Fusce sed commodo purus, at tempus turpis.`,
+      title: "What is the NED Scholarship Portal?",
+      content: `The NED Scholarship Portal is an online platform dedicated to managing scholarship programs offered by NED University. It serves as a centralized system for students to apply for scholarships, track their application status, and access relevant information and resources.`,
     },
     {
-      title: "Nunc maximus, magna at ultricies elementum?",
+      title:
+        "How do I apply for a scholarship through the NED Scholarship Portal?",
       content:
-        "Nunc maximus, magna at ultricies elementum, risus turpis vulputate quam, vitae convallis ex tortor sed dolor.",
+        "To apply for a scholarship, you need to create an account on the NED Scholarship Portal. Once registered, you can log in and browse the available scholarship programs. Select the scholarship you're interested in and complete the application form, providing all the required details and supporting documents. Finally, submit your application through the portal before the deadline.",
     },
     {
-      title: "Curabitur laoreet, mauris vel blandit fringilla?",
-      content: `Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem.
-            Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam.
-            Sed dolor urna, lobortis in arcu auctor, tincidunt mattis ante. Vivamus venenatis ultricies nibh in volutpat.
-            Cras eu metus quis leo vestibulum feugiat nec sagittis lacus.Mauris vulputate arcu sed massa euismod dignissim. `,
+      title:
+        "What types of scholarships are available on the NED Scholarship Portal?",
+      content: `The NED Scholarship Portal offers various types of scholarships, including merit-based scholarships, need-based scholarships, academic achievement scholarships, research grants, and more. The specific scholarships available may vary each academic year, so it's essential to regularly check the portal for updated information.
+      `,
     },
     {
-      title: "What is the package version?",
-      content: <p>current version is 1.2.1</p>,
+      title:
+        "Who is eligible to apply for scholarships through the NED Scholarship Portal?",
+      content: `Eligibility criteria for scholarships on the NED Scholarship Portal vary depending on the specific program. Generally, scholarships are open to both current and incoming students of NED University. Factors such as academic performance, financial need, field of study, and extracurricular activities may also influence eligibility for certain scholarships.`,
+    },
+    {
+      title:
+        "Can I apply for multiple scholarships through the NED Scholarship Portal?",
+      content: `Yes, you can apply for multiple scholarships simultaneously through the NED Scholarship Portal. However, make sure to review each scholarship's requirements and ensure you meet the eligibility criteria before submitting multiple applications.`,
+    },
+    {
+      title: "How will I know if my scholarship application is successful?",
+      content: `After submitting your scholarship application through the NED Scholarship Portal, the selection committee will review it thoroughly. If your application is successful, you will receive a notification through the portal or via email, informing you of the award and any further steps you need to take.`,
+    },
+    {
+      title:
+        "Can I track the status of my scholarship application on the NED Scholarship Portal?",
+      content: `Yes, the NED Scholarship Portal provides a tracking system that allows you to monitor the status of your scholarship application. Once logged in, you can check whether your application is under review, approved, or rejected. Additionally, you may receive updates and notifications regarding your application status through the portal.`,
+    },
+    {
+      title:
+        "What if I encounter technical issues or have questions about the NED Scholarship Portal?",
+      content: `If you experience technical difficulties while using the NED Scholarship Portal, you can reach out to the portal's support team for assistance. They can provide guidance on troubleshooting common problems or address any concerns you may have. Contact details for support should be available on the portal itself.`,
     },
   ],
 };
