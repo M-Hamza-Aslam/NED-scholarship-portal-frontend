@@ -4,9 +4,13 @@ import Carousel from "react-material-ui-carousel";
 import EastIcon from "@mui/icons-material/East";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import carouselImage1 from "../../../assets/images/carousel-1.jpg";
-import carouselImage2 from "../../../assets/images/carousel-2.jpg";
-import carouselImage3 from "../../../assets/images/carousel-3.jpg";
+import carouselImage4 from "../../../assets/images/carousel-4.jpg";
+import carouselImage6 from "../../../assets/images/carousel-6.jpg";
+import carouselImage7 from "../../../assets/images/carousel-7.jpg";
+// import carouselImage1 from "../../../assets/images/carousel-1.jpg";
+// import carouselImage2 from "../../../assets/images/carousel-2.jpg";
+// import carouselImage3 from "../../../assets/images/carousel-3.jpg";
+// import carouselImage5 from "../../../assets/images/carousel-5.jpg";
 
 import classes from "./InitialDisplay.module.css";
 
@@ -14,9 +18,9 @@ const InitialDisplay = () => {
   const navigate = useNavigate();
 
   const imageHelper = {
-    carousel1: carouselImage1,
-    carousel2: carouselImage2,
-    carousel3: carouselImage3,
+    carousel1: carouselImage4,
+    carousel2: carouselImage7,
+    carousel3: carouselImage6,
   };
 
   const navigateToScholarshipListHandler = () => {
